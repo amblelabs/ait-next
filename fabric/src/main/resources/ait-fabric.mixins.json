@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "dev.amble.ait.fabric.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "FabricAxeItemMixin",
+    "FabricPlayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

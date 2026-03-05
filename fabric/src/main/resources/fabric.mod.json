@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "liquor",
+  "version": "${version}",
+  "name": "Liquor Brewery",
+  "description": "liquor (lOWOr) brewery",
+  "authors": [
+    "DrTheo_"
+  ],
+  "contact": {
+    "homepage": "https://theo.is-a.dev/"
+  },
+  "license": "LGPL-3.0",
+  "icon": "assets/ait/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.amble.ait.fabric.FabricLiquorInit"
+    ],
+    "client": [
+      "dev.amble.ait.fabric.FabricLiquorClientInit"
+    ],
+    "modmenu": [
+      "dev.amble.ait.fabric.interop.ModMenuInterop"
+    ]
+  },
+  "mixins": [
+    "ait.mixins.json",
+    "ait-fabric.mixins.json"
+  ],
+  "accessWidener": "ait-fabric.accesswidener",
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+
+    "fabric-api": "*",
+    "cloth-config": "11.1.*",
+    "patchouli": ">=1.20.1-80"
+  },
+  "suggests": {
+    "modmenu": ">=7.0.1"
+  }
+}
