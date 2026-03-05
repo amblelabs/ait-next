@@ -1,8 +1,8 @@
 ---
 name: Proposal
-about: Make a proposal for Adventures in Time 2.x!
+about: Make a proposal for Adventures in Time 2.x! Only for team members.
 title: ''
-labels: ''
+labels: 'X: Proposal'
 assignees: ''
 ---
 
