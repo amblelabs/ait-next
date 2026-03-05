@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "id": "liquor",
+  "id": "ait",
   "version": "${version}",
-  "name": "Liquor Brewery",
-  "description": "liquor (lOWOr) brewery",
+  "name": "Adventures In Time",
+  "description": "Adventures In Time for 1.21.1 Fabric and Forge!",
   "authors": [
-    "DrTheo_"
+    "AmbleLabs"
   ],
   "contact": {
     "homepage": "https://theo.is-a.dev/"
@@ -15,10 +15,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.amble.ait.fabric.FabricLiquorInit"
+      "dev.amble.ait.fabric.AITLiquorInit"
     ],
     "client": [
-      "dev.amble.ait.fabric.FabricLiquorClientInit"
+      "dev.amble.ait.fabric.FabricAITClientInit"
     ],
     "modmenu": [
       "dev.amble.ait.fabric.interop.ModMenuInterop"
