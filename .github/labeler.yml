@@ -1,16 +1,16 @@
 "C: Textures":
   - changed-files:
-      - any-glob-to-any-file: 'Common/src/main/resources/assets/*/textures/**/*.png'
+      - any-glob-to-any-file: 'common/src/main/resources/assets/*/textures/**/*.png'
 
 "C: Structures":
   - changed-files:
       - any-glob-to-any-file:
-          - 'Common/src/main/resources/data/*/structures/**/*.nbt'
+          - 'common/src/main/resources/data/*/structures/**/*.nbt'
 
 "C: Audio":
   - changed-files:
-      - any-glob-to-any-file: 'Common/src/main/resources/assets/*/sounds/**/*.ogg'
+      - any-glob-to-any-file: 'common/src/main/resources/assets/*/sounds/**/*.ogg'
 
 "C: No Java":
   - changed-files:
-      - all-globs-to-all-files: "!src/main/java/**/*.java"
+      - all-globs-to-all-files: "!*/src/main/java/**/*.java"
