@@ -3,14 +3,16 @@ plugins {
     id 'architectury-plugin' version '3.4-SNAPSHOT'
 }
 
+apply from: 'versioning.gradle'
+
+version = getPublicVersion()
+
 architectury {
     minecraft = project.minecraft_version
 }
 
 allprojects {
-    apply from: 'versioning.gradle'
-
-    version = getPublicVersion()
+    version = rootProject.version
     group = project.maven_group
 }
 
