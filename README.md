@@ -54,7 +54,7 @@ If you have confusion about special blocks you are able to check the items toolt
 ### Developers:
 - [Loqor](https://loqor.dev/)
 - [duzo](https://duzo.is-a.dev/)
-- [Dr. Theo](https://theo.is-a.dev/)
+- [theoretically](https://theo.is-a.dev/)
 - [AddieDaBaddie](https://addi3.github.io/index)
 - [Saturn](https://github.com/Saturnorsomthing)
 - [Monke](https://github.com/rapbattlegod32)
