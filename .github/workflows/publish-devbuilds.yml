@@ -46,8 +46,8 @@ jobs:
         restore-keys:
           datagen-
 
-    - name: Run DataGen
-      run: ./gradlew --configuration-cache runDatagen
+    #- name: Run DataGen
+    #  run: ./gradlew --configuration-cache runDatagen
 
     - name: Save DataGen cache
       id: cache-save
