@@ -57,7 +57,7 @@ subprojects {
     publishing {
     	publications {
     		create("mavenJava", MavenPublication) {
-    			artifactId = project.archives_base_name
+    			artifactId = project.archives_name
     			version = getArtifactVersion()
     			from components.java
     		}
