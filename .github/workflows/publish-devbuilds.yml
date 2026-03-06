@@ -1,0 +1,95 @@
+name: Automated Builds
+
+on:
+  workflow_dispatch:
+  push:
+      paths:
+        - common/**
+        - fabric/**
+        - forge/**
+        - build.gradle
+        - gradle.properties
+        - settings.gradle
+        - gradle/**
+        - gradlew
+        - gradlew.bat
+        - versioning.gradle
+        - .github/workflows/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v5
+      with:
+        cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: 'gradle'
+
+    - name: Restore DataGen cache
+      id: cache-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: src/main/generated
+        key: datagen-${{ github.run_id }}
+        restore-keys:
+          datagen-
+
+    - name: Run DataGen
+      run: ./gradlew --configuration-cache runDatagen
+
+    - name: Save DataGen cache
+      id: cache-save
+      uses: actions/cache/save@v4
+      with:
+        path: src/main/generated
+        key: ${{ steps.cache-restore.outputs.cache-primary-key }}
+    
+    - name: Build
+      run: ./gradlew --configuration-cache build
+
+    - name: Setup Amble Maven
+      id: setup-maven
+      uses: drtheodor/static-file-server-actions/upload/setup@main
+      with:
+        repo: amblelabs/maven
+
+    - name: Build for Maven
+      env:
+        CI_MAVEN_PATH: ${{ steps.setup-maven.outputs.path }}
+      run: ./gradlew --configuration-cache publishMavenJavaPublicationToCiRepository
+
+    - name: Publish to Amble Maven
+      uses: drtheodor/static-file-server-actions/upload@main
+      with:
+        published: dev/amble/ait
+        token: ${{ secrets.BOT_TOKEN }}
+        message: "chore: publish AIT 2.x artifacts"
+
+    - name: Publish artifacts
+      uses: drtheodor/discord-webhook-upload-action@v0.2
+      with:
+        url: ${{ secrets.DEV_BUILDS }}
+        username: george washington
+        avatar: 'https://i.imgur.com/uiFqrQh.png'
+        
+        message_commit: '> :sparkles: [${commitMessage}](<${commitUrl}>) by [${authorName}](<${authorUrl}>)'
+        message_header: |
+          <:new1:1253371736510959636><:new2:1253371805734015006> New `Adventures in Time` 2.x dev build `#${{ github.run_number }}`:
+
+        file: |
+          Fabric/build/libs/*.jar
+          !Fabric/build/libs/*-sources.jar
+          Forge/build/libs/*.jar
+          !Forge/build/libs/*-sources.jar
