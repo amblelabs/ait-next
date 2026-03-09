@@ -71,11 +71,12 @@ sourceSets {
 
 processResources {
     from project(":common").sourceSets.main.resources
+
     inputs.property "version", project.version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "patchouli_version", project.patchouli_version
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version,
-                "minecraft_version": project.minecraft_version,
-                "patchouli_version": project.patchouli_version
+        expand inputs.properties
     }
 }
