@@ -1,6 +1,5 @@
 package dev.amble.ait.fabric.xplat;
 
-import dev.amble.ait.common.network.NetworkMessage;
 import dev.amble.ait.fabric.interop.trinkets.TrinketsApiInterop;
 import dev.amble.ait.interop.AitInterop;
 import dev.amble.ait.xplat.IClientXplatAbstractions;
@@ -14,6 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,8 +26,8 @@ import org.jetbrains.annotations.Nullable;
 public class FabricClientXplatImpl implements IClientXplatAbstractions {
 
     @Override
-    public void sendPacketToServer(NetworkMessage packet) {
-        ClientPlayNetworking.send(packet.getFabricId(), packet.toBuf());
+    public void sendPacketToServer(CustomPacketPayload packet) {
+        ClientPlayNetworking.send(packet);
     }
 
     @Override

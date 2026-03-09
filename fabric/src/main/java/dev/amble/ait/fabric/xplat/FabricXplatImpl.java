@@ -1,14 +1,12 @@
 package dev.amble.ait.fabric.xplat;
 
 import dev.amble.ait.api.mod.AitTags;
-import dev.amble.ait.common.network.NetworkMessage;
 import dev.amble.ait.fabric.interop.trinkets.TrinketsApiInterop;
 import dev.amble.ait.interop.AitInterop;
 import dev.amble.ait.xplat.IXplatAbstractions;
 import dev.amble.ait.xplat.IXplatTags;
 import dev.amble.ait.xplat.Platform;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -22,14 +20,13 @@ import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.*;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.common.ClientCommonPacketListener;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -47,6 +44,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 public class FabricXplatImpl implements IXplatAbstractions {
+
     @Override
     public Platform platform() {
         return Platform.FABRIC;
@@ -70,40 +68,39 @@ public class FabricXplatImpl implements IXplatAbstractions {
     }
 
     @Override
-    public void sendPacketToPlayer(ServerPlayer target, NetworkMessage packet) {
-        ServerPlayNetworking.send(target, packet.getFabricId(), packet.toBuf());
+    public void sendPacketToPlayer(ServerPlayer target, CustomPacketPayload packet) {
+        ServerPlayNetworking.send(target, packet);
     }
 
     @Override
-    public void sendPacketNear(Vec3 pos, double radius, ServerLevel dimension, NetworkMessage packet) {
+    public void sendPacketNear(Vec3 pos, double radius, ServerLevel dimension, CustomPacketPayload packet) {
         sendPacketToPlayers(PlayerLookup.around(dimension, pos, radius), packet);
     }
 
     @Override
-    public void sendPacketTracking(Entity entity, NetworkMessage packet) {
+    public void sendPacketTracking(Entity entity, CustomPacketPayload packet) {
         sendPacketToPlayers(PlayerLookup.tracking(entity), packet);
     }
 
-    private void sendPacketToPlayers(Collection<ServerPlayer> players, NetworkMessage packet) {
-        var pkt = ServerPlayNetworking.createS2CPacket(packet.getFabricId(), packet.toBuf());
+    private void sendPacketToPlayers(Collection<ServerPlayer> players, CustomPacketPayload packet) {
+        Packet<?> pkt = this.toVanilla(packet);
+
         for (var p : players) {
             p.connection.send(pkt);
         }
     }
 
     @Override
-    public Packet<ClientGamePacketListener> toVanillaClientboundPacket(NetworkMessage message) {
-        return ServerPlayNetworking.createS2CPacket(message.getFabricId(), message.toBuf());
+    public Packet<ClientCommonPacketListener> toVanilla(CustomPacketPayload message) {
+        return ServerPlayNetworking.createS2CPacket(message);
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityType<T> createBlockEntityType(BiFunction<BlockPos, BlockState, T> func,
-        Block... blocks) {
+    public <T extends BlockEntity> BlockEntityType<T> createBlockEntityType(BiFunction<BlockPos, BlockState, T> func, Block... blocks) {
         return FabricBlockEntityTypeBuilder.create(func::apply, blocks).build();
     }
 
     @Override
-    @SuppressWarnings("UnstableApiUsage")
     public boolean tryPlaceFluid(Level level, InteractionHand hand, BlockPos pos, Fluid fluid) {
         Storage<FluidVariant> target = FluidStorage.SIDED.find(level, pos, Direction.UP);
         if (target == null) {
@@ -120,7 +117,6 @@ public class FabricXplatImpl implements IXplatAbstractions {
     }
 
     @Override
-    @SuppressWarnings("UnstableApiUsage")
     public boolean drainAllFluid(Level level, BlockPos pos) {
         Storage<FluidVariant> target = FluidStorage.SIDED.find(level, pos, Direction.UP);
         if (target == null) {
@@ -143,11 +139,6 @@ public class FabricXplatImpl implements IXplatAbstractions {
         return false;
     }
 
-    @Override
-    public Item.Properties addEquipSlotFabric(EquipmentSlot slot) {
-        return new FabricItemSettings().equipmentSlot(s -> slot);
-    }
-
     private static final IXplatTags TAGS = new IXplatTags() {
 
     };
@@ -162,7 +153,7 @@ public class FabricXplatImpl implements IXplatAbstractions {
         return AnyOfCondition.anyOf(
             MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)),
             MatchTool.toolMatches(ItemPredicate.Builder.item().of(
-                AitTags.Items.create(new ResourceLocation("c", "shears"))))
+                AitTags.Items.create(ResourceLocation.fromNamespaceAndPath("c", "shears"))))
         );
     }
 

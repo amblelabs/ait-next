@@ -28,7 +28,8 @@ public class AitBlockEntities {
     private static <T extends BlockEntity> BlockEntityType<T> register(String id,
         BiFunction<BlockPos, BlockState, T> func, Block... blocks) {
         var ret = IXplatAbstractions.INSTANCE.createBlockEntityType(func, blocks);
-        var old = BLOCK_ENTITIES.put(new ResourceLocation(AitAPI.MOD_ID, id), ret);
+
+        var old = BLOCK_ENTITIES.put(AitAPI.modLoc(id), ret);
         if (old != null) {
             throw new IllegalArgumentException("Duplicate id " + id);
         }

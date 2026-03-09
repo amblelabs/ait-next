@@ -30,6 +30,15 @@ public class AitItems {
 
     public static final Item SCREWDRIVER = make("screwdriver", new Item(unstackable()));
 
+    public static final Item SHARD_BASIC = make("zeiton_shard/basic", new Item(unstackable()));
+    public static final Item SHARD_OVERCHARGED = make("zeiton_shard/overcharged", new Item(unstackable()));
+    public static final Item SHARD_RESONATING = make("zeiton_shard/resonating", new Item(unstackable()));
+    public static final Item SHARD_GRAVITY = make("zeiton_shard/gravity", new Item(unstackable()));
+    public static final Item SHARD_REFRACTION = make("zeiton_shard/refraction", new Item(unstackable()));
+    public static final Item SHARD_AMETHYST = make("zeiton_shard/amethyst", new Item(unstackable()));
+    public static final Item SHARD_QUARTZ = make("zeiton_shard/quartz", new Item(unstackable()));
+    public static final Item SHARD_SCULK = make("zeiton_shard/sculk", new Item(unstackable()));
+
     public static Item.Properties props() {
         return new Item.Properties();
     }

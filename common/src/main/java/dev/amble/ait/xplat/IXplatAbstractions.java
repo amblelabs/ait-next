@@ -1,9 +1,10 @@
 package dev.amble.ait.xplat;
 
 import dev.amble.ait.api.AitAPI;
-import dev.amble.ait.common.network.NetworkMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.common.ClientCommonPacketListener;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -35,19 +36,14 @@ public interface IXplatAbstractions {
 
     void initPlatformSpecific();
 
-    void sendPacketToPlayer(ServerPlayer target, NetworkMessage packet);
+    void sendPacketToPlayer(ServerPlayer target, CustomPacketPayload packet);
 
-    void sendPacketNear(Vec3 pos, double radius, ServerLevel dimension, NetworkMessage packet);
+    void sendPacketNear(Vec3 pos, double radius, ServerLevel dimension, CustomPacketPayload packet);
 
-    void sendPacketTracking(Entity entity, NetworkMessage packet);
+    void sendPacketTracking(Entity entity, CustomPacketPayload packet);
 
     // https://github.com/VazkiiMods/Botania/blob/13b7bcd9cbb6b1a418b0afe455662d29b46f1a7f/Xplat/src/main/java/vazkii/botania/xplat/IXplatAbstractions.java#L157
-    Packet<ClientGamePacketListener> toVanillaClientboundPacket(NetworkMessage message);
-
-    /**
-     * No-op on forge (use a SoftImplement)
-     */
-    Item.Properties addEquipSlotFabric(EquipmentSlot slot);
+    Packet<ClientCommonPacketListener> toVanilla(CustomPacketPayload message);
 
     // Blocks
 

@@ -6,12 +6,18 @@ license = "GNU LGPL 3.0"
 [[mods]]
 modId = "ait"
 version = "${version}"
-displayName = "Adventures In Time"
-authors = "AmbleLabs, Loqor, DrTheo, Duzo"
+displayName = "Adventures in Time"
+authors = "AmbleLabs"
 description = '''
 Adventures In Time for 1.21.1, Fabric and Forge!
 '''
 #logoFile = ""
+
+[[mixins]]
+config = "ait.mixins.json"
+
+[[mixins]]
+config = "ait-forge.mixins.json"
 
 [[dependencies.ait]]
 modId = "forge"
@@ -25,11 +31,4 @@ modId = "minecraft"
 mandatory = true
 versionRange = "[1.20.1,)"
 ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.liquor]]
-modId = "architectury"
-mandatory = true
-versionRange = "[9.2.14,)"
-ordering = "AFTER"
 side = "BOTH"

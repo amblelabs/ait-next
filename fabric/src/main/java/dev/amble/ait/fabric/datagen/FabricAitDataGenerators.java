@@ -27,15 +27,16 @@ public class FabricAitDataGenerators implements DataGeneratorEntrypoint {
         var pack = gen.createPack();
         var tags = IXplatAbstractions.INSTANCE.tags();
 
-        pack.addProvider((FabricDataGenerator.Pack.Factory<AitXplatRecipes>) x -> new AitXplatRecipes(
-                x, INGREDIENTS, FabricAitConditionsBuilder::new));
+        pack.addProvider((output, lookup) -> new AitXplatRecipes(
+                output, lookup, INGREDIENTS));
 
         var blockTags = new BlockTagProviderWrapper();
         pack.addProvider((output, lookup) -> blockTags.provider = new AitBlockTagProvider(output, lookup, tags));
         pack.addProvider((output, lookup) -> new AitItemTagProvider(output, lookup, blockTags.provider, tags));
 
-        pack.addProvider((FabricDataGenerator.Pack.Factory<LootTableProvider>) output -> new LootTableProvider(
-                output, Set.of(), List.of(new LootTableProvider.SubProviderEntry(AitLootTables::new, LootContextParamSets.ALL_PARAMS))
+        pack.addProvider((output, lookup) -> new LootTableProvider(
+                output, Set.of(), List.of(new LootTableProvider.SubProviderEntry(provider -> new AitLootTables(),
+                LootContextParamSets.ALL_PARAMS)), lookup
         ));
 
         pack.addProvider((output, lookup) -> new AdvancementProvider(
@@ -58,6 +59,6 @@ public class FabricAitDataGenerators implements DataGeneratorEntrypoint {
     }
 
     private static TagKey<Item> tag(String namespace, String s) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(namespace, s));
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(namespace, s));
     }
 }

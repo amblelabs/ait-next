@@ -6,7 +6,6 @@
   "client": [
   ],
   "mixins": [
-    "accessor.AccessorPotionBrewing"
   ],
   "injectors": {
     "defaultRequire": 1

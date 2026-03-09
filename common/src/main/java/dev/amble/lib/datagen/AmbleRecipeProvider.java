@@ -1,6 +1,9 @@
 package dev.amble.lib.datagen;
 
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -10,14 +13,16 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Consumer;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class AmbleRecipeProvider extends RecipeProvider {
 
     protected final String modId;
 
-    protected AmbleRecipeProvider(PackOutput out, String modId) {
-        super(out);
+    protected AmbleRecipeProvider(PackOutput out, CompletableFuture<HolderLookup.Provider> future, String modId) {
+        super(out, future);
         this.modId = modId;
     }
 
@@ -134,15 +139,16 @@ public abstract class AmbleRecipeProvider extends RecipeProvider {
     /**
      * @param largeSize True for a 3x3, false for a 2x2
      */
-    protected void packing(RecipeCategory category, ItemLike free, ItemLike compressed, String freeName, boolean largeSize,
-        Consumer<FinishedRecipe> recipes) {
+    protected void packing(RecipeCategory category, ItemLike free, ItemLike compressed, String freeName, boolean largeSize, RecipeOutput recipes) {
         var pack = ShapedRecipeBuilder.shaped(category, compressed)
             .define('X', free);
+
         if (largeSize) {
             pack.pattern("XXX").pattern("XXX").pattern("XXX");
         } else {
             pack.pattern("XX").pattern("XX");
         }
+
         pack.unlockedBy("has_item", hasItem(free)).save(recipes, modLoc(freeName + "_packing"));
 
         ShapelessRecipeBuilder.shapeless(category, free, largeSize ? 9 : 4)
@@ -151,7 +157,7 @@ public abstract class AmbleRecipeProvider extends RecipeProvider {
     }
 
     protected ResourceLocation modLoc(String path) {
-        return new ResourceLocation(modId, path);
+        return ResourceLocation.fromNamespaceAndPath(modId, path);
     }
 
     @Nullable
@@ -164,21 +170,19 @@ public abstract class AmbleRecipeProvider extends RecipeProvider {
         return item == null ? null : Ingredient.of(item);
     }
 
-
-    protected static InventoryChangeTrigger.TriggerInstance hasItem(MinMaxBounds.Ints bounds, ItemLike itemLike) {
-        return paucalInventoryTrigger(ItemPredicate.Builder.item().of(itemLike).withCount(bounds).build());
+    protected static Criterion<InventoryChangeTrigger.TriggerInstance> hasItem(MinMaxBounds.Ints bounds, ItemLike itemLike) {
+        return ambleInventoryTrigger(ItemPredicate.Builder.item().of(itemLike).withCount(bounds).build());
     }
 
-    protected static InventoryChangeTrigger.TriggerInstance hasItem(ItemLike itemLike) {
-        return paucalInventoryTrigger(ItemPredicate.Builder.item().of(itemLike).build());
+    protected static Criterion<InventoryChangeTrigger.TriggerInstance> hasItem(ItemLike itemLike) {
+        return ambleInventoryTrigger(ItemPredicate.Builder.item().of(itemLike).build());
     }
 
-    protected static InventoryChangeTrigger.TriggerInstance hasItem(TagKey<Item> itemTag) {
-        return paucalInventoryTrigger(ItemPredicate.Builder.item().of(itemTag).build());
+    protected static Criterion<InventoryChangeTrigger.TriggerInstance> hasItem(TagKey<Item> itemTag) {
+        return ambleInventoryTrigger(ItemPredicate.Builder.item().of(itemTag).build());
     }
 
-    protected static InventoryChangeTrigger.TriggerInstance paucalInventoryTrigger(ItemPredicate... $$0) {
-        return new InventoryChangeTrigger.TriggerInstance(ContextAwarePredicate.ANY, MinMaxBounds.Ints.ANY,
-            MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, $$0);
+    protected static Criterion<InventoryChangeTrigger.TriggerInstance> ambleInventoryTrigger(ItemPredicate... predicates) {
+        return CriteriaTriggers.INVENTORY_CHANGED.createCriterion(new InventoryChangeTrigger.TriggerInstance(Optional.empty(), InventoryChangeTrigger.TriggerInstance.Slots.ANY, List.of(predicates)));
     }
 }

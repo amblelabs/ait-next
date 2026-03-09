@@ -1,7 +1,7 @@
 package dev.amble.lib.datagen;
 
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -25,9 +25,9 @@ public abstract class AmbleLootTableSubProvider implements LootTableSubProvider 
     }
 
     @Override
-    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> register) {
+    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> register) {
         var blockTables = new HashMap<Block, LootTable.Builder>();
-        var lootTables = new HashMap<ResourceLocation, LootTable.Builder>();
+        var lootTables = new HashMap<ResourceKey<LootTable>, LootTable.Builder>();
 
         this.makeLootTables(blockTables, lootTables);
 
@@ -39,7 +39,7 @@ public abstract class AmbleLootTableSubProvider implements LootTableSubProvider 
     }
 
     protected abstract void makeLootTables(Map<Block, LootTable.Builder> blockTables,
-        Map<ResourceLocation, LootTable.Builder> lootTables);
+        Map<ResourceKey<LootTable>, LootTable.Builder> lootTables);
 
     protected LootPool.Builder dropThisPool(ItemLike item, int count) {
         return dropThisPool(item, ConstantValue.exactly(count));

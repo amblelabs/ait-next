@@ -15,16 +15,6 @@ public class FabricPacketHandler {
     public static void init() {
     }
 
-    private static <T> ServerPlayNetworking.PlayChannelHandler makeServerBoundHandler(
-            Function<FriendlyByteBuf, T> decoder, TriConsumer<T, MinecraftServer, ServerPlayer> handle) {
-        return (server, player, _handler, buf, _responseSender) -> handle.accept(decoder.apply(buf), server, player);
-    }
-
     public static void initClient() {
-    }
-
-    private static <T> ClientPlayNetworking.PlayChannelHandler makeClientBoundHandler(
-            Function<FriendlyByteBuf, T> decoder, Consumer<T> handler) {
-        return (_client, _handler, buf, _responseSender) -> handler.accept(decoder.apply(buf));
     }
 }

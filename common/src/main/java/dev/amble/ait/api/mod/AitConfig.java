@@ -19,14 +19,12 @@ public class AitConfig {
 
     }
 
-    // Simple extensions for resource location configs
     public static boolean anyMatch(List<? extends String> keys, ResourceLocation key) {
         for (String s : keys) {
-            if (ResourceLocation.isValidResourceLocation(s)) {
-                var rl = new ResourceLocation(s);
-                if (rl.equals(key)) {
-                    return true;
-                }
+            var rl = ResourceLocation.tryParse(s);
+
+            if (rl != null && rl.equals(key)) {
+                return true;
             }
         }
         return false;

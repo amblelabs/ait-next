@@ -1,14 +1,16 @@
 package dev.amble.lib.datagen;
 
+import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.FrameType;
 import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public abstract class AmbleAdvancementSubProvider implements AdvancementSubProvider {
 
     protected final String modId;
@@ -17,15 +19,15 @@ public abstract class AmbleAdvancementSubProvider implements AdvancementSubProvi
         this.modId = modId;
     }
 
-    protected DisplayInfo simple(ItemLike icon, String name, FrameType frameType) {
-        return simpleBg(icon, name, frameType, null);
+    protected DisplayInfo simple(ItemLike icon, String name, AdvancementType frameType) {
+        return simpleBg(icon, name, frameType, Optional.empty());
     }
 
-    protected DisplayInfo simpleBg(ItemLike icon, String name, FrameType frameType, @Nullable ResourceLocation background) {
+    protected DisplayInfo simpleBg(ItemLike icon, String name, AdvancementType frameType, Optional<ResourceLocation> background) {
         return display(new ItemStack(icon), name, frameType, background, true, true, false);
     }
 
-    protected DisplayInfo display(ItemStack icon, String name, FrameType frameType, ResourceLocation background, boolean showToast, boolean announceChat, boolean hidden) {
+    protected DisplayInfo display(ItemStack icon, String name, AdvancementType frameType, Optional<ResourceLocation> background, boolean showToast, boolean announceChat, boolean hidden) {
         name = "advancement." + this.modId + ":" + name;
 
         return new DisplayInfo(icon,
@@ -35,6 +37,6 @@ public abstract class AmbleAdvancementSubProvider implements AdvancementSubProvi
     }
 
     protected ResourceLocation modLoc(String name) {
-        return new ResourceLocation(modId, name);
+        return ResourceLocation.fromNamespaceAndPath(modId, name);
     }
 }

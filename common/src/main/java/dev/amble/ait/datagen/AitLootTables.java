@@ -3,7 +3,7 @@ package dev.amble.ait.datagen;
 import dev.amble.ait.api.AitAPI;
 import dev.amble.lib.datagen.AmbleLootTableSubProvider;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.properties.SlabType;
@@ -22,8 +22,8 @@ public class AitLootTables extends AmbleLootTableSubProvider {
     }
 
     @Override
-    protected void makeLootTables(Map<Block, LootTable.Builder> blockTables,
-        Map<ResourceLocation, LootTable.Builder> lootTables) {
+    protected void makeLootTables(Map<Block, LootTable.Builder> blockTables, Map<ResourceKey<LootTable>, LootTable.Builder> lootTables) {
+
     }
 
     private void makeSlabTable(Map<Block, LootTable.Builder> lootTables, Block block) {

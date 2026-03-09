@@ -12,12 +12,12 @@ public abstract class FabricAmbleModelProvider extends FabricModelProvider {
     }
 
     @Override
-    public void generateBlockStateModels(BlockModelGenerators blockModelGenerators) {
+    public void generateBlockStateModels(BlockModelGenerators gen) {
 
     }
 
     @Override
-    public void generateItemModels(ItemModelGenerators itemModelGenerators) {
+    public void generateItemModels(ItemModelGenerators gen) {
 
     }
 }

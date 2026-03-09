@@ -14,12 +14,22 @@ public class FabricAitModels extends FabricAmbleModelProvider {
     }
 
     @Override
-    public void generateBlockStateModels(BlockModelGenerators blockModelGenerators) {
+    public void generateBlockStateModels(BlockModelGenerators gen) {
 
     }
 
     @Override
     public void generateItemModels(ItemModelGenerators gen) {
         gen.generateFlatItem(AitItems.SCREWDRIVER, ModelTemplates.FLAT_ITEM);
+
+        // Zeiton shards
+        gen.generateFlatItem(AitItems.SHARD_AMETHYST, ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitItems.SHARD_BASIC, ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitItems.SHARD_GRAVITY, ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitItems.SHARD_OVERCHARGED, ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitItems.SHARD_QUARTZ, ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitItems.SHARD_REFRACTION, ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitItems.SHARD_RESONATING, ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitItems.SHARD_SCULK, ModelTemplates.FLAT_ITEM);
     }
 }

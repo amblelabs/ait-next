@@ -1,10 +1,10 @@
 package dev.amble.ait.xplat;
 
 import dev.amble.ait.api.AitAPI;
-import dev.amble.ait.common.network.NetworkMessage;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -15,7 +15,7 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 public interface IClientXplatAbstractions {
-    void sendPacketToServer(NetworkMessage packet);
+    void sendPacketToServer(CustomPacketPayload packet);
 
     void setRenderLayer(Block block, RenderType type);
 

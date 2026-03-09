@@ -1,12 +1,6 @@
-loom {
-    forge {
-        mixinConfig "ait.mixins.json"
-    }
-}
-
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoForge()
 }
 
 configurations {
@@ -19,12 +13,14 @@ configurations {
     developmentForge.extendsFrom common
 }
 
+repositories {
+    maven { url "https://maven.neoforged.net/releases" }
+}
+
 dependencies {
-    forge "net.minecraftforge:forge:$rootProject.forge_version"
+    neoForge "net.neoforged:neoforge:$rootProject.forge_version"
 
-    modImplementation "dev.architectury:architectury-forge:$rootProject.architectury_api_version"
-
-    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    common(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
 }
 
 tasks.withType(JavaCompile) {
@@ -36,7 +32,10 @@ sourcesJar {
 }
 
 sourceSets {
-    main.resources.srcDirs += ['src/generated/resources', '../common/src/generated/resources']
+    main.resources.srcDirs += [
+            'src/generated/resources',
+//            '../common/src/main/generated'
+    ]
 }
 
 processResources {

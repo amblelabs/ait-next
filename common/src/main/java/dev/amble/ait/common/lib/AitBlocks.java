@@ -56,7 +56,7 @@ public class AitBlocks {
 
     private static BlockBehaviour.Properties woodyHard(MapColor color) {
         return BlockBehaviour.Properties
-            .copy(Blocks.OAK_LOG)
+            .ofFullCopy(Blocks.OAK_LOG)
             .mapColor(color)
             .sound(SoundType.WOOD)
             .strength(3f, 4f);
@@ -64,7 +64,7 @@ public class AitBlocks {
 
     private static BlockBehaviour.Properties woody(MapColor color) {
         return BlockBehaviour.Properties
-            .copy(Blocks.OAK_LOG)
+            .ofFullCopy(Blocks.OAK_LOG)
             .mapColor(color)
             .sound(SoundType.WOOD)
             .strength(2f);
@@ -72,7 +72,7 @@ public class AitBlocks {
 
     private static BlockBehaviour.Properties leaves(MapColor color) {
         return BlockBehaviour.Properties
-            .copy(Blocks.OAK_LEAVES)
+            .ofFullCopy(Blocks.OAK_LEAVES)
             .strength(0.2F)
             .randomTicks()
             .sound(SoundType.GRASS)
@@ -95,6 +95,7 @@ public class AitBlocks {
         }
         return block;
     }
+
     private static <T extends Block> T blockItem(String name, T block) {
         return blockItem(name, block, AitItems.props(), AitCreativeTabs.AIT);
     }
@@ -102,19 +103,21 @@ public class AitBlocks {
     private static <T extends Block> T blockItem(String name, T block, @Nullable CreativeModeTab tab) {
         return blockItem(name, block, AitItems.props(), tab);
     }
+
     private static <T extends Block> T blockItem(String name, T block, Item.Properties props) {
         return blockItem(name, block, props, AitCreativeTabs.AIT);
     }
 
     private static <T extends Block> T blockItem(String name, T block, Item.Properties props, @Nullable CreativeModeTab tab) {
         blockNoItem(name, block);
+
         var old = BLOCK_ITEMS.put(modLoc(name), new Pair<>(block, props));
-        if (old != null) {
-            throw new IllegalArgumentException("Typo? Duplicate id " + name);
-        }
+        if (old != null) throw new IllegalArgumentException("Duplicate id " + name);
+
         if (tab != null) {
             BLOCK_TABS.computeIfAbsent(tab, t -> new ArrayList<>()).add(block);
         }
+
         return block;
     }
 }
