@@ -76,7 +76,9 @@ processResources {
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "patchouli_version", project.patchouli_version
 
+    def expansionVars = inputs.properties
+
     filesMatching("fabric.mod.json") {
-        expand inputs.properties
+        expand expansionVars
     }
 }
