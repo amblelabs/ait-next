@@ -17,11 +17,18 @@ loom {
     accessWidenerPath = file("src/main/resources/ait-fabric.accesswidener")
 }
 
+fabricApi {
+    configureDataGeneration() {
+        client = true
+        outputDirectory = file("../common/src/main/generated")
+    }
+}
+
 repositories {
     // patchouli
     maven { url = 'https://maven.blamejared.com' }
 
-    // modmenu and cloth
+    // cloth
     maven { url "https://maven.shedaniel.me/" }
     maven { url 'https://maven.ladysnake.org/releases' }
 
@@ -56,10 +63,15 @@ sourcesJar {
 }
 
 sourceSets {
-    main.resources.srcDirs += ['src/generated/resources', '../common/src/generated/resources']
+    main.resources.srcDirs += [
+            'src/main/generated',
+//            '../common/src/main/generated'
+    ]
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+
     from project(":common").sourceSets.main.resources
     inputs.property "version", project.version
 

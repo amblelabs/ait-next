@@ -1,0 +1,38 @@
+package dev.amble.ait.datagen;
+
+import dev.amble.ait.api.AitAPI;
+import dev.amble.lib.datagen.AmbleLootTableSubProvider;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.*;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+
+import java.util.Map;
+
+public class AitLootTables extends AmbleLootTableSubProvider {
+
+    public AitLootTables() {
+        super(AitAPI.MOD_ID);
+    }
+
+    @Override
+    protected void makeLootTables(Map<Block, LootTable.Builder> blockTables,
+        Map<ResourceLocation, LootTable.Builder> lootTables) {
+    }
+
+    private void makeSlabTable(Map<Block, LootTable.Builder> lootTables, Block block) {
+        var leafPool = dropThisPool(block, 1)
+            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
+                .when(new LootItemBlockStatePropertyCondition.Builder(block).setProperties(
+                    StatePropertiesPredicate.Builder.properties().hasProperty(SlabBlock.TYPE, SlabType.DOUBLE)
+                )))
+            .apply(ApplyExplosionDecay.explosionDecay());
+        lootTables.put(block, LootTable.lootTable().withPool(leafPool));
+    }
+}

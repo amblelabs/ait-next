@@ -28,7 +28,7 @@ public class AitItems {
     private static final Map<ResourceLocation, Item> ITEMS = new LinkedHashMap<>(); // preserve insertion order
     private static final Map<CreativeModeTab, List<TabEntry>> ITEM_TABS = new LinkedHashMap<>();
 
-    public static final Item YEAST = make("yeast", new Item(props()));
+    public static final Item SCREWDRIVER = make("screwdriver", new Item(unstackable()));
 
     public static Item.Properties props() {
         return new Item.Properties();
@@ -41,7 +41,7 @@ public class AitItems {
     private static <T extends Item> T make(ResourceLocation id, T item, @Nullable CreativeModeTab tab) {
         var old = ITEMS.put(id, item);
         if (old != null) {
-            throw new IllegalArgumentException("Typo? Duplicate id " + id);
+            throw new IllegalArgumentException("Duplicate id " + id);
         }
         if (tab != null) {
             ITEM_TABS.computeIfAbsent(tab, t -> new ArrayList<>()).add(new TabEntry.ItemEntry(item));

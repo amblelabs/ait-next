@@ -12,6 +12,8 @@
 out/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+# Datagen
+.cache
 
 # JIRA plugin
 atlassian-ide-plugin.xml

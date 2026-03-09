@@ -2,10 +2,12 @@
   "schemaVersion": 1,
   "id": "ait",
   "version": "${version}",
-  "name": "Adventures In Time",
+  "name": "Adventures in Time",
   "description": "Adventures In Time for 1.21.1 Fabric and Forge!",
   "authors": [
     "AmbleLabs"
+  ],
+  "contributors": [
   ],
   "contact": {
     "homepage": "https://theo.is-a.dev/"
@@ -19,6 +21,9 @@
     ],
     "client": [
       "dev.amble.ait.fabric.FabricAitClientInit"
+    ],
+    "fabric-datagen": [
+      "dev.amble.ait.fabric.datagen.FabricAitDataGenerators"
     ],
     "modmenu": [
       "dev.amble.ait.fabric.interop.ModMenuInterop"
