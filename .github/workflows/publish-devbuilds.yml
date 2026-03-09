@@ -68,7 +68,7 @@ jobs:
     - name: Build for Maven
       env:
         CI_MAVEN_PATH: ${{ steps.setup-maven.outputs.path }}
-      run: ./gradlew --configuration-cache publishMavenJavaPublicationToCiRepository
+      run: ./gradlew --configuration-cache :fabric:publishMavenJavaPublicationToCiRepository
 
     - name: Publish to Amble Maven
       uses: drtheodor/static-file-server-actions/upload@main

@@ -1,15 +1,15 @@
 package dev.amble.ait.forge;
 
 import dev.amble.ait.api.AitAPI;
-import dev.architectury.platform.forge.EventBuses;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(AitAPI.MOD_ID)
 public final class ForgeAit {
 
-    public ForgeAit() {
-        // Submit our event bus to let Architectury API register our content on the right time.
-        EventBuses.registerModEventBus(AitAPI.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+    public ForgeAit(IEventBus modEventBus, ModContainer modContainer) {
+        NeoForge.EVENT_BUS.register(this);
     }
 }
