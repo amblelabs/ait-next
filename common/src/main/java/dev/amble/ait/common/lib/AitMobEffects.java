@@ -7,9 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
-public class AITMobEffects {
+public class AitMobEffects {
     public static void register(BiConsumer<MobEffect, ResourceLocation> r) {
         for (var e : EFFECTS.entrySet()) {
             r.accept(e.getValue(), e.getKey());

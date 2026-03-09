@@ -1,7 +1,7 @@
-package dev.amble.liquor.fabric.interop.trinkets;
+package dev.amble.ait.fabric.interop.trinkets;
 
 import com.google.common.collect.Multimap;
-import dev.amble.liquor.common.items.LiquorBaubleItem;
+import dev.amble.ait.common.items.AitBaubleItem;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.Trinket;
 import dev.emi.trinkets.api.TrinketsApi;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class TrinketsApiInterop {
     public static void init() {
         BuiltInRegistries.ITEM.stream().forEach(item -> {
-            if (item instanceof LiquorBaubleItem bauble) {
+            if (item instanceof AitBaubleItem bauble) {
                 TrinketsApi.registerTrinket(item, new Trinket() {
                     @Override
                     public Multimap<Attribute, AttributeModifier> getModifiers(ItemStack stack, SlotReference slot,

@@ -1,6 +1,6 @@
 package dev.amble.ait.xplat;
 
-import dev.amble.ait.api.AT;
+import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.common.network.NetworkMessage;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -29,13 +29,14 @@ public interface IClientXplatAbstractions {
 
     private static IClientXplatAbstractions find() {
         var providers = ServiceLoader.load(IClientXplatAbstractions.class).stream().toList();
+
         if (providers.size() != 1) {
             var names = providers.stream().map(p -> p.type().getName()).collect(Collectors.joining(",", "[", "]"));
             throw new IllegalStateException(
                 "There should be exactly one IClientXplatAbstractions implementation on the classpath. Found: " + names);
         } else {
             var provider = providers.get(0);
-            AITAPI.LOGGER.debug("Instantiating client xplat impl: {}", provider.type().getName());
+            AitAPI.LOGGER.debug("Instantiating client xplat impl: {}", provider.type().getName());
             return provider.get();
         }
     }

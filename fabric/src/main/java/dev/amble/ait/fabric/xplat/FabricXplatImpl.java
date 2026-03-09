@@ -1,12 +1,12 @@
-package dev.amble.liquor.fabric.xplat;
+package dev.amble.ait.fabric.xplat;
 
-import dev.amble.liquor.api.mod.LiquorTags;
-import dev.amble.liquor.common.network.NetworkMessage;
-import dev.amble.liquor.fabric.interop.trinkets.TrinketsApiInterop;
-import dev.amble.liquor.interop.LiquorInterop;
-import dev.amble.liquor.xplat.IXplatAbstractions;
-import dev.amble.liquor.xplat.IXplatTags;
-import dev.amble.liquor.xplat.Platform;
+import dev.amble.ait.api.mod.AitTags;
+import dev.amble.ait.common.network.NetworkMessage;
+import dev.amble.ait.fabric.interop.trinkets.TrinketsApiInterop;
+import dev.amble.ait.interop.AitInterop;
+import dev.amble.ait.xplat.IXplatAbstractions;
+import dev.amble.ait.xplat.IXplatTags;
+import dev.amble.ait.xplat.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -26,7 +26,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -65,7 +64,7 @@ public class FabricXplatImpl implements IXplatAbstractions {
 
     @Override
     public void initPlatformSpecific() {
-        if (this.isModPresent(LiquorInterop.Fabric.TRINKETS_API_ID)) {
+        if (this.isModPresent(AitInterop.Fabric.TRINKETS_API_ID)) {
             TrinketsApiInterop.init();
         }
     }
@@ -150,60 +149,7 @@ public class FabricXplatImpl implements IXplatAbstractions {
     }
 
     private static final IXplatTags TAGS = new IXplatTags() {
-        @Override
-        public TagKey<Item> bottleable() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drink_containing/bottle"));
-        }
 
-        @Override
-        public TagKey<Item> drinks() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks"));
-        }
-
-        @Override
-        public TagKey<Item> cactusJuiceLike() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/cactus_juice"));
-        }
-
-        @Override
-        public TagKey<Item> honeyLike() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/honey"));
-        }
-
-        @Override
-        public TagKey<Item> potionLike() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/magic"));
-        }
-
-        @Override
-        public TagKey<Item> milkLike() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/milk"));
-        }
-
-        @Override
-        public TagKey<Item> ominousLike() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/ominous"));
-        }
-
-        @Override
-        public TagKey<Item> sodaLike() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/soda"));
-        }
-
-        @Override
-        public TagKey<Item> teaLike() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/tea"));
-        }
-
-        @Override
-        public TagKey<Item> water() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/water"));
-        }
-
-        @Override
-        public TagKey<Item> waterLike() {
-            return LiquorTags.Items.create(new ResourceLocation("c", "drinks/watery"));
-        }
     };
 
     @Override
@@ -216,7 +162,7 @@ public class FabricXplatImpl implements IXplatAbstractions {
         return AnyOfCondition.anyOf(
             MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)),
             MatchTool.toolMatches(ItemPredicate.Builder.item().of(
-                LiquorTags.Items.create(new ResourceLocation("c", "shears"))))
+                AitTags.Items.create(new ResourceLocation("c", "shears"))))
         );
     }
 

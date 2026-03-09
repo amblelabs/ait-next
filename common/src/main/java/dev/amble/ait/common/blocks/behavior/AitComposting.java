@@ -5,7 +5,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.ComposterBlock;
 
-public final class AITComposting {
+public final class AitComposting {
 
     public static void setup() {
 

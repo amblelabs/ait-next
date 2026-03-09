@@ -1,6 +1,6 @@
-package dev.amble.liquor.fabric.client;
+package dev.amble.ait.fabric.client;
 
-import dev.amble.liquor.xplat.IClientXplatAbstractions;
+import dev.amble.ait.xplat.IClientXplatAbstractions;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;

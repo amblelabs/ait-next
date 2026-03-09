@@ -1,10 +1,10 @@
-package dev.amble.liquor.fabric.xplat;
+package dev.amble.ait.fabric.xplat;
 
-import dev.amble.liquor.common.network.NetworkMessage;
-import dev.amble.liquor.fabric.interop.trinkets.TrinketsApiInterop;
-import dev.amble.liquor.interop.LiquorInterop;
-import dev.amble.liquor.xplat.IClientXplatAbstractions;
-import dev.amble.liquor.xplat.IXplatAbstractions;
+import dev.amble.ait.common.network.NetworkMessage;
+import dev.amble.ait.fabric.interop.trinkets.TrinketsApiInterop;
+import dev.amble.ait.interop.AitInterop;
+import dev.amble.ait.xplat.IClientXplatAbstractions;
+import dev.amble.ait.xplat.IXplatAbstractions;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -37,7 +37,7 @@ public class FabricClientXplatImpl implements IClientXplatAbstractions {
 
     @Override
     public void initPlatformSpecific() {
-        if (IXplatAbstractions.INSTANCE.isModPresent(LiquorInterop.Fabric.TRINKETS_API_ID)) {
+        if (IXplatAbstractions.INSTANCE.isModPresent(AitInterop.Fabric.TRINKETS_API_ID)) {
             TrinketsApiInterop.clientInit();
         }
     }
@@ -48,7 +48,6 @@ public class FabricClientXplatImpl implements IClientXplatAbstractions {
         EntityRendererRegistry.register(type, renderer);
     }
 
-    // suck it fabric trying to be "safe"
     private record UnclampedClampedItemPropFunc(ItemPropertyFunction inner) implements ClampedItemPropertyFunction {
         @Override
         public float unclampedCall(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity,

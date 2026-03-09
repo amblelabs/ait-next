@@ -1,4 +1,4 @@
-package dev.amble.liquor.fabric.mixin;
+package dev.amble.ait.fabric.mixin;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

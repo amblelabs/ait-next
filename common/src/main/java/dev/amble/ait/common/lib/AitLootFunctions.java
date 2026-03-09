@@ -7,9 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
-public class AITLootFunctions {
+public class AitLootFunctions {
     public static void registerSerializers(BiConsumer<LootItemFunctionType, ResourceLocation> r) {
         for (var e : LOOT_FUNCS.entrySet()) {
             r.accept(e.getValue(), e.getKey());

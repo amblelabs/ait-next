@@ -1,4 +1,4 @@
-package dev.amble.liquor.common.lib;
+package dev.amble.ait.common.lib;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -7,9 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import static dev.amble.liquor.api.LiquorAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
-public class LiquorSounds {
+public class AitSounds {
     public static void registerSounds(BiConsumer<SoundEvent, ResourceLocation> r) {
         for (var e : SOUNDS.entrySet()) {
             r.accept(e.getValue(), e.getKey());

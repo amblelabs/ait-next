@@ -7,14 +7,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
-public class AITPotions {
+public class AitPotions {
     public static void register(BiConsumer<Potion, ResourceLocation> r) {
         for (var e : POTIONS.entrySet()) {
             r.accept(e.getValue(), e.getKey());
         }
-        AITPotions.addRecipes();
+        AitPotions.addRecipes();
     }
 
     private static final Map<ResourceLocation, Potion> POTIONS = new LinkedHashMap<>();

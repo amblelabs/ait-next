@@ -7,24 +7,22 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.function.Supplier;
 
-public interface AITAPI {
+public interface AitAPI {
     String MOD_ID = "ait";
     Logger LOGGER = LogManager.getLogger(MOD_ID);
 
-    Supplier<AITAPI> INSTANCE = Suppliers.memoize(() -> {
+    Supplier<AitAPI> INSTANCE = Suppliers.memoize(() -> {
         try {
-            return (AITAPI) Class.forName("dev.amble.ait.common.impl.AITAPIImpl")
+            return (AitAPI) Class.forName("dev.amble.ait.common.impl.AitAPIImpl")
                     .getDeclaredConstructor().newInstance();
         } catch (ReflectiveOperationException e) {
             LogManager.getLogger().warn("Unable to find AITAPIImpl, using a dummy");
-            return new AITAPI() {
+            return new AitAPI() {
             };
         }
     });
 
-    String DRUNKNESS_USERDATA = modLoc("drunkness").toString();
-
-    static AITAPI instance() {
+    static AitAPI instance() {
         return INSTANCE.get();
     }
 

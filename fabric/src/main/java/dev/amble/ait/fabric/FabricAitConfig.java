@@ -1,9 +1,10 @@
-package dev.amble.liquor.fabric;
+package dev.amble.ait.fabric;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.amble.liquor.api.LiquorAPI;
-import dev.amble.liquor.api.mod.LiquorConfig;
-import dev.amble.liquor.xplat.IXplatAbstractions;
+import dev.amble.ait.api.AitAPI;
+import dev.amble.ait.api.mod.AitConfig;
+import dev.amble.ait.xplat.IXplatAbstractions;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
@@ -12,10 +13,10 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 import net.minecraft.resources.ResourceLocation;
 
-@Config(name = LiquorAPI.MOD_ID)
+@Config(name = AitAPI.MOD_ID)
 @Config.Gui.Background("minecraft:textures/block/calcite.png")
 @SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
-public class FabricLiquorConfig extends PartitioningSerializer.GlobalData {
+public class FabricAitConfig extends PartitioningSerializer.GlobalData {
     @ConfigEntry.Category("common")
     @ConfigEntry.Gui.TransitiveObject
     public final Common common = new Common();
@@ -28,30 +29,29 @@ public class FabricLiquorConfig extends PartitioningSerializer.GlobalData {
     @ConfigEntry.Gui.TransitiveObject
     public final Server server = new Server();
 
-    public static FabricLiquorConfig setup() {
-        var gson = new GsonBuilder()
+    public static FabricAitConfig setup() {
+        Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
             .create();
-        AutoConfig.register(FabricLiquorConfig.class, PartitioningSerializer.wrap((cfg, clazz) ->
+
+        AutoConfig.register(FabricAitConfig.class, PartitioningSerializer.wrap((cfg, clazz) ->
             new GsonConfigSerializer<>(cfg, clazz, gson)));
-        var instance = AutoConfig.getConfigHolder(FabricLiquorConfig.class).getConfig();
 
-        LiquorConfig.setCommon(instance.common);
+        FabricAitConfig instance = AutoConfig.getConfigHolder(FabricAitConfig.class).getConfig();
 
-        // We care about the client only on the *physical* client ...
+        AitConfig.setCommon(instance.common);
+
         if (IXplatAbstractions.INSTANCE.isPhysicalClient()) {
-            LiquorConfig.setClient(instance.client);
+            AitConfig.setClient(instance.client);
         }
-        // but we care about the server on the *logical* server
-        // i believe this should Just Work without a guard? assuming we don't access it from the client ever
-        LiquorConfig.setServer(instance.server);
 
+        AitConfig.setServer(instance.server);
         return instance;
     }
 
     @Config(name = "common")
-    public static final class Common implements LiquorConfig.CommonConfigAccess, ConfigData {
+    public static final class Common implements AitConfig.CommonConfigAccess, ConfigData {
 
         @Override
         public void validatePostLoad() throws ValidationException {
@@ -59,7 +59,7 @@ public class FabricLiquorConfig extends PartitioningSerializer.GlobalData {
     }
 
     @Config(name = "client")
-    public static final class Client implements LiquorConfig.ClientConfigAccess, ConfigData {
+    public static final class Client implements AitConfig.ClientConfigAccess, ConfigData {
 
         @Override
         public void validatePostLoad() throws ValidationException {
@@ -67,7 +67,7 @@ public class FabricLiquorConfig extends PartitioningSerializer.GlobalData {
     }
 
     @Config(name = "server")
-    public static final class Server implements LiquorConfig.ServerConfigAccess, ConfigData {
+    public static final class Server implements AitConfig.ServerConfigAccess, ConfigData {
 
         @Override
         public void validatePostLoad() throws ValidationException {

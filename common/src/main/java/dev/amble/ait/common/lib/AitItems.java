@@ -9,10 +9,10 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
 // https://github.com/VazkiiMods/Botania/blob/2c4f7fdf9ebf0c0afa1406dfe1322841133d75fa/Common/src/main/java/vazkii/botania/common/item/ModItems.java
-public class AITItems {
+public class AitItems {
     public static void registerItems(BiConsumer<Item, ResourceLocation> r) {
         for (var e : ITEMS.entrySet()) {
             r.accept(e.getValue(), e.getKey());
@@ -29,9 +29,6 @@ public class AITItems {
     private static final Map<CreativeModeTab, List<TabEntry>> ITEM_TABS = new LinkedHashMap<>();
 
     public static final Item YEAST = make("yeast", new Item(props()));
-
-//    public static final Supplier<ItemStack> VODKA = addToTab(() -> AlcoholItem.withType(
-//            new ItemStack(AITItems.YEAST)), AITCreativeTabs.LIQUOR);
 
     public static Item.Properties props() {
         return new Item.Properties();
@@ -57,7 +54,7 @@ public class AITItems {
     }
 
     private static <T extends Item> T make(String id, T item) {
-        return make(modLoc(id), item, AITCreativeTabs.LIQUOR);
+        return make(modLoc(id), item, AitCreativeTabs.AIT);
     }
 
     private static Supplier<ItemStack> addToTab(Supplier<ItemStack> stack, CreativeModeTab tab) {

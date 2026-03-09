@@ -6,10 +6,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
 // https://github.com/VazkiiMods/Botania/blob/1.19.x/Xplat/src/main/java/vazkii/botania/client/model/BotaniaModelLayers.java
-public class AITModelLayers {
+public class AitModelLayers {
 
     private static ModelLayerLocation make(String name) {
         return make(name, "main");

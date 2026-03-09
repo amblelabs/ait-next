@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AITStrippables {
+public class AitStrippables {
     public static final Map<Block, Block> STRIPPABLES = new HashMap<>();
 
     public static void init() {

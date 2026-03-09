@@ -8,9 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
-public class AITEntities {
+public class AitEntities {
     public static void registerEntities(BiConsumer<EntityType<?>, ResourceLocation> r) {
         for (var e : ENTITIES.entrySet()) {
             r.accept(e.getValue(), e.getKey());

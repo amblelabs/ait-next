@@ -5,6 +5,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 
-public interface AITBaubleItem {
+public interface AitBaubleItem {
     Multimap<Attribute, AttributeModifier> getAttrs(ItemStack stack);
 }

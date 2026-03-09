@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class AITBlockSetTypes {
+public class AitBlockSetTypes {
     public static void registerBlocks(Consumer<BlockSetType> r) {
         for (var type : TYPES) {
             r.accept(type);

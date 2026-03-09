@@ -1,6 +1,6 @@
-package dev.amble.liquor.fabric.mixin;
+package dev.amble.ait.fabric.mixin;
 
-import dev.amble.liquor.common.blocks.behavior.LiquorStrippables;
+import dev.amble.ait.common.blocks.behavior.AitStrippables;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,10 +13,12 @@ import java.util.Optional;
 // https://github.com/VazkiiMods/Botania/blob/1.18.x/Fabric/src/main/java/vazkii/botania/fabric/mixin/FabricMixinAxeItem.java
 @Mixin(AxeItem.class)
 public class FabricAxeItemMixin {
+
     @Inject(method = "getStripped", at = @At("RETURN"), cancellable = true)
     private void stripBlock(BlockState state, CallbackInfoReturnable<Optional<BlockState>> cir) {
         if (cir.getReturnValue().isEmpty()) {
-            var block = LiquorStrippables.STRIPPABLES.get(state.getBlock());
+            var block = AitStrippables.STRIPPABLES.get(state.getBlock());
+
             if (block != null) {
                 cir.setReturnValue(Optional.of(block.withPropertiesOf(state)));
             }

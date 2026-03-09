@@ -1,5 +1,5 @@
 package dev.amble.ait.common.lib;
 
-public class LiquorRegistries {
+public class AitRegistries {
 //    public static final ResourceKey<Registry<>>  = ResourceKey.createRegistryKey(modLoc(""));
 }

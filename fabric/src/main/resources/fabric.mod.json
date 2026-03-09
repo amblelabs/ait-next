@@ -15,10 +15,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.amble.ait.fabric.AITLiquorInit"
+      "dev.amble.ait.fabric.FabricAitInit"
     ],
     "client": [
-      "dev.amble.ait.fabric.FabricAITClientInit"
+      "dev.amble.ait.fabric.FabricAitClientInit"
     ],
     "modmenu": [
       "dev.amble.ait.fabric.interop.ModMenuInterop"

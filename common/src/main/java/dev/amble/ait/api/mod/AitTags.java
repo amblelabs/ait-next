@@ -7,9 +7,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
-public class AITTags {
+public class AitTags {
     public static final class Items {
 
         public static TagKey<Item> create(String name) {

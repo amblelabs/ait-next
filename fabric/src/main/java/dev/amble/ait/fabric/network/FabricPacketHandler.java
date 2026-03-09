@@ -1,4 +1,4 @@
-package dev.amble.liquor.fabric.network;
+package dev.amble.ait.fabric.network;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

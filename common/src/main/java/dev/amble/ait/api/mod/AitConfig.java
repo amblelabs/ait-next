@@ -1,11 +1,11 @@
 package dev.amble.ait.api.mod;
 
-import dev.amble.ait.api.AI;
+import dev.amble.ait.api.AitAPI;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public class AITConfig {
+public class AitConfig {
 
     public interface CommonConfigAccess {
 
@@ -59,7 +59,7 @@ public class AITConfig {
 
     public static void setCommon(CommonConfigAccess access) {
         if (common != null) {
-            AITAPI.LOGGER.warn("CommonConfigAccess was replaced! Old {} New {}",
+            AitAPI.LOGGER.warn("CommonConfigAccess was replaced! Old {} New {}",
                 common.getClass().getName(), access.getClass().getName());
         }
 
@@ -68,7 +68,7 @@ public class AITConfig {
 
     public static void setClient(ClientConfigAccess access) {
         if (client != null) {
-            AITAPI.LOGGER.warn("ClientConfigAccess was replaced! Old {} New {}",
+            AitAPI.LOGGER.warn("ClientConfigAccess was replaced! Old {} New {}",
                 client.getClass().getName(), access.getClass().getName());
         }
 
@@ -77,7 +77,7 @@ public class AITConfig {
 
     public static void setServer(ServerConfigAccess access) {
         if (server != null) {
-            AITAPI.LOGGER.warn("ServerConfigAccess was replaced! Old {} New {}",
+            AitAPI.LOGGER.warn("ServerConfigAccess was replaced! Old {} New {}",
                 server.getClass().getName(), access.getClass().getName());
         }
 

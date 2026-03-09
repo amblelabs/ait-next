@@ -7,7 +7,7 @@ import vazkii.patchouli.api.PatchouliAPI;
 
 import java.util.List;
 
-public class AITInterop {
+public class AitInterop {
     public static final String PATCHOULI_ANY_INTEROP_FLAG = "ait:any_interop";
 
     public static final String PEHKUI_ID = "pehkui";

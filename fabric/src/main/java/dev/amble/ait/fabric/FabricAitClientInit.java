@@ -1,11 +1,11 @@
-package dev.amble.liquor.fabric;
+package dev.amble.ait.fabric;
 
-import dev.amble.liquor.client.model.LiquorModelLayers;
-import dev.amble.liquor.client.renderer.LiquorAdditionalRenderers;
-import dev.amble.liquor.common.lib.LiquorParticles;
-import dev.amble.liquor.fabric.client.RegisterClientStuff;
-import dev.amble.liquor.fabric.network.FabricPacketHandler;
-import dev.amble.liquor.interop.LiquorInterop;
+import dev.amble.ait.client.model.AitModelLayers;
+import dev.amble.ait.client.renderer.AitAdditionalRenderers;
+import dev.amble.ait.common.lib.AitParticles;
+import dev.amble.ait.fabric.client.RegisterClientStuff;
+import dev.amble.ait.fabric.network.FabricPacketHandler;
+import dev.amble.ait.interop.AitInterop;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
@@ -17,21 +17,21 @@ import net.minecraft.core.particles.ParticleType;
 
 import java.util.function.Function;
 
-public final class FabricLiquorClientInit implements ClientModInitializer {
+public final class FabricAitClientInit implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
         FabricPacketHandler.initClient();
 
-        HudRenderCallback.EVENT.register(LiquorAdditionalRenderers::overlayGui);
+        HudRenderCallback.EVENT.register(AitAdditionalRenderers::overlayGui);
 
         RegisterClientStuff.init();
 
-        LiquorModelLayers.init((loc, defn) -> {
+        AitModelLayers.init((loc, defn) -> {
             EntityModelLayerRegistry.registerModelLayer(loc, defn::get);
         });
 
-        LiquorParticles.FactoryHandler.registerFactories(new LiquorParticles.FactoryHandler.Consumer() {
+        AitParticles.FactoryHandler.registerFactories(new AitParticles.FactoryHandler.Consumer() {
             @Override
             public <T extends ParticleOptions> void register(ParticleType<T> type, Function<SpriteSet, ParticleProvider<T>> constructor) {
                 ParticleFactoryRegistry.getInstance().register(type, constructor::apply);
@@ -40,7 +40,7 @@ public final class FabricLiquorClientInit implements ClientModInitializer {
 
         RegisterClientStuff.registerBlockEntityRenderers(BlockEntityRenderers::register);
 
-        LiquorInterop.clientInit();
+        AitInterop.clientInit();
         RegisterClientStuff.registerColorProviders(
                 ColorProviderRegistry.ITEM::register,
                 ColorProviderRegistry.BLOCK::register

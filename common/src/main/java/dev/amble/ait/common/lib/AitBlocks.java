@@ -19,9 +19,9 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
-public class AITBlocks {
+public class AitBlocks {
     public static void registerBlocks(BiConsumer<Block, ResourceLocation> r) {
         for (var e : BLOCKS.entrySet()) {
             r.accept(e.getValue(), e.getKey());
@@ -78,8 +78,8 @@ public class AITBlocks {
             .sound(SoundType.GRASS)
             .noOcclusion()
             .isValidSpawn((bs, level, pos, type) -> type == EntityType.OCELOT || type == EntityType.PARROT)
-            .isSuffocating(AITBlocks::never)
-            .isViewBlocking(AITBlocks::never);
+            .isSuffocating(AitBlocks::never)
+            .isViewBlocking(AitBlocks::never);
     }
 
     //
@@ -96,14 +96,14 @@ public class AITBlocks {
         return block;
     }
     private static <T extends Block> T blockItem(String name, T block) {
-        return blockItem(name, block, AITItems.props(), AITCreativeTabs.LIQUOR);
+        return blockItem(name, block, AitItems.props(), AitCreativeTabs.AIT);
     }
 
     private static <T extends Block> T blockItem(String name, T block, @Nullable CreativeModeTab tab) {
-        return blockItem(name, block, AITItems.props(), tab);
+        return blockItem(name, block, AitItems.props(), tab);
     }
     private static <T extends Block> T blockItem(String name, T block, Item.Properties props) {
-        return blockItem(name, block, props, AITCreativeTabs.LIQUOR);
+        return blockItem(name, block, props, AitCreativeTabs.AIT);
     }
 
     private static <T extends Block> T blockItem(String name, T block, Item.Properties props, @Nullable CreativeModeTab tab) {

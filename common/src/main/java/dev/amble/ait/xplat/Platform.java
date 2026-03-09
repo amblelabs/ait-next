@@ -1,4 +1,4 @@
-package dev.amble.liquor.xplat;
+package dev.amble.ait.xplat;
 
 public enum Platform {
     FORGE, FABRIC

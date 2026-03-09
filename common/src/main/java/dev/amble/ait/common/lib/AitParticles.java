@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static dev.amble.ait.api.AITAPI.modLoc;
+import static dev.amble.ait.api.AitAPI.modLoc;
 
-public class AITParticles {
+public class AitParticles {
     public static void registerParticles(BiConsumer<ParticleType<?>, ResourceLocation> r) {
         for (var e : PARTICLES.entrySet()) {
             r.accept(e.getValue(), e.getKey());
