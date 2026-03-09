@@ -2,10 +2,14 @@ package dev.amble.ait.client.screen;
 
 import dev.amble.ait.client.screen.wheel.*;
 import dev.amble.ait.client.screen.wheel.action.Action;
+import dev.amble.ait.common.items.ItemCrystal;
+import dev.amble.ait.common.items.ItemSonic;
 import dev.amble.ait.common.items.components.SonicCrystals;
+import dev.amble.ait.common.lib.AitComponents;
+import dev.amble.ait.common.sonic.SonicCrystal;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * @author drtheodor
@@ -57,28 +61,59 @@ public class SonicWheelScreen extends AbstractWheelScreen {
         return false;
     }
 
-    public static AbstractWheelScreen tryCreate(SonicCrystals crystals) {
-        // FIXME: this is a temp stub until a real implementation is done.
-        Action doShitNothing = new Action() {
-            @Override
-            public void run(Minecraft client, Widget widget) {
-                client.gui.setOverlayMessage(Component.literal("clicked on crystal"), false);
-            }
-        };
+    public static AbstractWheelScreen tryCreate(ItemStack stack) {
+        return tryCreate(stack, WidgetSet.create(new Widget[0]));
+    }
+
+    private static AbstractWheelScreen tryCreate(ItemStack stack, WidgetSet outer) {
+        SonicCrystals crystals = stack.get(AitComponents.SONIC_CRYSTALS);
+        if (crystals == null) return null;
 
         Widget[] inner = new Widget[] {
                 null, // TOP_LEFT
-                Widget.fromStack(crystals.getItem(0), doShitNothing, true), // TOP
+                ListFunctionsAction.widget(stack, crystals, 0), // TOP
                 null, // TOP_RIGHT
 
-                Widget.fromStack(crystals.getItem(1), doShitNothing, true), // LEFT
-                Widget.fromStack(crystals.getItem(2), doShitNothing, true), // RIGHT
+                ListFunctionsAction.widget(stack, crystals, 1), // LEFT
+                ListFunctionsAction.widget(stack, crystals, 2), // RIGHT
 
                 null, // BOTTOM_LEFT
-                Widget.fromStack(crystals.getItem(3), doShitNothing, true), // BOTTOM
+                ListFunctionsAction.widget(stack, crystals, 3), // BOTTOM
                 null, // BOTTOM_RIGHT
         };
 
-        return new SonicWheelScreen(WidgetSet.create(new Widget[0]), WidgetSet.create(inner));
+        return new SonicWheelScreen(outer, WidgetSet.create(inner));
+    }
+
+    record ListFunctionsAction(ItemStack sonic, SonicCrystal crystal, int crystalIdx) implements Action {
+
+        static Widget widget(ItemStack sonic, SonicCrystals crystals, int crystalIdx) {
+            ItemStack crystalStack = crystals.getItem(crystalIdx);
+            if (crystalStack == null) return Widget.empty();
+
+            SonicCrystal crystal = ((ItemCrystal) crystalStack.getItem()).getCrystal();
+            return Widget.fromStack(crystalStack, new ListFunctionsAction(sonic, crystal, crystalIdx), true);
+        }
+
+        @Override
+        public void run(Minecraft client, Widget widget) {
+            Widget[] outer = new Widget[8];
+
+            int i = 0;
+            for (SonicCrystal.SonicFunction function : crystal.functions()) {
+                outer[i] = new Widget(function.name(), function.preview(), new SonicFunctionAction(sonic, crystalIdx * 8 + i), false);
+                i++;
+            }
+
+            client.setScreen(SonicWheelScreen.tryCreate(sonic, WidgetSet.create(outer, Widget.empty())));
+        }
+    }
+
+    record SonicFunctionAction(ItemStack sonic, int funcIdx) implements Action {
+
+        @Override
+        public void run(Minecraft client, Widget widget) {
+            ItemSonic.setFunction(sonic, funcIdx);
+        }
     }
 }

@@ -1,11 +1,8 @@
 package dev.amble.ait.fabric.client;
 
-import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.client.renderer.ClientSonicTooltip;
-import dev.amble.ait.common.items.ItemSonic;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
-import dev.amble.ait.common.lib.AitItems;
 import dev.amble.ait.xplat.IClientXplatAbstractions;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.color.block.BlockColor;
@@ -31,8 +28,8 @@ public class RegisterClientStuff {
 
         var x = IClientXplatAbstractions.INSTANCE;
 
-        x.registerItemProperty(AitItems.SONIC_SCREWDRIVER, AitAPI.modLoc("sonic_crystal"),
-                (itemStack, clientLevel, livingEntity, i) -> ItemSonic.getCrystal(itemStack));
+//        x.registerItemProperty(AitItems.SONIC_SCREWDRIVER, AitAPI.modLoc("sonic_crystal"),
+//                (itemStack, clientLevel, livingEntity, i) -> ItemSonic.getCrystal(itemStack));
     }
 
     public static void registerColorProviders(BiConsumer<ItemColor, Item> itemColorRegistry,

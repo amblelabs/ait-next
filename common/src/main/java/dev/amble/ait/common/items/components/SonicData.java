@@ -6,13 +6,17 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
-public record SonicData(int currentCrystal) {
+/**
+ * @param function function = crystalIdx * 8 + relFuncIdx
+ */
+public record SonicData(int function) {
     
     public static final Codec<SonicData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.INT.fieldOf("current_crystal").forGetter(SonicData::currentCrystal)
+            Codec.INT.fieldOf("function").forGetter(SonicData::function)
     ).apply(instance, SonicData::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SonicData> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.INT, SonicData::currentCrystal, SonicData::new);
+    public static final StreamCodec<RegistryFriendlyByteBuf, SonicData> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, SonicData::function, SonicData::new);
 
     public static final SonicData DEFAULT = new SonicData(-1);
 }

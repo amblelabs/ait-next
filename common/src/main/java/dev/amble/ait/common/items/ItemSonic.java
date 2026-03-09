@@ -6,25 +6,28 @@ import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitComponents;
+import dev.amble.ait.common.sonic.SonicCrystal;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.math.Fraction;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,15 +47,12 @@ public class ItemSonic extends Item {
             return false;
 
         if (other.isEmpty()) {
-            SonicCrystals contents = screwdriver.get(AitComponents.SONIC_CRYSTALS);
-            if (contents == null) return false;
-
             // FIXME: this will explode on the server, i think.
-            Minecraft.getInstance().setScreen(SonicWheelScreen.tryCreate(contents));
+            Minecraft.getInstance().setScreen(SonicWheelScreen.tryCreate(screwdriver));
             return true;
         }
 
-        if (!other.is(AitTags.Items.ZEITON_SHARDS))
+        if (!other.is(AitTags.Items.ZEITON_SHARDS) || !(other.getItem() instanceof ItemCrystal))
             return false;
 
         SonicCrystals contents = screwdriver.get(AitComponents.SONIC_CRYSTALS);
@@ -126,7 +126,9 @@ public class ItemSonic extends Item {
             lines.add(Component.translatable("item.minecraft.bundle.fullness", i, TOOLTIP_MAX_WEIGHT).withStyle(ChatFormatting.GRAY));
         }
 
-        lines.add(Component.empty());
+        SonicCrystal.SonicFunction function = function(stack);
+
+        lines.add(function != null ? function.name() : Component.empty());
         lines.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
@@ -140,8 +142,117 @@ public class ItemSonic extends Item {
         }
     }
 
-    public static int getCrystal(ItemStack itemStack) {
-        return itemStack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT).currentCrystal();
+    @Override
+    public @NotNull UseAnim getUseAnimation(ItemStack itemStack) {
+        return UseAnim.BOW;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+        ItemStack stack = user.getItemInHand(hand);
+        SonicCrystal.SonicFunction mode = function(stack);
+
+        if (mode == null)
+            return InteractionResultHolder.fail(stack);
+
+        if (!checkCharge(stack))
+            return InteractionResultHolder.fail(stack);
+
+        if (mode.startUsing(stack, world, user, hand)) {
+            user.startUsingItem(hand);
+            return InteractionResultHolder.consume(stack);
+        }
+
+        return InteractionResultHolder.fail(stack);
+    }
+
+    @Override
+    public void onUseTick(Level world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        SonicCrystal.SonicFunction mode = function(stack);
+        if (mode == null) return;
+
+        int ticks = mode.maxTime() - remainingUseTicks;
+
+        int fuelUsed = mode.tick(stack, world, user, ticks, remainingUseTicks);
+
+        // FIXME: this is not great
+        if (fuelUsed == SonicCrystal.SonicFunction.HALT) {
+            user.stopUsingItem();
+            return;
+        }
+
+        removeCharge(stack, fuelUsed);
+
+        if (!checkCharge(stack))
+            user.stopUsingItem();
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level world, LivingEntity user, int remainingUseTicks) {
+        SonicCrystal.SonicFunction mode = function(stack);
+        if (mode == null) return;
+
+        mode.stopUsing(stack, world, user, mode.maxTime() - remainingUseTicks, remainingUseTicks);
+    }
+
+    @Override
+    public @NotNull ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
+        SonicCrystal.SonicFunction mode = function(stack);
+        if (mode == null) return stack;
+
+        mode.finishUsing(stack, level, user);
+        return stack;
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        SonicCrystal.SonicFunction function = function(stack);
+        return function != null ? function.maxTime() : 0;
+    }
+
+    private static void removeCharge(ItemStack stack, int amount) {
+        // TODO: implement this
+    }
+
+    private static void addCharge(ItemStack stack, int amount) {
+        // TODO: implement this
+    }
+
+    private static boolean checkCharge(ItemStack stack) {
+        // TODO: implement this
+        return true;
+    }
+
+    private static @Nullable SonicCrystal.SonicFunction function(ItemStack stack) {
+        int funcIdx = getFunction(stack);
+        if (funcIdx == -1) return null;
+
+        int relFuncIdx = funcIdx % 8;
+        int crystalIdx = (funcIdx - relFuncIdx) / 8;
+
+        SonicCrystal crystal = getCrystal(stack, crystalIdx);
+        if (crystal == null || relFuncIdx >= crystal.functions().length) return null;
+
+        return crystal.functions()[relFuncIdx];
+    }
+
+    public static @Nullable SonicCrystal getCrystal(ItemStack stack, int crystalIdx) {
+        SonicCrystals crystals = stack.get(AitComponents.SONIC_CRYSTALS);
+        if (crystals == null) return null;
+
+        ItemStack crystalStack = crystals.getItem(crystalIdx);
+        if (crystalStack == null) return null;
+
+        if (!(crystalStack.getItem() instanceof ItemCrystal crystalItem)) return null;
+        return crystalItem.getCrystal();
+    }
+
+    public static int getFunction(ItemStack itemStack) {
+        return itemStack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT).function();
+    }
+
+    public static void setFunction(ItemStack stack, int funcIdx) {
+        stack.set(AitComponents.SONIC_DATA, new SonicData(funcIdx));
     }
 
     private void playRemoveOneSound(Entity entity) {

@@ -11,4 +11,5 @@ public class I18n {
             .append(Component.translatable("widget." + AitAPI.MOD_ID + ".empty.desc")
                     .withStyle(ChatFormatting.GRAY));
 
+    public static final Component FUNC_ON_FIRE = Component.translatable("sonic." + AitAPI.MOD_ID + ".set_on_fire");
 }
