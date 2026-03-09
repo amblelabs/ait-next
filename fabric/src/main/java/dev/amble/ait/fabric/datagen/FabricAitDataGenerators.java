@@ -4,6 +4,7 @@ import dev.amble.ait.datagen.AitLootTables;
 import dev.amble.ait.datagen.AitAdvancements;
 import dev.amble.ait.datagen.IXplatIngredients;
 import dev.amble.ait.datagen.recipe.AitXplatRecipes;
+import dev.amble.ait.fabric.datagen.lang.FabricAitLangProvider;
 import dev.amble.ait.fabric.datagen.tag.AitBlockTagProvider;
 import dev.amble.ait.fabric.datagen.tag.AitItemTagProvider;
 import dev.amble.ait.xplat.IXplatAbstractions;
@@ -43,7 +44,9 @@ public class FabricAitDataGenerators implements DataGeneratorEntrypoint {
                 output, lookup, List.of(new AitAdvancements())
         ));
 
-        pack.addProvider((output, lookup) -> new FabricAitModels(output));
+        pack.addProvider((output, lookup) -> new FabricAitModelProvider(output));
+
+        pack.addProvider(FabricAitLangProvider.EnUs::new);
     }
 
     private static class BlockTagProviderWrapper {

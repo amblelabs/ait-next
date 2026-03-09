@@ -7,9 +7,9 @@ import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
 import net.minecraft.data.models.model.ModelTemplates;
 
-public class FabricAitModels extends FabricAmbleModelProvider {
+public class FabricAitModelProvider extends FabricAmbleModelProvider {
 
-    public FabricAitModels(FabricDataOutput output) {
+    public FabricAitModelProvider(FabricDataOutput output) {
         super(output);
     }
 

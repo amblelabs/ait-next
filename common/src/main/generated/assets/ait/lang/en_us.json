@@ -1,0 +1,17 @@
+{
+  "item.ait.screwdriver": "Screwdriver",
+  "item.ait.screwdriver.desc": "Just a normal screwdriver.",
+  "item.ait.sonic_screwdriver": "Sonic Screwdriver",
+  "item.ait.sonic_screwdriver.desc": "Just a normal screwdriver- oop, nope, nevermind.",
+  "item.ait.zeiton_shard.amethyst": "Amethyst Zeiton Shard",
+  "item.ait.zeiton_shard.basic": "Basic Zeiton Shard",
+  "item.ait.zeiton_shard.gravity": "Gravitational Zeiton Shard",
+  "item.ait.zeiton_shard.overcharged": "Overcharged Zeiton Shard",
+  "item.ait.zeiton_shard.quartz": "Quartz Zeiton Shard",
+  "item.ait.zeiton_shard.refraction": "Refractional Zeiton Shard",
+  "item.ait.zeiton_shard.resonating": "Resonating Zeiton Shard",
+  "item.ait.zeiton_shard.sculk": "Sculk Zeiton Shard",
+  "tag.item.ait.zeiton_shards": "Zeiton Shards",
+  "widget.ait.empty": "Empty",
+  "widget.ait.empty.desc": "..."
+}

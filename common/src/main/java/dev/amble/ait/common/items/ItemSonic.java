@@ -118,22 +118,25 @@ public class ItemSonic extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
-        SonicCrystals contents = itemStack.get(AitComponents.SONIC_CRYSTALS);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> lines, TooltipFlag flag) {
+        SonicCrystals contents = stack.get(AitComponents.SONIC_CRYSTALS);
 
         if (contents != null) {
             int i = Mth.mulAndTruncate(contents.weight(), TOOLTIP_MAX_WEIGHT);
-            list.add(Component.translatable("item.minecraft.bundle.fullness", i, TOOLTIP_MAX_WEIGHT).withStyle(ChatFormatting.GRAY));
+            lines.add(Component.translatable("item.minecraft.bundle.fullness", i, TOOLTIP_MAX_WEIGHT).withStyle(ChatFormatting.GRAY));
         }
+
+        lines.add(Component.empty());
+        lines.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
     @Override
-    public void onDestroyed(ItemEntity itemEntity) {
-        SonicCrystals contents = itemEntity.getItem().get(AitComponents.SONIC_CRYSTALS);
+    public void onDestroyed(ItemEntity entity) {
+        SonicCrystals contents = entity.getItem().get(AitComponents.SONIC_CRYSTALS);
 
         if (contents != null) {
-            itemEntity.getItem().set(AitComponents.SONIC_CRYSTALS, SonicCrystals.EMPTY);
-            ItemUtils.onContainerDestroyed(itemEntity, contents.itemsCopy());
+            entity.getItem().set(AitComponents.SONIC_CRYSTALS, SonicCrystals.EMPTY);
+            ItemUtils.onContainerDestroyed(entity, contents.itemsCopy());
         }
     }
 

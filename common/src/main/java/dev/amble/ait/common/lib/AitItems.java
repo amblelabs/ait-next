@@ -3,6 +3,7 @@ package dev.amble.ait.common.lib;
 import com.google.common.base.Suppliers;
 import dev.amble.ait.common.items.ItemSonic;
 import dev.amble.ait.common.items.components.SonicCrystals;
+import dev.amble.ait.common.items.components.SonicData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,8 @@ public class AitItems {
 
     public static final Item SCREWDRIVER = make("screwdriver", new Item(unstackable()));
     public static final Item SONIC_SCREWDRIVER = make("sonic_screwdriver", new ItemSonic(unstackable()
-            .component(AitComponents.SONIC_CRYSTALS, SonicCrystals.EMPTY)));
+            .component(AitComponents.SONIC_CRYSTALS, SonicCrystals.EMPTY)
+            .component(AitComponents.SONIC_DATA, SonicData.DEFAULT)));
 
     public static final Item SHARD_BASIC = make("zeiton_shard/basic", new Item(unstackable()));
     public static final Item SHARD_OVERCHARGED = make("zeiton_shard/overcharged", new Item(unstackable()));
@@ -53,12 +55,11 @@ public class AitItems {
 
     private static <T extends Item> T make(ResourceLocation id, T item, @Nullable CreativeModeTab tab) {
         var old = ITEMS.put(id, item);
-        if (old != null) {
-            throw new IllegalArgumentException("Duplicate id " + id);
-        }
-        if (tab != null) {
-            ITEM_TABS.computeIfAbsent(tab, t -> new ArrayList<>()).add(new TabEntry.ItemEntry(item));
-        }
+        if (old != null) throw new IllegalArgumentException("Duplicate id " + id);
+
+        if (tab != null) ITEM_TABS.computeIfAbsent(tab, t -> new ArrayList<>())
+                .add(new TabEntry.ItemEntry(item));
+
         return item;
     }
 
@@ -67,7 +68,7 @@ public class AitItems {
     }
 
     private static <T extends Item> T make(String id, T item) {
-        return make(modLoc(id), item, AitCreativeTabs.AIT);
+        return make(id, item, AitCreativeTabs.AIT);
     }
 
     private static Supplier<ItemStack> addToTab(Supplier<ItemStack> stack, CreativeModeTab tab) {
