@@ -81,12 +81,12 @@ jobs:
       uses: drtheodor/discord-webhook-upload-action@v0.2
       with:
         url: ${{ secrets.DEV_BUILDS }}
-        username: george washington
-        avatar: 'https://i.imgur.com/uiFqrQh.png'
+        username: john f kennedy
+        avatar: 'https://i.imgur.com/LRdjXlD.png'
         
         message_commit: '> :sparkles: [${commitMessage}](<${commitUrl}>) by [${authorName}](<${authorUrl}>)'
         message_header: |
-          <:new1:1253371736510959636><:new2:1253371805734015006> New `Adventures in Time` 2.x dev build `#${{ github.run_number }}`:
+          <:new1:1253371736510959636><:new2:1253371805734015006> New <:al_explosion:1467652202356150272> <:al_ait:1393920126645960704> **Adventures in Time** `2.x` <:al_explosion:1467652202356150272> dev build `#${{ github.run_number }}`:
 
         file: |
           fabric/build/libs/*.jar
