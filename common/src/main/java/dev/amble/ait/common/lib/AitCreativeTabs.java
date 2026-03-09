@@ -21,7 +21,7 @@ public class AitCreativeTabs {
 
     private static final Map<ResourceLocation, CreativeModeTab> TABS = new LinkedHashMap<>();
 
-    public static final CreativeModeTab AIT = register("ait", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 7)
+    public static final CreativeModeTab AIT = register("main", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 7)
             .icon(() -> new ItemStack(AitItems.SCREWDRIVER)));
 
     private static CreativeModeTab register(String name, CreativeModeTab.Builder tabBuilder) {

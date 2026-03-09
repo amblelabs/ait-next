@@ -2,10 +2,12 @@ package dev.amble.ait.fabric.datagen.lang;
 
 import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.api.mod.AitTags;
+import dev.amble.ait.common.lib.AitCreativeTabs;
 import dev.amble.ait.common.lib.AitItems;
 import dev.amble.lib.fabric.datagen.FabricAmbleLangProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.network.chat.contents.TranslatableContents;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,6 +21,8 @@ public class FabricAitLangProvider {
 
         @Override
         public void generateTranslations(HolderLookup.Provider provider, TranslationBuilder builder) {
+            builder.add(((TranslatableContents) AitCreativeTabs.AIT.getDisplayName().getContents()).getKey(), "Adventures in Time");
+
             builder.add(AitItems.SCREWDRIVER, "Screwdriver");
             builder.add(AitItems.SCREWDRIVER.getDescriptionId() + ".desc", "Just a normal screwdriver.");
 
