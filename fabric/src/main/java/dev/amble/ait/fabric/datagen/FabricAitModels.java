@@ -15,7 +15,7 @@ public class FabricAitModels extends FabricAmbleModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators gen) {
-
+        // will use later
     }
 
     @Override

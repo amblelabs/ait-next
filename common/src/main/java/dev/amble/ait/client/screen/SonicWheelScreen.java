@@ -58,6 +58,7 @@ public class SonicWheelScreen extends AbstractWheelScreen {
     }
 
     public static AbstractWheelScreen tryCreate(SonicCrystals crystals) {
+        // FIXME: this is a temp stub until a real implementation is done.
         Action doShitNothing = new Action() {
             @Override
             public void run(Minecraft client, Widget widget) {
