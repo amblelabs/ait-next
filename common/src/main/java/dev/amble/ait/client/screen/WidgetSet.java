@@ -1,5 +1,6 @@
 package dev.amble.ait.client.screen;
 
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 /**
@@ -20,7 +21,14 @@ public class WidgetSet {
     }
 
     public static WidgetSet create(Widget[] list) {
+        return create(list, null);
+    }
+
+    public static WidgetSet create(Widget[] list, Widget filler) {
         WidgetSet set = new WidgetSet();
+
+        if (filler != null)
+            Arrays.fill(set.widgets, filler);
 
         if (list.length == 0)
             return set;

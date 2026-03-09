@@ -31,7 +31,7 @@ public final class Widget {
     private int hoverColor = HOVER_COLOR;
 
     public static Widget fromStack(ItemStack stack, Action action, boolean keepOpened) {
-        return stack == null ? null : new Widget(stack.getDisplayName(), stack, action, keepOpened);
+        return stack == null ? empty() : new Widget(stack.getDisplayName(), stack, action, keepOpened);
     }
 
     public Widget(Component label, ItemStack preview, Action actions, boolean keepOpened) {
