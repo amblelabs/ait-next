@@ -2,6 +2,7 @@ package dev.amble.ait.common.items.components;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import dev.amble.ait.common.items.ItemSonic;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -39,11 +40,18 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
     }
 
     static Fraction getWeight(ItemStack arg) {
-        return Fraction.ONE;
+        return Fraction.getFraction(1, ItemSonic.TOOLTIP_MAX_WEIGHT);
     }
 
     public ItemStack getItemUnsafe(int i) {
         return this.items.get(i);
+    }
+
+    public @Nullable ItemStack getItem(int i) {
+        if (i < 0 || i >= this.items.size())
+            return null;
+
+        return getItemUnsafe(i);
     }
 
     public Stream<ItemStack> itemCopyStream() {

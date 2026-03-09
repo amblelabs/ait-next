@@ -1,11 +1,13 @@
 package dev.amble.ait.common.items;
 
 import dev.amble.ait.api.mod.AitTags;
+import dev.amble.ait.client.screen.SonicWheelScreen;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitComponents;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -30,7 +32,7 @@ import java.util.Optional;
 public class ItemSonic extends Item {
 
     private static final int BAR_COLOR = Mth.color(0.4F, 0.4F, 1.0F);
-    private static final int TOOLTIP_MAX_WEIGHT = 4;
+    public static final int TOOLTIP_MAX_WEIGHT = 4;
 
     public ItemSonic(Properties properties) {
         super(properties);
@@ -41,29 +43,53 @@ public class ItemSonic extends Item {
         if (clickAction != ClickAction.SECONDARY || !slot.allowModification(player))
             return false;
 
+        if (other.isEmpty()) {
+            SonicCrystals contents = screwdriver.get(AitComponents.SONIC_CRYSTALS);
+            if (contents == null) return false;
+
+            Minecraft.getInstance().setScreen(SonicWheelScreen.tryCreate(contents));
+            return true;
+        }
+
         if (!other.is(AitTags.Items.ZEITON_SHARDS))
             return false;
 
         SonicCrystals contents = screwdriver.get(AitComponents.SONIC_CRYSTALS);
-
         if (contents == null) return false;
 
         SonicCrystals.Mutable mutable = new SonicCrystals.Mutable(contents);
 
-        if (other.isEmpty()) {
-            ItemStack itemStack3 = mutable.removeOne();
-            if (itemStack3 != null) {
-                this.playRemoveOneSound(player);
-                slotAccess.set(itemStack3);
-            }
-        } else {
-            int i = mutable.tryInsert(other);
-            if (i > 0) {
-                this.playInsertSound(player);
-            }
+        int i = mutable.tryInsert(other);
+
+        if (i > 0) {
+            this.playInsertSound(player);
         }
 
         screwdriver.set(AitComponents.SONIC_CRYSTALS, mutable.toImmutable());
+        return true;
+    }
+
+    @Override
+    public boolean overrideStackedOnOther(ItemStack itemStack, Slot slot, ClickAction clickAction, Player player) {
+        if (clickAction != ClickAction.SECONDARY) return false;
+
+        SonicCrystals bundleContents = itemStack.get(AitComponents.SONIC_CRYSTALS);
+        if (bundleContents == null) return false;
+
+        ItemStack itemStack2 = slot.getItem();
+        if (!itemStack2.isEmpty()) return false;
+
+        SonicCrystals.Mutable mutable = new SonicCrystals.Mutable(bundleContents);
+        this.playRemoveOneSound(player);
+
+        ItemStack itemStack3 = mutable.removeOne();
+
+        if (itemStack3 != null) {
+            ItemStack itemStack4 = slot.safeInsert(itemStack3);
+            mutable.tryInsert(itemStack4);
+        }
+
+        itemStack.set(AitComponents.SONIC_CRYSTALS, mutable.toImmutable());
         return true;
     }
 
