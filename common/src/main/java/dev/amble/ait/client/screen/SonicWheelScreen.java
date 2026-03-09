@@ -66,16 +66,18 @@ public class SonicWheelScreen extends AbstractWheelScreen {
         };
 
         Widget[] inner = new Widget[] {
-                null,
-                Widget.fromStack(crystals.getItem(0), doShitNothing, true),
-                null,
-                Widget.fromStack(crystals.getItem(1), doShitNothing, true),
-                null,
-                Widget.fromStack(crystals.getItem(2), doShitNothing, true),
-                null,
-                Widget.fromStack(crystals.getItem(3), doShitNothing, true),
+                null, // TOP_LEFT
+                Widget.fromStack(crystals.getItem(0), doShitNothing, true), // TOP
+                null, // TOP_RIGHT
+
+                Widget.fromStack(crystals.getItem(1), doShitNothing, true), // LEFT
+                Widget.fromStack(crystals.getItem(2), doShitNothing, true), // RIGHT
+
+                null, // BOTTOM_LEFT
+                Widget.fromStack(crystals.getItem(3), doShitNothing, true), // BOTTOM
+                null, // BOTTOM_RIGHT
         };
 
-        return new SonicWheelScreen(WidgetSet.create(new Widget[0], Widget.empty()), WidgetSet.create(inner));
+        return new SonicWheelScreen(WidgetSet.create(new Widget[0]), WidgetSet.create(inner));
     }
 }

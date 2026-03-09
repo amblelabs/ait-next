@@ -47,6 +47,7 @@ public class ItemSonic extends Item {
             SonicCrystals contents = screwdriver.get(AitComponents.SONIC_CRYSTALS);
             if (contents == null) return false;
 
+            // FIXME: this will explode on the server, i think.
             Minecraft.getInstance().setScreen(SonicWheelScreen.tryCreate(contents));
             return true;
         }
