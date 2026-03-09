@@ -42,14 +42,6 @@ public enum WidgetSlot implements StringRepresentable {
         return height / 2 + y;
     }
 
-    public int getHalfX(int width) {
-        return (width + x) / 2;
-    }
-
-    public int getHalfY(int height) {
-        return (height + y) / 2;
-    }
-
     public int getXOffset() {
         return xOffset;
     }
