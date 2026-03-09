@@ -1,6 +1,7 @@
 package dev.amble.ait.common.lib;
 
 import com.google.common.base.Suppliers;
+import dev.amble.ait.common.items.ItemScrewdriver;
 import dev.amble.ait.common.items.ItemSonic;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
@@ -31,7 +32,7 @@ public class AitItems {
     private static final Map<ResourceLocation, Item> ITEMS = new LinkedHashMap<>(); // preserve insertion order
     private static final Map<CreativeModeTab, List<TabEntry>> ITEM_TABS = new LinkedHashMap<>();
 
-    public static final Item SCREWDRIVER = make("screwdriver", new Item(unstackable()));
+    public static final Item SCREWDRIVER = make("screwdriver", new ItemScrewdriver(unstackable()));
     public static final Item SONIC_SCREWDRIVER = make("sonic_screwdriver", new ItemSonic(unstackable()
             .component(AitComponents.SONIC_CRYSTALS, SonicCrystals.EMPTY)
             .component(AitComponents.SONIC_DATA, SonicData.DEFAULT)));
