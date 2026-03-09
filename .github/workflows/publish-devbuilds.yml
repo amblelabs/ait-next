@@ -6,7 +6,7 @@ on:
       paths:
         - common/**
         - fabric/**
-        - forge/**
+#        - forge/**
         - build.gradle
         - gradle.properties
         - settings.gradle
@@ -37,27 +37,27 @@ jobs:
         distribution: 'temurin'
         cache: 'gradle'
 
-    - name: Restore DataGen cache
-      id: cache-restore
-      uses: actions/cache/restore@v4
-      with:
-        path: src/main/generated
-        key: datagen-${{ github.run_id }}
-        restore-keys:
-          datagen-
+#    - name: Restore DataGen cache
+#      id: cache-restore
+#      uses: actions/cache/restore@v4
+#      with:
+#        path: src/main/generated
+#        key: datagen-${{ github.run_id }}
+#        restore-keys:
+#          datagen-
 
-    #- name: Run DataGen
-    #  run: ./gradlew --configuration-cache runDatagen
+#    - name: Run DataGen
+#      run: ./gradlew --configuration-cache runDatagen
 
-    - name: Save DataGen cache
-      id: cache-save
-      uses: actions/cache/save@v4
-      with:
-        path: src/main/generated
-        key: ${{ steps.cache-restore.outputs.cache-primary-key }}
+#    - name: Save DataGen cache
+#      id: cache-save
+#      uses: actions/cache/save@v4
+#      with:
+#        path: src/main/generated
+#        key: ${{ steps.cache-restore.outputs.cache-primary-key }}
     
     - name: Build
-      run: ./gradlew --configuration-cache build
+      run: ./gradlew --configuration-cache :fabric:build
 
     - name: Setup Amble Maven
       id: setup-maven
@@ -89,7 +89,7 @@ jobs:
           <:new1:1253371736510959636><:new2:1253371805734015006> New `Adventures in Time` 2.x dev build `#${{ github.run_number }}`:
 
         file: |
-          Fabric/build/libs/*.jar
-          !Fabric/build/libs/*-sources.jar
-          Forge/build/libs/*.jar
-          !Forge/build/libs/*-sources.jar
+          fabric/build/libs/*.jar
+          !fabric/build/libs/*-sources.jar
+          forge/build/libs/*.jar
+          !forge/build/libs/*-sources.jar
