@@ -1,5 +1,6 @@
-package dev.amble.ait.client.screen;
+package dev.amble.ait.client.screen.wheel.action;
 
+import dev.amble.ait.client.screen.wheel.Widget;
 import net.minecraft.client.Minecraft;
 
 /**

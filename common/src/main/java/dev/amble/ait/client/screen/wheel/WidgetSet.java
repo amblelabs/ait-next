@@ -1,4 +1,4 @@
-package dev.amble.ait.client.screen;
+package dev.amble.ait.client.screen.wheel;
 
 import java.util.Arrays;
 import java.util.function.BiConsumer;

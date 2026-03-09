@@ -1,4 +1,4 @@
-package dev.amble.ait.client.screen;
+package dev.amble.ait.client.screen.wheel;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,7 @@ public class WheelOptionWidget extends Button {
     private final float animationProgress;
     private final boolean hasIcon;
 
-    protected WheelOptionWidget(int x, int y, Widget widget, int xOffset, int yOffset, int size, float anim, boolean hasIcon) {
+    public WheelOptionWidget(int x, int y, Widget widget, int xOffset, int yOffset, int size, float anim, boolean hasIcon) {
         super(x+(32 - size)/2, y+(32 - size)/2, size, size, Component.empty(), button -> { }, DEFAULT_NARRATION);
 
         this.widget = widget;

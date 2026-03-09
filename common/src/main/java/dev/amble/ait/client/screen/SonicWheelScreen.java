@@ -1,5 +1,7 @@
 package dev.amble.ait.client.screen;
 
+import dev.amble.ait.client.screen.wheel.*;
+import dev.amble.ait.client.screen.wheel.action.Action;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;

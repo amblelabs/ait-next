@@ -1,4 +1,4 @@
-package dev.amble.ait.client.screen;
+package dev.amble.ait.client.screen.wheel;
 
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package dev.amble.ait.client.screen;
+package dev.amble.ait.client.screen.wheel;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;

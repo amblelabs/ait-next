@@ -1,5 +1,6 @@
-package dev.amble.ait.client.screen;
+package dev.amble.ait.client.screen.wheel;
 
+import dev.amble.ait.client.screen.wheel.action.Action;
 import dev.amble.ait.common.I18n;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
