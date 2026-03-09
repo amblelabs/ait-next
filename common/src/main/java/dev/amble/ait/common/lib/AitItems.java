@@ -1,6 +1,8 @@
 package dev.amble.ait.common.lib;
 
 import com.google.common.base.Suppliers;
+import dev.amble.ait.common.items.ItemSonic;
+import dev.amble.ait.common.items.components.SonicCrystals;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +31,8 @@ public class AitItems {
     private static final Map<CreativeModeTab, List<TabEntry>> ITEM_TABS = new LinkedHashMap<>();
 
     public static final Item SCREWDRIVER = make("screwdriver", new Item(unstackable()));
+    public static final Item SONIC_SCREWDRIVER = make("sonic_screwdriver", new ItemSonic(unstackable()
+            .component(AitComponents.SONIC_CRYSTALS, SonicCrystals.EMPTY)));
 
     public static final Item SHARD_BASIC = make("zeiton_shard/basic", new Item(unstackable()));
     public static final Item SHARD_OVERCHARGED = make("zeiton_shard/overcharged", new Item(unstackable()));

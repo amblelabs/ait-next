@@ -36,9 +36,7 @@ public final class FabricAitInit implements ModInitializer {
     }
 
     private void initListeners() {
-        CommandRegistrationCallback.EVENT.register((dp, a, b) -> {
-            AitCommands.register(dp);
-        });
+        CommandRegistrationCallback.EVENT.register((dp, a, b) -> AitCommands.register(dp));
 
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((tab, entries) -> {
             AitBlocks.registerBlockCreativeTab(entries::accept, tab);
@@ -61,6 +59,8 @@ public final class FabricAitInit implements ModInitializer {
         AitAttributes.register(bind(BuiltInRegistries.ATTRIBUTE));
         AitMobEffects.register(bind(BuiltInRegistries.MOB_EFFECT));
         AitPotions.register(bind(BuiltInRegistries.POTION));
+
+        AitComponents.registerComponents(bind(BuiltInRegistries.DATA_COMPONENT_TYPE));
 
         AitParticles.registerParticles(bind(BuiltInRegistries.PARTICLE_TYPE));
 
