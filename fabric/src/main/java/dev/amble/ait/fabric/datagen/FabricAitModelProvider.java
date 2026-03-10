@@ -20,8 +20,8 @@ public class FabricAitModelProvider extends FabricAmbleModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerators gen) {
-        gen.generateFlatItem(AitItems.SCREWDRIVER, ModelTemplates.FLAT_ITEM);
-        gen.generateFlatItem(AitItems.SONIC_SCREWDRIVER, ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitItems.SCREWDRIVER, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
+        gen.generateFlatItem(AitItems.SONIC_SCREWDRIVER, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
 
         // Zeiton shards
         gen.generateFlatItem(AitItems.SHARD_AMETHYST, ModelTemplates.FLAT_ITEM);
