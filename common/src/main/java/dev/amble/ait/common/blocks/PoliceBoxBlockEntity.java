@@ -1,6 +1,7 @@
 package dev.amble.ait.common.blocks;
 
 import dev.amble.ait.common.lib.AitBlockEntities;
+import dev.amble.ait.common.lib.AitSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -73,7 +74,7 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
                     triggerAnim("right_door", "right_open");
                     doorState = DoorState.RIGHT_OPEN;
                 }
-                this.getLevel().playSound(null, this.getBlockPos(), SoundEvents.COPPER_DOOR_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
+                this.getLevel().playSound(null, this.getBlockPos(), AitSounds.DOOR_OPEN, SoundSource.BLOCKS, 0.5f, 1.0f);
             }
             case RIGHT_OPEN -> {
                 if (crouching) {
@@ -83,13 +84,13 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
                     triggerAnim("left_door", "left_open");
                     doorState = DoorState.BOTH_OPEN;
                 }
-                this.getLevel().playSound(null, this.getBlockPos(), SoundEvents.COPPER_DOOR_OPEN, SoundSource.BLOCKS, 1.0f, 1.0f);
+                this.getLevel().playSound(null, this.getBlockPos(), AitSounds.DOOR_OPEN, SoundSource.BLOCKS, 0.5f, 1.0f);
             }
             case BOTH_OPEN -> {
                 triggerAnim("right_door", "right_close");
                 triggerAnim("left_door", "left_close");
                 doorState = DoorState.CLOSED;
-                this.getLevel().playSound(null, this.getBlockPos(), SoundEvents.COPPER_DOOR_OPEN, SoundSource.BLOCKS, 1.0f, 1.0f);
+                this.getLevel().playSound(null, this.getBlockPos(), AitSounds.DOOR_CLOSE, SoundSource.BLOCKS, 0.6f, 1.0f);
             }
         }
 

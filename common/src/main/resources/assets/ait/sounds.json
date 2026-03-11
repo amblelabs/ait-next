@@ -1,0 +1,15 @@
+{
+  "tardis/door_open": {
+    "subtitle": "subtitles.ait.tardis.door_open",
+    "sounds": [
+      "ait:tardis/door_open"
+    ]
+  },
+  "tardis/door_close": {
+    "subtitle": "subtitles.ait.tardis.door_close",
+    "sounds": [
+      "ait:tardis/door_close"
+    ]
+  }
+}
+

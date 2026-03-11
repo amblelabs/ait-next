@@ -19,6 +19,8 @@ public class AitSounds {
     private static final Map<ResourceLocation, SoundEvent> SOUNDS = new LinkedHashMap<>();
 
     //
+    public static final SoundEvent DOOR_OPEN = sound("tardis/door_open");
+    public static final SoundEvent DOOR_CLOSE = sound("tardis/door_close");
 
     private static SoundEvent sound(String name) {
         var id = modLoc(name);
