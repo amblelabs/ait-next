@@ -22,7 +22,6 @@ public class FabricAitModelProvider extends FabricAmbleModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerators gen) {
         gen.generateFlatItem(AitItems.SCREWDRIVER, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
-        gen.generateFlatItem(AitItems.SONIC_SCREWDRIVER, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
 
         // Police box item
         gen.generateFlatItem(AitBlocks.POLICE_BOX.asItem(), ModelTemplates.FLAT_ITEM);

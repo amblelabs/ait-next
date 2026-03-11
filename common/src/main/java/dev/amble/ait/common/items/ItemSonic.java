@@ -1,14 +1,14 @@
 package dev.amble.ait.common.items;
 
 import dev.amble.ait.api.mod.AitTags;
-import dev.amble.ait.client.screen.SonicWheelScreen;
+import dev.amble.ait.client.renderer.CoralSonicItemRenderer;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitComponents;
 import dev.amble.ait.common.sonic.SonicCrystal;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -28,17 +28,58 @@ import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.math.Fraction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
-public class ItemSonic extends Item {
+public class ItemSonic extends Item implements GeoItem {
 
     private static final int BAR_COLOR = Mth.color(0.4F, 0.4F, 1.0F);
     public static final int TOOLTIP_MAX_WEIGHT = 4;
 
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    private static final RawAnimation OPEN = RawAnimation.begin().thenPlay("open");
+    private static final RawAnimation CLOSE = RawAnimation.begin().thenPlay("close");
+
     public ItemSonic(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private CoralSonicItemRenderer renderer;
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+                if (this.renderer == null)
+                    this.renderer = new CoralSonicItemRenderer();
+                return this.renderer;
+            }
+        });
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "sonic_state", 2, state -> {
+            ItemStack stack = state.getData(software.bernie.geckolib.constant.DataTickets.ITEMSTACK);
+            if (stack != null && isOpened(stack)) {
+                return state.setAndContinue(OPEN);
+            }
+            return state.setAndContinue(CLOSE);
+        }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.cache;
     }
 
     @Override
@@ -46,11 +87,8 @@ public class ItemSonic extends Item {
         if (clickAction != ClickAction.SECONDARY || !slot.allowModification(player))
             return false;
 
-        if (other.isEmpty()) {
-            // FIXME: this will explode on the server, i think.
-            Minecraft.getInstance().setScreen(SonicWheelScreen.tryCreate(screwdriver));
-            return true;
-        }
+        if (other.isEmpty())
+            return false;
 
         if (!other.is(AitTags.Items.ZEITON_SHARDS) || !(other.getItem() instanceof ItemCrystal))
             return false;
@@ -143,6 +181,13 @@ public class ItemSonic extends Item {
     }
 
     @Override
+    public void inventoryTick(ItemStack stack, Level world, Entity entity, int slotId, boolean isSelected) {
+        if (!world.isClientSide && world instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            GeoItem.getOrAssignId(stack, serverLevel);
+        }
+    }
+
+    @Override
     public @NotNull UseAnim getUseAnimation(ItemStack itemStack) {
         return UseAnim.BOW;
     }
@@ -175,7 +220,6 @@ public class ItemSonic extends Item {
 
         int fuelUsed = mode.tick(stack, world, user, ticks, remainingUseTicks);
 
-        // FIXME: this is not great
         if (fuelUsed == SonicCrystal.SonicFunction.HALT) {
             user.stopUsingItem();
             return;
@@ -252,7 +296,23 @@ public class ItemSonic extends Item {
     }
 
     public static void setFunction(ItemStack stack, int funcIdx) {
-        stack.set(AitComponents.SONIC_DATA, new SonicData(funcIdx));
+        SonicData current = stack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT);
+        stack.set(AitComponents.SONIC_DATA, current.withFunction(funcIdx));
+    }
+
+    public static boolean isOpened(ItemStack stack) {
+        return stack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT).opened();
+    }
+
+    public static void setOpened(ItemStack stack, boolean opened) {
+        SonicData current = stack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT);
+        stack.set(AitComponents.SONIC_DATA, current.withOpened(opened));
+    }
+
+    public static boolean toggleOpened(ItemStack stack) {
+        boolean newState = !isOpened(stack);
+        setOpened(stack, newState);
+        return newState;
     }
 
     private void playRemoveOneSound(Entity entity) {

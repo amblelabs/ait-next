@@ -7,8 +7,8 @@ import software.bernie.geckolib.model.GeoModel;
 
 public class PoliceBoxGeoModel extends GeoModel<PoliceBoxBlockEntity> {
 
-    private static final ResourceLocation MODEL = AitAPI.modLoc("geo/police_box.geo.json");
-    private static final ResourceLocation ANIMATION = AitAPI.modLoc("animations/police_box.animation.json");
+    private static final ResourceLocation MODEL = AitAPI.modLoc("geo/blockentities/police_box.geo.json");
+    private static final ResourceLocation ANIMATION = AitAPI.modLoc("animations/blockentities/police_box.animation.json");
 
     private static final ResourceLocation[] TEXTURES = {
             AitAPI.modLoc("textures/blockentities/exteriors/police_box_default.png"),

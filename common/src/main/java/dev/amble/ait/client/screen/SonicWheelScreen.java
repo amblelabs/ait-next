@@ -1,5 +1,6 @@
 package dev.amble.ait.client.screen;
 
+import dev.amble.ait.client.AitKeybinds;
 import dev.amble.ait.client.screen.wheel.*;
 import dev.amble.ait.client.screen.wheel.action.Action;
 import dev.amble.ait.common.items.ItemCrystal;
@@ -51,6 +52,11 @@ public class SonicWheelScreen extends AbstractWheelScreen {
 
     @Override
     public boolean keyPressed(int i, int j, int k) {
+        if (AitKeybinds.SONIC_WHEEL.matches(i, j)) {
+            this.onClose();
+            return true;
+        }
+
         if (super.keyPressed(i, j, k))
             return true;
 

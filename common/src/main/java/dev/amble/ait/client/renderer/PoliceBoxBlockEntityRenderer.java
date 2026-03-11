@@ -39,8 +39,8 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
                           int colour) {
         if (!isReRender) {
             int rotation = entity.getBlockState().getValue(PoliceBoxBlock.ROTATION);
+            poseStack.translate(0.5,0,0.5);
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation * -45f));
-            poseStack.translate(-0.5,0,-0.5);
         }
     }
 
@@ -49,7 +49,7 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
                                RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer,
                                boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                                int colour) {
-        float alpha = entity.getAlpha();
+        float alpha = 0.1f;//entity.getAlpha();
         int packedColor = ((int) (alpha * 255) << 24) | 0xFFFFFF;
 
         if (alpha < 1.0f && bufferSource instanceof MultiBufferSource.BufferSource immediate) {
