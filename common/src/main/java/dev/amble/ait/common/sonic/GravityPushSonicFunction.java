@@ -51,19 +51,16 @@ public class GravityPushSonicFunction implements SonicCrystal.SonicFunction {
 
             Entity entity = entityHitResult.getEntity();
 
-            // Calculate push direction: from user toward the target
             Vec3 direction = entity.position().subtract(user.position()).normalize();
             Vec3 push = direction.multiply(PUSH_STRENGTH, PUSH_STRENGTH, PUSH_STRENGTH)
                     .add(0, PUSH_UPWARD, 0);
 
             entity.setDeltaMovement(entity.getDeltaMovement().add(push));
-            entity.hurtMarked = true; // forces velocity sync to client
+            entity.hurtMarked = true;
 
-            // Sound
             level.playSound(null, user.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.5F, 0.5F);
             level.playSound(null, entity.blockPosition(), SoundEvents.WIND_CHARGE_BURST.value(), SoundSource.PLAYERS, 1.0F, 0.8F);
 
-            // Spawn particle wave from user to target
             if (level instanceof ServerLevel serverLevel) {
                 spawnPushWave(serverLevel, user.getPosition(0), entity.position().add(0, entity.getBbHeight() / 2, 0));
             }
@@ -74,10 +71,6 @@ public class GravityPushSonicFunction implements SonicCrystal.SonicFunction {
         return 1;
     }
 
-    /**
-     * Spawns a wave of color-transitioning dust particles from origin to target.
-     * Particles transition from bright blue to dark blue along the path.
-     */
     private static void spawnPushWave(ServerLevel level, Vec3 origin, Vec3 target) {
         Vec3 direction = target.subtract(origin);
         double distance = direction.length();
@@ -92,15 +85,14 @@ public class GravityPushSonicFunction implements SonicCrystal.SonicFunction {
             double progress = (double) i / particleCount;
             Vec3 pos = origin.add(step.scale(distance * progress));
 
-            // Spread particles in a cone that widens toward the target
             double spread = 0.15 + progress * 0.6;
 
             level.sendParticles(
                     dustOptions,
                     pos.x, pos.y, pos.z,
-                    3,             // count
-                    spread, spread, spread,  // offset
-                    0.02           // speed
+                    3,
+                    spread, spread, spread,
+                    0.02
             );
         }
     }

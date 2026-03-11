@@ -2,6 +2,7 @@ package dev.amble.ait.common.sonic;
 
 import dev.amble.ait.common.I18n;
 import net.minecraft.core.particles.DustColorTransitionOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -21,17 +22,17 @@ import org.joml.Vector3f;
 
 public class DisarmSonicFunction implements SonicCrystal.SonicFunction {
 
-    private static final Vector3f GOLD = new Vector3f(0.5f, 0.5f, 0.2f);
+    private static final Vector3f GOLD = new Vector3f(1.0f, 0.85f, 0.2f);
     private static final Vector3f WHITE = new Vector3f(1f, 1f, 1f);
 
     @Override
     public ItemStack preview() {
-        return new ItemStack(Items.BLACK_WOOL);
+        return new ItemStack(Items.IRON_SWORD);
     }
 
     @Override
     public Component name() {
-        return I18n.FUNC_ON_PUSH;
+        return I18n.FUNC_ON_DISARM;
     }
 
     @Override
@@ -52,12 +53,10 @@ public class DisarmSonicFunction implements SonicCrystal.SonicFunction {
             if (!(entity instanceof LivingEntity livingEntity)) return SonicCrystal.SonicFunction.HALT;
 
             ItemStack droppedStack = livingEntity.getMainHandItem().copy();
-
             if (droppedStack.isEmpty()) return SonicCrystal.SonicFunction.HALT;
 
             livingEntity.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 
-            // Fully configure the ItemEntity before adding to world
             ItemEntity itemEntity = new ItemEntity(
                     level,
                     livingEntity.getX(), livingEntity.getY() + livingEntity.getBbHeight() / 2, livingEntity.getZ(),
@@ -67,15 +66,12 @@ public class DisarmSonicFunction implements SonicCrystal.SonicFunction {
             Vec3 lookDir = livingEntity.getLookAngle();
             itemEntity.setDeltaMovement(lookDir.x * 0.2, 0.3, lookDir.z * 0.2);
             itemEntity.setPickUpDelay(40);
-
             level.addFreshEntity(itemEntity);
-
 
             level.playSound(null, livingEntity.blockPosition(), SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 0.8F);
 
             if (level instanceof ServerLevel serverLevel) {
-                spawnPushWave(serverLevel, livingEntity.position().add(0, livingEntity.getBbHeight() / 2, 0),
-                        livingEntity.position().add(0, livingEntity.getBbHeight() / 2, 0));
+                spawnDisarmEffect(serverLevel, livingEntity);
             }
 
             return SonicCrystal.SonicFunction.HALT;
@@ -84,35 +80,15 @@ public class DisarmSonicFunction implements SonicCrystal.SonicFunction {
         return 1;
     }
 
-    /**
-     * Spawns a wave of color-transitioning dust particles from origin to target.
-     * Particles transition from bright blue to dark blue along the path.
-     */
-    private static void spawnPushWave(ServerLevel level, Vec3 origin, Vec3 target) {
-        Vec3 direction = target.subtract(origin);
-        double distance = direction.length();
-        Vec3 step = direction.normalize();
+    private static void spawnDisarmEffect(ServerLevel level, LivingEntity target) {
+        double x = target.getX();
+        double y = target.getY() + target.getBbHeight() / 2;
+        double z = target.getZ();
 
-        int particleCount = (int) (distance * 4);
-        DustColorTransitionOptions dustOptions = new DustColorTransitionOptions(
-                GOLD, WHITE, 1.5f
-        );
+        DustColorTransitionOptions dust = new DustColorTransitionOptions(GOLD, WHITE, 1.5f);
 
-        for (int i = 0; i < particleCount; i++) {
-            double progress = (double) i / particleCount;
-            Vec3 pos = origin.add(step.scale(distance * progress));
-
-            // Spread particles in a cone that widens toward the target
-            double spread = 0.15 + progress * 0.6;
-
-            level.sendParticles(
-                    dustOptions,
-                    pos.x, pos.y, pos.z,
-                    3,             // count
-                    spread, spread, spread,  // offset
-                    0.02           // speed
-            );
-        }
+        level.sendParticles(dust, x, y, z, 15, 0.4, 0.5, 0.4, 0.05);
+        level.sendParticles(ParticleTypes.ELECTRIC_SPARK, x, y, z, 8, 0.3, 0.4, 0.3, 0.1);
     }
 
     private static boolean canActivate(int ticks) {
