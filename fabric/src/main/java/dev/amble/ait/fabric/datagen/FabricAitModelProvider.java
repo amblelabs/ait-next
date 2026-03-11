@@ -1,5 +1,6 @@
 package dev.amble.ait.fabric.datagen;
 
+import dev.amble.ait.common.lib.AitBlocks;
 import dev.amble.ait.common.lib.AitItems;
 import dev.amble.lib.fabric.datagen.FabricAmbleModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -22,6 +23,9 @@ public class FabricAitModelProvider extends FabricAmbleModelProvider {
     public void generateItemModels(ItemModelGenerators gen) {
         gen.generateFlatItem(AitItems.SCREWDRIVER, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
         gen.generateFlatItem(AitItems.SONIC_SCREWDRIVER, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
+
+        // Police box item
+        gen.generateFlatItem(AitBlocks.POLICE_BOX.asItem(), ModelTemplates.FLAT_ITEM);
 
         // Zeiton shards
         gen.generateFlatItem(AitItems.SHARD_AMETHYST, ModelTemplates.FLAT_ITEM);

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "ait:textures/blockentities/exteriors/police_box_default.png"
-  }
-}
-
