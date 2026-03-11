@@ -40,12 +40,12 @@ public class AitItems {
             .component(AitComponents.SONIC_DATA, SonicData.DEFAULT)));
 
     public static final Item SHARD_BASIC = make("zeiton_shard/basic", new ItemCrystal(unstackable(), SonicCrystal.BASIC));
-    public static final Item SHARD_OVERCHARGED = make("zeiton_shard/overcharged", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
-    public static final Item SHARD_RESONATING = make("zeiton_shard/resonating", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
+    public static final Item SHARD_OVERCHARGED = make("zeiton_shard/overcharged", new ItemCrystal(unstackable(), SonicCrystal.OVERCHARGED));
+    public static final Item SHARD_RESONATING = make("zeiton_shard/resonating", new ItemCrystal(unstackable(), SonicCrystal.RESONATING));
     public static final Item SHARD_GRAVITY = make("zeiton_shard/gravity", new ItemCrystal(unstackable(), SonicCrystal.GRAVITY));
-    public static final Item SHARD_REFRACTION = make("zeiton_shard/refraction", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
-    public static final Item SHARD_AMETHYST = make("zeiton_shard/amethyst", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
-    public static final Item SHARD_QUARTZ = make("zeiton_shard/quartz", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
+    public static final Item SHARD_REFRACTION = make("zeiton_shard/refraction", new ItemCrystal(unstackable(), SonicCrystal.REFRACTION));
+    public static final Item SHARD_AMETHYST = make("zeiton_shard/amethyst", new ItemCrystal(unstackable(), SonicCrystal.AMETHYST));
+    public static final Item SHARD_QUARTZ = make("zeiton_shard/quartz", new ItemCrystal(unstackable(), SonicCrystal.QUARTZ));
     public static final Item SHARD_SCULK = make("zeiton_shard/sculk", new ItemCrystal(unstackable(), SonicCrystal.ECHO_SHARD));
 
     public static Item.Properties props() {

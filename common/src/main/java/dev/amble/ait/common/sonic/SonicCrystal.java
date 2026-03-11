@@ -16,7 +16,12 @@ public record SonicCrystal(SonicFunction... functions) {
 
     public static final SonicCrystal EMPTY = new SonicCrystal();
     public static final SonicCrystal BASIC = new SonicCrystal(new SetOnFireSonicFunction());
+    public static final SonicCrystal OVERCHARGED = new SonicCrystal(new SetOnFireSonicFunction());
+    public static final SonicCrystal RESONATING = new SonicCrystal(new SetOnFireSonicFunction());
     public static final SonicCrystal GRAVITY = new SonicCrystal(new GravitateSonicFunction(), new GravityPushSonicFunction());
+    public static final SonicCrystal REFRACTION = new SonicCrystal(new LaserSonicFunction());
+    public static final SonicCrystal AMETHYST = new SonicCrystal(new SetOnFireSonicFunction());
+    public static final SonicCrystal QUARTZ = new SonicCrystal(new HighFrequencySonicFunction());
     public static final SonicCrystal ECHO_SHARD = new SonicCrystal(new DisarmSonicFunction());
 
     public interface SonicFunction {

@@ -15,4 +15,6 @@ public class I18n {
     public static final Component FUNC_ON_GRAVITATE = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_gravitate");
     public static final Component FUNC_ON_PUSH = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_push");
     public static final Component FUNC_ON_DISARM = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_disarm");
+    public static final Component FUNC_ON_LASER = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_laser");
+    public static final Component FUNC_ON_HIGH_FREQ = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_high_freq");
 }
