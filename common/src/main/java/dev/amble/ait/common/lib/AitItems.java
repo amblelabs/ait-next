@@ -42,7 +42,7 @@ public class AitItems {
     public static final Item SHARD_BASIC = make("zeiton_shard/basic", new ItemCrystal(unstackable(), SonicCrystal.BASIC));
     public static final Item SHARD_OVERCHARGED = make("zeiton_shard/overcharged", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
     public static final Item SHARD_RESONATING = make("zeiton_shard/resonating", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
-    public static final Item SHARD_GRAVITY = make("zeiton_shard/gravity", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
+    public static final Item SHARD_GRAVITY = make("zeiton_shard/gravity", new ItemCrystal(unstackable(), SonicCrystal.GRAVITATION));
     public static final Item SHARD_REFRACTION = make("zeiton_shard/refraction", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
     public static final Item SHARD_AMETHYST = make("zeiton_shard/amethyst", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
     public static final Item SHARD_QUARTZ = make("zeiton_shard/quartz", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
