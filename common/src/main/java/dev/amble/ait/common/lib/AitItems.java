@@ -46,7 +46,7 @@ public class AitItems {
     public static final Item SHARD_REFRACTION = make("zeiton_shard/refraction", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
     public static final Item SHARD_AMETHYST = make("zeiton_shard/amethyst", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
     public static final Item SHARD_QUARTZ = make("zeiton_shard/quartz", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
-    public static final Item SHARD_SCULK = make("zeiton_shard/sculk", new ItemCrystal(unstackable(), SonicCrystal.EMPTY));
+    public static final Item SHARD_SCULK = make("zeiton_shard/sculk", new ItemCrystal(unstackable(), SonicCrystal.ECHO_SHARD));
 
     public static Item.Properties props() {
         return new Item.Properties();
