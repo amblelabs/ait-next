@@ -7,33 +7,46 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PoliceBoxBlockEntity extends BlockEntity {
+public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity {
 
-    private static final String TEXTURE_INDEX_KEY = "TextureIndex";
+    public enum DoorState {
+        CLOSED,
+        RIGHT_OPEN,
+        BOTH_OPEN
+    }
+
     private static final String ALPHA_KEY = "Alpha";
-    public static final int TEXTURE_COUNT = 5;
+    private static final String DOOR_STATE_KEY = "DoorState";
 
-    private int textureIndex = 0;
+    private static final RawAnimation RIGHT_OPEN = RawAnimation.begin().thenPlay("right door open");
+    private static final RawAnimation LEFT_OPEN = RawAnimation.begin().thenPlay("left door open");
+    private static final RawAnimation RIGHT_CLOSE = RawAnimation.begin().thenPlay("right door close");
+    private static final RawAnimation LEFT_CLOSE = RawAnimation.begin().thenPlay("left door close");
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     private float alpha = 1.0f;
+    private DoorState doorState = DoorState.CLOSED;
 
     public PoliceBoxBlockEntity(BlockPos pos, BlockState state) {
         super(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, pos, state);
     }
 
     public int getTextureIndex() {
-        return textureIndex;
+        return this.getBlockState().getValue(PoliceBoxBlock.TEXTURE);
     }
 
-    public void cycleTexture() {
-        this.textureIndex = (this.textureIndex + 1) % TEXTURE_COUNT;
-        this.setChanged();
-
-        if (this.level != null) {
-            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
-        }
+    public DoorState getDoorState() {
+        return doorState;
     }
 
     public float getAlpha() {
@@ -43,7 +56,44 @@ public class PoliceBoxBlockEntity extends BlockEntity {
     public void setAlpha(float alpha) {
         this.alpha = Math.clamp(alpha, 0.0f, 1.0f);
         this.setChanged();
+        if (this.level != null) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        }
+    }
 
+    public void interact(boolean crouching) {
+        if (this.getLevel() == null) return;
+        switch (doorState) {
+            case CLOSED -> {
+                if (crouching) {
+                    triggerAnim("right_door", "right_open");
+                    triggerAnim("left_door", "left_open");
+                    doorState = DoorState.BOTH_OPEN;
+                } else {
+                    triggerAnim("right_door", "right_open");
+                    doorState = DoorState.RIGHT_OPEN;
+                }
+                this.getLevel().playSound(null, this.getBlockPos(), SoundEvents.COPPER_DOOR_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
+            }
+            case RIGHT_OPEN -> {
+                if (crouching) {
+                    triggerAnim("right_door", "right_close");
+                    doorState = DoorState.CLOSED;
+                } else {
+                    triggerAnim("left_door", "left_open");
+                    doorState = DoorState.BOTH_OPEN;
+                }
+                this.getLevel().playSound(null, this.getBlockPos(), SoundEvents.COPPER_DOOR_OPEN, SoundSource.BLOCKS, 1.0f, 1.0f);
+            }
+            case BOTH_OPEN -> {
+                triggerAnim("right_door", "right_close");
+                triggerAnim("left_door", "left_close");
+                doorState = DoorState.CLOSED;
+                this.getLevel().playSound(null, this.getBlockPos(), SoundEvents.COPPER_DOOR_OPEN, SoundSource.BLOCKS, 1.0f, 1.0f);
+            }
+        }
+
+        this.setChanged();
         if (this.level != null) {
             this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
         }
@@ -52,15 +102,16 @@ public class PoliceBoxBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.putInt(TEXTURE_INDEX_KEY, this.textureIndex);
         tag.putFloat(ALPHA_KEY, this.alpha);
+        tag.putInt(DOOR_STATE_KEY, this.doorState.ordinal());
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        this.textureIndex = tag.getInt(TEXTURE_INDEX_KEY);
         this.alpha = tag.contains(ALPHA_KEY) ? tag.getFloat(ALPHA_KEY) : 1.0f;
+        int doorOrdinal = tag.getInt(DOOR_STATE_KEY);
+        this.doorState = DoorState.values()[Math.clamp(doorOrdinal, 0, DoorState.values().length - 1)];
     }
 
     @Override
@@ -74,7 +125,23 @@ public class PoliceBoxBlockEntity extends BlockEntity {
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
-}
 
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "right_door", 5, state -> PlayState.STOP)
+                .triggerableAnim("right_open", RIGHT_OPEN)
+                .triggerableAnim("right_close", RIGHT_CLOSE)
+        );
+        controllers.add(new AnimationController<>(this, "left_door", 5, state -> PlayState.STOP)
+                .triggerableAnim("left_open", LEFT_OPEN)
+                .triggerableAnim("left_close", LEFT_CLOSE)
+        );
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+}
 
 

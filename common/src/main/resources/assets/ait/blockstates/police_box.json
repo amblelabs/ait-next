@@ -1,13 +1,124 @@
 {
   "variants": {
-    "rotation=0": { "model": "ait:block/police_box" },
-    "rotation=1": { "model": "ait:block/police_box" },
-    "rotation=2": { "model": "ait:block/police_box" },
-    "rotation=3": { "model": "ait:block/police_box" },
-    "rotation=4": { "model": "ait:block/police_box" },
-    "rotation=5": { "model": "ait:block/police_box" },
-    "rotation=6": { "model": "ait:block/police_box" },
-    "rotation=7": { "model": "ait:block/police_box" }
+    "rotation=0,texture=0": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=0,texture=1": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=0,texture=2": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=0,texture=3": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=0,texture=4": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=1,texture=0": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=1,texture=1": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=1,texture=2": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=1,texture=3": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=1,texture=4": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=2,texture=0": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=2,texture=1": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=2,texture=2": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=2,texture=3": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=2,texture=4": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=3,texture=0": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=3,texture=1": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=3,texture=2": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=3,texture=3": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=3,texture=4": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=4,texture=0": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=4,texture=1": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=4,texture=2": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=4,texture=3": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=4,texture=4": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=5,texture=0": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=5,texture=1": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=5,texture=2": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=5,texture=3": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=5,texture=4": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=6,texture=0": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=6,texture=1": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=6,texture=2": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=6,texture=3": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=6,texture=4": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=7,texture=0": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=7,texture=1": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=7,texture=2": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=7,texture=3": {
+      "model": "ait:block/police_box"
+    },
+    "rotation=7,texture=4": {
+      "model": "ait:block/police_box"
+    }
   }
 }
-

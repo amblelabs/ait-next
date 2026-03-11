@@ -20,11 +20,14 @@ import net.minecraft.world.phys.BlockHitResult;
 public class PoliceBoxBlock extends BaseEntityBlock {
 
     public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 7);
+    public static final IntegerProperty TEXTURE = IntegerProperty.create("texture", 0, 4);
     public static final MapCodec<PoliceBoxBlock> CODEC = simpleCodec(PoliceBoxBlock::new);
 
     public PoliceBoxBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(ROTATION, 0));
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(ROTATION, 0)
+                .setValue(TEXTURE, 0));
     }
 
     public static Properties defaultProps() {
@@ -41,7 +44,7 @@ public class PoliceBoxBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ROTATION);
+        builder.add(ROTATION, TEXTURE);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class PoliceBoxBlock extends BaseEntityBlock {
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof PoliceBoxBlockEntity policeBox) {
-            policeBox.cycleTexture();
+            policeBox.interact(player.isShiftKeyDown());
         }
 
         return InteractionResult.CONSUME;

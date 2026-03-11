@@ -51,6 +51,8 @@ dependencies {
 
     modImplementation("com.terraformersmc:modmenu:$modmenu_version")
 
+    modImplementation "software.bernie.geckolib:geckolib-fabric-$minecraft_version:$geckolib_version"
+
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
 }
 

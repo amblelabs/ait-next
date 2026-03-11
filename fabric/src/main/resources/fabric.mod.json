@@ -41,7 +41,8 @@
 
     "fabric-api": "*",
     "cloth-config": "15.0.*",
-    "patchouli": ">=${minecraft_version}-${patchouli_version}"
+    "patchouli": ">=${minecraft_version}-${patchouli_version}",
+    "geckolib": "*"
   },
   "suggests": {
     "modmenu": "*"
