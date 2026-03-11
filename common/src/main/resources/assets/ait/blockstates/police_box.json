@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "rotation=0": { "model": "ait:block/police_box" },
+    "rotation=1": { "model": "ait:block/police_box" },
+    "rotation=2": { "model": "ait:block/police_box" },
+    "rotation=3": { "model": "ait:block/police_box" },
+    "rotation=4": { "model": "ait:block/police_box" },
+    "rotation=5": { "model": "ait:block/police_box" },
+    "rotation=6": { "model": "ait:block/police_box" },
+    "rotation=7": { "model": "ait:block/police_box" }
+  }
+}
+

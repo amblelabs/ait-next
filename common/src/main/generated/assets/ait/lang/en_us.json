@@ -1,4 +1,5 @@
 {
+  "block.ait.police_box": "Police Box",
   "item.ait.screwdriver": "Screwdriver",
   "item.ait.screwdriver.desc": "Just a normal screwdriver.",
   "item.ait.sonic_screwdriver": "Sonic Screwdriver",
@@ -12,6 +13,12 @@
   "item.ait.zeiton_shard.resonating": "Resonating Zeiton Shard",
   "item.ait.zeiton_shard.sculk": "Sculk Zeiton Shard",
   "itemGroup.ait.main": "Adventures in Time",
+  "sonic.ait.set_on_fire": "Ignite",
+  "sonic.ait.on_gravitate": "Levitate",
+  "sonic.ait.on_push": "Shockwave",
+  "sonic.ait.on_disarm": "Disarm",
+  "sonic.ait.on_laser": "Laser",
+  "sonic.ait.on_high_freq": "High Frequency",
   "tag.item.ait.zeiton_shards": "Zeiton Shards",
   "widget.ait.empty": "Empty",
   "widget.ait.empty.desc": "..."

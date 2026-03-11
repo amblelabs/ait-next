@@ -2,6 +2,10 @@ architectury {
     common rootProject.enabled_platforms.split(',')
 }
 
+loom {
+    accessWidenerPath = file("../fabric/src/main/resources/ait-fabric.accesswidener")
+}
+
 repositories {
     // patchouli
     maven { url 'https://maven.blamejared.com' }

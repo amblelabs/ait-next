@@ -1,8 +1,10 @@
 package dev.amble.ait.fabric.client;
 
+import dev.amble.ait.client.renderer.PoliceBoxBlockEntityRenderer;
 import dev.amble.ait.client.renderer.ClientSonicTooltip;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
+import dev.amble.ait.common.lib.AitBlockEntities;
 import dev.amble.ait.xplat.IClientXplatAbstractions;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.color.block.BlockColor;
@@ -38,7 +40,7 @@ public class RegisterClientStuff {
     }
 
     public static void registerBlockEntityRenderers(@NotNull BlockEntityRendererRegisterer registerer) {
-
+        registerer.registerBlockEntityRenderer(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, PoliceBoxBlockEntityRenderer::new);
     }
 
     @FunctionalInterface

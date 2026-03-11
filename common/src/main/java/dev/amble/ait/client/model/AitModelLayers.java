@@ -24,6 +24,6 @@ public class AitModelLayers {
     // moving this stuff into the same file:
     // https://github.com/VazkiiMods/Botania/blob/1.19.x/Xplat/src/main/java/vazkii/botania/client/model/BotaniaLayerDefinitions.java
     public static void init(BiConsumer<ModelLayerLocation, Supplier<LayerDefinition>> consumer) {
-
+        consumer.accept(PoliceBoxModel.LAYER_LOCATION, PoliceBoxModel::createBodyLayer);
     }
 }

@@ -1,5 +1,6 @@
 package dev.amble.ait.common.lib;
 
+import dev.amble.ait.common.blocks.PoliceBoxBlock;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -83,6 +84,8 @@ public class AitBlocks {
     }
 
     //
+
+    public static final PoliceBoxBlock POLICE_BOX = blockItem("police_box", new PoliceBoxBlock(PoliceBoxBlock.defaultProps()));
 
     private static boolean never(Object... args) {
         return false;

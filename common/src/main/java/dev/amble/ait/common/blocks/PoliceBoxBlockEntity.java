@@ -1,0 +1,63 @@
+package dev.amble.ait.common.blocks;
+
+import dev.amble.ait.common.lib.AitBlockEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class PoliceBoxBlockEntity extends BlockEntity {
+
+    private static final String TEXTURE_INDEX_KEY = "TextureIndex";
+    public static final int TEXTURE_COUNT = 5;
+
+    private int textureIndex = 0;
+
+    public PoliceBoxBlockEntity(BlockPos pos, BlockState state) {
+        super(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, pos, state);
+    }
+
+    public int getTextureIndex() {
+        return textureIndex;
+    }
+
+    public void cycleTexture() {
+        this.textureIndex = (this.textureIndex + 1) % TEXTURE_COUNT;
+        this.setChanged();
+
+        if (this.level != null) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putInt(TEXTURE_INDEX_KEY, this.textureIndex);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        this.textureIndex = tag.getInt(TEXTURE_INDEX_KEY);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        saveAdditional(tag, registries);
+        return tag;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+}
+
+
+
