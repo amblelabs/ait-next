@@ -46,7 +46,7 @@ public class PoliceBoxBlockEntityRenderer implements BlockEntityRenderer<PoliceB
                        MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         int index = blockEntity.getTextureIndex() % TEXTURES.length;
         ResourceLocation texture = TEXTURES[index];
-        float alpha = 0.5f;//blockEntity.getAlpha();
+        float alpha = blockEntity.getAlpha();
 
         poseStack.pushPose();
         poseStack.translate(0.5, 1.5, 0.5);
