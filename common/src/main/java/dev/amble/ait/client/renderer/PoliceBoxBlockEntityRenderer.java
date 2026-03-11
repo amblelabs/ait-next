@@ -65,12 +65,10 @@ public class PoliceBoxBlockEntityRenderer implements BlockEntityRenderer<PoliceB
         VertexConsumer consumer = bufferSource.getBuffer(AITRenderLayers.tardisTranslucent(texture));
         model.renderToBuffer(poseStack, consumer, packedLight, packedOverlay, packedColor);
 
-        if (alpha >= 1.0f) {
-            ResourceLocation emissionTexture = EMISSION_TEXTURES[index];
-            if (Minecraft.getInstance().getResourceManager().getResource(emissionTexture).isPresent()) {
-                VertexConsumer emissiveConsumer = bufferSource.getBuffer(AITRenderLayers.tardisEmissiveCullZOffset(emissionTexture, true));
-                model.renderToBuffer(poseStack, emissiveConsumer, FULLBRIGHT, packedOverlay, packedColor);
-            }
+        ResourceLocation emissionTexture = EMISSION_TEXTURES[index];
+        if (Minecraft.getInstance().getResourceManager().getResource(emissionTexture).isPresent()) {
+            VertexConsumer emissiveConsumer = bufferSource.getBuffer(AITRenderLayers.tardisEmissiveCullZOffset(emissionTexture, true));
+            model.renderToBuffer(poseStack, emissiveConsumer, FULLBRIGHT, packedOverlay, packedColor);
         }
 
         poseStack.popPose();

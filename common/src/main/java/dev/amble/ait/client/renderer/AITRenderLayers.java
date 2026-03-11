@@ -63,7 +63,7 @@ public class AITRenderLayers extends RenderType {
                 CompositeState compositeState = CompositeState.builder()
                         .setShaderState(RENDERTYPE_EYES_SHADER)
                         .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
-                        .setCullState(NO_CULL)
+                        .setCullState(CULL)
                         .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                         .setLayeringState(VIEW_OFFSET_Z_LAYERING)
                         .setLightmapState(LIGHTMAP)
