@@ -1,18 +1,17 @@
 package dev.amble.ait.fabric.network;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import dev.amble.ait.common.network.SetSonicFunctionC2SPacket;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import org.apache.logging.log4j.util.TriConsumer;
-
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class FabricPacketHandler {
 
     public static void init() {
+        PayloadTypeRegistry.playC2S().register(SetSonicFunctionC2SPacket.TYPE, SetSonicFunctionC2SPacket.STREAM_CODEC);
+
+        ServerPlayNetworking.registerGlobalReceiver(SetSonicFunctionC2SPacket.TYPE, (packet, context) -> {
+            context.server().execute(() -> SetSonicFunctionC2SPacket.handle(packet, context.player()));
+        });
     }
 
     public static void initClient() {
