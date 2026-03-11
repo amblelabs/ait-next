@@ -39,12 +39,34 @@ public class WheelOptionWidget extends Button {
 
         this.setTooltip(Tooltip.create(widget.label()));
 
-        // Set a bounding box that circumscribes the arc for accessibility
-        int bboxSize = (int) (outerRadius * 2);
-        this.setX(centerX - bboxSize / 2);
-        this.setY(centerY - bboxSize / 2);
-        this.width = bboxSize;
-        this.height = bboxSize;
+        // Compute a tight bounding box around the actual arc segment
+        float sa = this.startAngle;
+        float ea = this.endAngle;
+        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;
+        float maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;
+
+        int steps = 16;
+        for (int i = 0; i <= steps; i++) {
+            float t = (float) i / steps;
+            float deg = sa + t * (ea - sa);
+            double rad = Math.toRadians(deg - 90);
+            float cos = (float) Math.cos(rad);
+            float sin = (float) Math.sin(rad);
+
+            for (float r : new float[]{innerRadius, outerRadius}) {
+                float px = centerX + r * cos;
+                float py = centerY + r * sin;
+                if (px < minX) minX = px;
+                if (px > maxX) maxX = px;
+                if (py < minY) minY = py;
+                if (py > maxY) maxY = py;
+            }
+        }
+
+        this.setX((int) Math.floor(minX));
+        this.setY((int) Math.floor(minY));
+        this.width = (int) Math.ceil(maxX) - this.getX();
+        this.height = (int) Math.ceil(maxY) - this.getY();
     }
 
     @Override

@@ -12,6 +12,6 @@ public class I18n {
                     .withStyle(ChatFormatting.GRAY));
 
     public static final Component FUNC_ON_FIRE = Component.translatable("sonic." + AitAPI.MOD_ID + ".set_on_fire");
-
     public static final Component FUNC_ON_GRAVITATE = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_gravitate");
+    public static final Component FUNC_ON_PUSH = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_push");
 }

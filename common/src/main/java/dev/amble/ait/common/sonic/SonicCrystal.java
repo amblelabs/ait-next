@@ -16,7 +16,7 @@ public record SonicCrystal(SonicFunction... functions) {
 
     public static final SonicCrystal EMPTY = new SonicCrystal();
     public static final SonicCrystal BASIC = new SonicCrystal(new SetOnFireSonicFunction());
-    public static final SonicCrystal GRAVITATION = new SonicCrystal(new GravitateSonicFunction());
+    public static final SonicCrystal GRAVITY = new SonicCrystal(new GravitateSonicFunction(), new GravityPushSonicFunction());
 
     public interface SonicFunction {
         ItemStack preview();
