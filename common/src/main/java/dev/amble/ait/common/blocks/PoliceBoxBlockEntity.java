@@ -13,9 +13,11 @@ import net.minecraft.world.level.block.state.BlockState;
 public class PoliceBoxBlockEntity extends BlockEntity {
 
     private static final String TEXTURE_INDEX_KEY = "TextureIndex";
+    private static final String ALPHA_KEY = "Alpha";
     public static final int TEXTURE_COUNT = 5;
 
     private int textureIndex = 0;
+    private float alpha = 1.0f;
 
     public PoliceBoxBlockEntity(BlockPos pos, BlockState state) {
         super(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, pos, state);
@@ -34,16 +36,31 @@ public class PoliceBoxBlockEntity extends BlockEntity {
         }
     }
 
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = Math.clamp(alpha, 0.0f, 1.0f);
+        this.setChanged();
+
+        if (this.level != null) {
+            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        }
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putInt(TEXTURE_INDEX_KEY, this.textureIndex);
+        tag.putFloat(ALPHA_KEY, this.alpha);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         this.textureIndex = tag.getInt(TEXTURE_INDEX_KEY);
+        this.alpha = tag.contains(ALPHA_KEY) ? tag.getFloat(ALPHA_KEY) : 1.0f;
     }
 
     @Override
