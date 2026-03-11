@@ -21,20 +21,23 @@ public class PoliceBoxBlock extends BaseEntityBlock {
 
     public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 7);
     public static final IntegerProperty TEXTURE = IntegerProperty.create("texture", 0, 4);
+    public static final IntegerProperty LIGHT = IntegerProperty.create("light", 0, 7);
     public static final MapCodec<PoliceBoxBlock> CODEC = simpleCodec(PoliceBoxBlock::new);
 
     public PoliceBoxBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(ROTATION, 0)
-                .setValue(TEXTURE, 0));
+                .setValue(TEXTURE, 0)
+                .setValue(LIGHT, 7));
     }
 
     public static Properties defaultProps() {
         return Properties.of()
                 .mapColor(MapColor.COLOR_BLUE)
                 .strength(50f, 1200f)
-                .noOcclusion();
+                .noOcclusion()
+                .lightLevel(state -> state.getValue(LIGHT));
     }
 
     @Override
@@ -44,7 +47,7 @@ public class PoliceBoxBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ROTATION, TEXTURE);
+        builder.add(ROTATION, TEXTURE, LIGHT);
     }
 
     @Override
@@ -75,4 +78,3 @@ public class PoliceBoxBlock extends BaseEntityBlock {
         return InteractionResult.CONSUME;
     }
 }
-

@@ -36,11 +36,29 @@ public class PoliceBoxEmissiveLayer extends GeoRenderLayer<PoliceBoxBlockEntity>
         int packedColor = ((int) (alpha * 255) << 24) | 0xFFFFFF;
 
         RenderType emissiveType = AITRenderLayers.tardisEmissiveCullZOffset(emissiveTexture, true);
-        VertexConsumer emissiveConsumer = bufferSource.getBuffer(emissiveType);
 
-        for (GeoBone bone : bakedModel.topLevelBones()) {
-            getRenderer().renderRecursively(poseStack, entity, bone, emissiveType, bufferSource,
-                    emissiveConsumer, true, partialTick, FULLBRIGHT, packedOverlay, packedColor);
+        if (alpha < 1.0f && bufferSource instanceof MultiBufferSource.BufferSource immediate) {
+            RenderType depthType = AITRenderLayers.tardisDepth(emissiveTexture);
+            VertexConsumer depthConsumer = bufferSource.getBuffer(depthType);
+
+            for (GeoBone bone : bakedModel.topLevelBones()) {
+                getRenderer().renderRecursively(poseStack, entity, bone, depthType, bufferSource,
+                        depthConsumer, true, partialTick, FULLBRIGHT, packedOverlay, 0xFFFFFFFF);
+            }
+            immediate.endBatch(depthType);
+
+            VertexConsumer emissiveConsumer = bufferSource.getBuffer(emissiveType);
+            for (GeoBone bone : bakedModel.topLevelBones()) {
+                getRenderer().renderRecursively(poseStack, entity, bone, emissiveType, bufferSource,
+                        emissiveConsumer, true, partialTick, FULLBRIGHT, packedOverlay, packedColor);
+            }
+            immediate.endBatch(emissiveType);
+        } else {
+            VertexConsumer emissiveConsumer = bufferSource.getBuffer(emissiveType);
+            for (GeoBone bone : bakedModel.topLevelBones()) {
+                getRenderer().renderRecursively(poseStack, entity, bone, emissiveType, bufferSource,
+                        emissiveConsumer, true, partialTick, FULLBRIGHT, packedOverlay, packedColor);
+            }
         }
     }
 }

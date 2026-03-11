@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,6 +57,11 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
         this.alpha = Math.clamp(alpha, 0.0f, 1.0f);
         this.setChanged();
         if (this.level != null) {
+            int light = Math.round(this.alpha * 7.0f);
+            BlockState current = this.getBlockState();
+            if (current.getValue(PoliceBoxBlock.LIGHT) != light) {
+                this.level.setBlock(this.worldPosition, current.setValue(PoliceBoxBlock.LIGHT, light), 3);
+            }
             this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
         }
     }
@@ -67,28 +71,21 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
         switch (doorState) {
             case CLOSED -> {
                 if (crouching) {
-                    triggerAnim("right_door", "right_open");
-                    triggerAnim("left_door", "left_open");
                     doorState = DoorState.BOTH_OPEN;
                 } else {
-                    triggerAnim("right_door", "right_open");
                     doorState = DoorState.RIGHT_OPEN;
                 }
                 this.getLevel().playSound(null, this.getBlockPos(), AitSounds.DOOR_OPEN, SoundSource.BLOCKS, 0.5f, 1.0f);
             }
             case RIGHT_OPEN -> {
                 if (crouching) {
-                    triggerAnim("right_door", "right_close");
                     doorState = DoorState.CLOSED;
                 } else {
-                    triggerAnim("left_door", "left_open");
                     doorState = DoorState.BOTH_OPEN;
                 }
                 this.getLevel().playSound(null, this.getBlockPos(), AitSounds.DOOR_OPEN, SoundSource.BLOCKS, 0.5f, 1.0f);
             }
             case BOTH_OPEN -> {
-                triggerAnim("right_door", "right_close");
-                triggerAnim("left_door", "left_close");
                 doorState = DoorState.CLOSED;
                 this.getLevel().playSound(null, this.getBlockPos(), AitSounds.DOOR_CLOSE, SoundSource.BLOCKS, 0.6f, 1.0f);
             }
@@ -129,14 +126,18 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "right_door", 5, state -> PlayState.STOP)
-                .triggerableAnim("right_open", RIGHT_OPEN)
-                .triggerableAnim("right_close", RIGHT_CLOSE)
-        );
-        controllers.add(new AnimationController<>(this, "left_door", 5, state -> PlayState.STOP)
-                .triggerableAnim("left_open", LEFT_OPEN)
-                .triggerableAnim("left_close", LEFT_CLOSE)
-        );
+        controllers.add(new AnimationController<>(this, "right_door", 2, state -> {
+            if (doorState == DoorState.RIGHT_OPEN || doorState == DoorState.BOTH_OPEN) {
+                return state.setAndContinue(RIGHT_OPEN);
+            }
+            return state.setAndContinue(RIGHT_CLOSE);
+        }));
+        controllers.add(new AnimationController<>(this, "left_door", 2, state -> {
+            if (doorState == DoorState.BOTH_OPEN) {
+                return state.setAndContinue(LEFT_OPEN);
+            }
+            return state.setAndContinue(LEFT_CLOSE);
+        }));
     }
 
     @Override
