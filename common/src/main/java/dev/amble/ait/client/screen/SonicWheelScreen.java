@@ -17,11 +17,13 @@ import net.minecraft.world.item.ItemStack;
  */
 public class SonicWheelScreen extends AbstractWheelScreen {
 
-    public static final float OUTER_RING_SPREAD_DEFAULT = 1.87f;
-    public static final int OUTER_RING_SIZE_DEFAULT = 32;
+    // Outer ring radii
+    public static final float OUTER_INNER_RADIUS = 55f;
+    public static final float OUTER_OUTER_RADIUS = 90f;
 
-    public static final float INNER_RING_SPREAD_DEFAULT = -1.63f;
-    public static final int INNER_RING_SIZE_DEFAULT = 24;
+    // Inner ring radii
+    public static final float INNER_INNER_RADIUS = 15f;
+    public static final float INNER_OUTER_RADIUS = 50f;
 
     private final WidgetSet outer;
     private final WidgetSet inner;
@@ -33,14 +35,17 @@ public class SonicWheelScreen extends AbstractWheelScreen {
 
     @Override
     protected void init() {
+        int cx = width / 2;
+        int cy = height / 2;
+
         outer.forEach((slot, widget) -> {
             if (widget != null) addRenderableWidget(new WheelOptionWidget(
-                slot.getX(width), slot.getY(height), widget, slot.getXOffset(), slot.getYOffset(), OUTER_RING_SIZE_DEFAULT, OUTER_RING_SPREAD_DEFAULT, true));
+                cx, cy, OUTER_INNER_RADIUS, OUTER_OUTER_RADIUS, slot, widget, true));
         });
 
         inner.forEach((slot, widget) -> {
             if (widget != null) addRenderableWidget(new WheelOptionWidget(
-                slot.getX(width), slot.getY(height), widget, slot.getXOffset(), slot.getYOffset(), INNER_RING_SIZE_DEFAULT, INNER_RING_SPREAD_DEFAULT, true));
+                cx, cy, INNER_INNER_RADIUS, INNER_OUTER_RADIUS, slot, widget, true));
         });
     }
 

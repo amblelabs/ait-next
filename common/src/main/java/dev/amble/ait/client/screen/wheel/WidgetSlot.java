@@ -9,45 +9,55 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum WidgetSlot implements StringRepresentable {
 
-    TOP_LEFT(-21-32, -21-32, -8, -8),
-    TOP(-32/2, -21-32-5, 0, -8),
-    TOP_RIGHT(21, -21-32, 8, -8),
+    // Angles in degrees, 0 = top, clockwise. Each sector is 45° wide, centered on the cardinal/diagonal.
+    TOP_LEFT    (292.5f, 337.5f),
+    TOP         (337.5f, 382.5f),  // wraps around 0; handled in angle range checks
+    TOP_RIGHT   (22.5f,  67.5f),
 
-    LEFT(-21-32-5, -32/2, -8, 0),
-    RIGHT(21+5, -32/2, 8, 0),
+    LEFT        (247.5f, 292.5f),
+    RIGHT       (67.5f,  112.5f),
 
-    BOTTOM_LEFT(-21-32, 21, -8, 8),
-    BOTTOM(-32/2, 21+5, 0, 8),
-    BOTTOM_RIGHT(21, 21, 8, 8);
+    BOTTOM_LEFT (202.5f, 247.5f),
+    BOTTOM      (157.5f, 202.5f),
+    BOTTOM_RIGHT(112.5f, 157.5f);
 
     public static final WidgetSlot[] VALUES = WidgetSlot.values();
 
-    final int x;
-    final int y;
-    final int xOffset;
-    final int yOffset;
+    private final float startAngle;
+    private final float endAngle;
 
-    WidgetSlot(int x, int y, int xOffset, int yOffset) {
-        this.x = x;
-        this.y = y;
-        this.xOffset = xOffset;
-        this.yOffset = yOffset;
+    WidgetSlot(float startAngle, float endAngle) {
+        this.startAngle = startAngle;
+        this.endAngle = endAngle;
     }
 
-    public int getX(int width) {
-        return width / 2 + x;
+    /**
+     * Start angle in degrees (0 = top, clockwise).
+     */
+    public float startAngle() {
+        return startAngle;
     }
 
-    public int getY(int height) {
-        return height / 2 + y;
+    /**
+     * End angle in degrees (0 = top, clockwise).
+     */
+    public float endAngle() {
+        return endAngle;
     }
 
-    public int getXOffset() {
-        return xOffset;
+    /**
+     * Mid-angle in degrees.
+     */
+    public float midAngle() {
+        return (startAngle + endAngle) / 2f;
     }
 
-    public int getYOffset() {
-        return yOffset;
+    /**
+     * Mid-angle in radians, converted from screen coordinates (0=top, CW)
+     * to math coordinates (0=right, CCW).
+     */
+    public double midAngleRad() {
+        return Math.toRadians(midAngle() - 90);
     }
 
     @Override
