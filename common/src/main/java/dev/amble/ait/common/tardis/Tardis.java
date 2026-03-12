@@ -142,6 +142,17 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
     }
     //endregion
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+
+        if (obj instanceof Tardis tardis)
+            return this.id.equals(tardis.id);
+
+        return false;
+    }
+
     @Override
     public int hashCode() {
         return id.hashCode();

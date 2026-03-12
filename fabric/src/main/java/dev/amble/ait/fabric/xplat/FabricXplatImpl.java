@@ -160,13 +160,11 @@ public class FabricXplatImpl implements IXplatAbstractions {
 
     @Override
     public String getModName(String namespace) {
-        if (namespace.equals("c")) {
-            return "Common";
-        }
+        if (namespace.equals("c")) return "Common";
+
         Optional<ModContainer> container = FabricLoader.getInstance().getModContainer(namespace);
-        if (container.isPresent()) {
-            return container.get().getMetadata().getName();
-        }
+        if (container.isPresent()) return container.get().getMetadata().getName();
+
         return namespace;
     }
 
