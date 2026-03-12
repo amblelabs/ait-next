@@ -38,6 +38,8 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
+
+        api("org.jspecify:jspecify:1.0.0")
     }
 
     java {

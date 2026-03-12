@@ -27,7 +27,7 @@ public class FabricAitLangProvider {
             builder.add(AitItems.SCREWDRIVER.getDescriptionId() + ".desc", "Just a normal screwdriver.");
 
             builder.add(AitItems.SONIC_SCREWDRIVER, "Sonic Screwdriver");
-            builder.add(AitItems.SONIC_SCREWDRIVER.getDescriptionId() + ".desc", "Just a normal screwdriver- oop, nope, nevermind.");
+            builder.add(AitItems.SONIC_SCREWDRIVER.getDescriptionId() + ".desc", "Just a normal screwdriver- oop, nope, never mind.");
 
             // Zeiton Shards
             builder.add(AitTags.Items.ZEITON_SHARDS, "Zeiton Shards");

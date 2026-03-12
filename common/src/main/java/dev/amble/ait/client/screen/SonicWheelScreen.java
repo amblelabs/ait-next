@@ -11,6 +11,9 @@ import dev.amble.ait.common.sonic.SonicCrystal;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * @author drtheodor
@@ -60,8 +63,9 @@ public class SonicWheelScreen extends AbstractWheelScreen {
         if (super.keyPressed(i, j, k))
             return true;
 
-        KeyMapping[] hotbar = minecraft.options.keyHotbarSlots;
+        KeyMapping[] hotbar = Objects.requireNonNull(minecraft).options.keyHotbarSlots;
 
+        //noinspection ForLoopReplaceableByForEach - TODO: use index for quick keybinds
         for (int l = 0; l < hotbar.length; l++) {
             if (hotbar[l].matches(i, j)) {
 //                this.simulateClick(l);
@@ -72,15 +76,15 @@ public class SonicWheelScreen extends AbstractWheelScreen {
         return false;
     }
 
-    public static AbstractWheelScreen tryCreate(ItemStack stack) {
+    public static @Nullable AbstractWheelScreen tryCreate(ItemStack stack) {
         return tryCreate(stack, WidgetSet.create(new Widget[0]));
     }
 
-    private static AbstractWheelScreen tryCreate(ItemStack stack, WidgetSet outer) {
+    private static @Nullable AbstractWheelScreen tryCreate(ItemStack stack, WidgetSet outer) {
         SonicCrystals crystals = stack.get(AitComponents.SONIC_CRYSTALS);
         if (crystals == null) return null;
 
-        Widget[] inner = new Widget[] {
+        @Nullable Widget[] inner = new @Nullable Widget[] {
                 null, // TOP_LEFT
                 ListFunctionsAction.widget(stack, crystals, 0), // TOP
                 null, // TOP_RIGHT

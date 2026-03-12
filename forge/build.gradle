@@ -25,7 +25,7 @@ dependencies {
     common(project(path: ':common', configuration: 'transformProductionNeoForge')) { transitive false }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     source(project(":common").sourceSets.main.allSource)
 }
 

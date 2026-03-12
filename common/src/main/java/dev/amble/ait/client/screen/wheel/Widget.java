@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -15,6 +15,7 @@ import java.util.Objects;
  * @author drtheodor
  * From hex-spell-wheel
  */
+@SuppressWarnings("unused")
 public final class Widget {
 
     private static final ItemStack EMPTY_STACK = new ItemStack(Items.BARRIER);
@@ -25,17 +26,17 @@ public final class Widget {
     private final Component label;
     private ItemStack preview;
 
-    private final Action actions;
+    private final @Nullable Action actions;
     private final boolean keepOpened;
 
     private int normalColor = NORMAL_COLOR;
     private int hoverColor = HOVER_COLOR;
 
-    public static Widget fromStack(ItemStack stack, Action action, boolean keepOpened) {
-        return stack == null ? empty() : new Widget(stack.getDisplayName(), stack, action, keepOpened);
+    public static Widget fromStack(ItemStack stack, @Nullable Action action, boolean keepOpened) {
+        return new Widget(stack.getDisplayName(), stack, action, keepOpened);
     }
 
-    public Widget(Component label, ItemStack preview, Action actions, boolean keepOpened) {
+    public Widget(Component label, ItemStack preview, @Nullable Action actions, boolean keepOpened) {
         this.label = label;
         this.preview = preview;
         this.actions = actions;

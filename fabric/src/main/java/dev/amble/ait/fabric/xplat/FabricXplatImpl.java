@@ -96,6 +96,7 @@ public class FabricXplatImpl implements IXplatAbstractions {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public <T extends BlockEntity> BlockEntityType<T> createBlockEntityType(BiFunction<BlockPos, BlockState, T> func, Block... blocks) {
         return FabricBlockEntityTypeBuilder.create(func::apply, blocks).build();
     }

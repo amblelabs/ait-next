@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 import static dev.amble.ait.api.AitAPI.modLoc;
 
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class AitBlocks {
     public static void registerBlocks(BiConsumer<Block, ResourceLocation> r) {
         for (var e : BLOCKS.entrySet()) {
@@ -91,6 +92,7 @@ public class AitBlocks {
     public static final DoorBlock POLICE_BOX_DOOR = blockItem("police_box_door", new DoorBlock(DoorBlock.defaultProps()));
     public static final ConsoleBlock CONSOLE = blockItem("console", new ConsoleBlock(ConsoleBlock.defaultProps()));
 
+    @SuppressWarnings("SameReturnValue") // intended
     private static boolean never(Object... args) {
         return false;
     }

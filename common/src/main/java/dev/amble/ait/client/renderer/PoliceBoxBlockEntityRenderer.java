@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBlockEntity> {
@@ -29,13 +29,13 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
 
     @Override
     public RenderType getRenderType(PoliceBoxBlockEntity entity, ResourceLocation texture,
-                                    MultiBufferSource bufferSource, float partialTick) {
+                                    @Nullable MultiBufferSource bufferSource, float partialTick) {
         return AITRenderLayers.tardisTranslucent(texture);
     }
 
     @Override
     public void preRender(PoseStack poseStack, PoliceBoxBlockEntity entity, BakedGeoModel model,
-                          MultiBufferSource bufferSource, VertexConsumer buffer,
+                          @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
                           boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                           int colour) {
         if (!isReRender) {
@@ -63,15 +63,12 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
     }
 
     private static void setDoorBoneRotation(BakedGeoModel model, String boneName, float rotY) {
-        GeoBone bone = model.getBone(boneName).orElse(null);
-        if (bone != null) {
-            bone.setRotY(rotY);
-        }
+        model.getBone(boneName).ifPresent(bone -> bone.setRotY(rotY));
     }
 
     @Override
     public void actuallyRender(PoseStack poseStack, PoliceBoxBlockEntity entity, BakedGeoModel model,
-                               RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer,
+                               @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
                                boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                                int colour) {
         float alpha = entity.getAlpha();

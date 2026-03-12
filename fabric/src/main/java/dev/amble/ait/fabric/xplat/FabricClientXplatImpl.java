@@ -48,6 +48,7 @@ public class FabricClientXplatImpl implements IClientXplatAbstractions {
         EntityRendererRegistry.register(type, renderer);
     }
 
+    @SuppressWarnings("deprecation")
     private record UnclampedClampedItemPropFunc(ItemPropertyFunction inner) implements ClampedItemPropertyFunction {
         @Override
         public float unclampedCall(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity,
@@ -62,6 +63,7 @@ public class FabricClientXplatImpl implements IClientXplatAbstractions {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void registerItemProperty(Item item, ResourceLocation id, ItemPropertyFunction func) {
         ItemProperties.register(item, id, new UnclampedClampedItemPropFunc(func));
     }

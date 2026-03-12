@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -26,6 +27,7 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+// FIXME: this looks like a remnant of ait 1
 public class FallingTardisBlockEntity extends Entity implements GeoEntity {
 
     private static final EntityDataAccessor<CompoundTag> DATA_BLOCK_STATE_TAG =
@@ -36,7 +38,7 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private BlockState blockState = Blocks.AIR.defaultBlockState();
-    private CompoundTag blockEntityData;
+    private @Nullable CompoundTag blockEntityData;
     private int time;
 
     public FallingTardisBlockEntity(EntityType<?> type, Level level) {
@@ -56,18 +58,19 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
         syncToClient();
     }
 
-    public static FallingTardisBlockEntity fall(Level level, BlockPos pos, BlockState state) {
-        CompoundTag beData = null;
+    @SuppressWarnings("UnusedReturnValue")
+    public static @Nullable FallingTardisBlockEntity fall(Level level, BlockPos pos, BlockState state) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (be != null) {
-            beData = be.saveWithoutMetadata(level.registryAccess());
-        }
+        if (be == null) return null;
+
+        CompoundTag beData = be.saveWithoutMetadata(level.registryAccess());
 
         level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
 
         FallingTardisBlockEntity entity = new FallingTardisBlockEntity(
                 level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state, beData);
         level.addFreshEntity(entity);
+
         return entity;
     }
 
@@ -75,14 +78,6 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_BLOCK_STATE_TAG, new CompoundTag());
         builder.define(DATA_BLOCK_ENTITY_TAG, new CompoundTag());
-    }
-
-    public BlockState getFallingBlockState() {
-        return this.blockState;
-    }
-
-    public CompoundTag getBlockEntityData() {
-        return this.blockEntityData;
     }
 
     private void syncToClient() {
@@ -98,8 +93,7 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
     }
 
     public CompoundTag getClientBlockEntityData() {
-        CompoundTag tag = this.entityData.get(DATA_BLOCK_ENTITY_TAG);
-        return tag.isEmpty() ? null : tag;
+        return this.entityData.get(DATA_BLOCK_ENTITY_TAG);
     }
 
     public int getTextureIndex() {
@@ -120,7 +114,7 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
 
     public float getAlpha() {
         CompoundTag data = this.level().isClientSide() ? getClientBlockEntityData() : this.blockEntityData;
-        if (data != null && data.contains("Alpha")) {
+        if (data.contains("Alpha")) {
             return data.getFloat("Alpha");
         }
         return 1.0f;
@@ -128,7 +122,7 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
 
     public int getDoorStateOrdinal() {
         CompoundTag data = this.level().isClientSide() ? getClientBlockEntityData() : this.blockEntityData;
-        if (data != null && data.contains("DoorState")) {
+        if (data.contains("DoorState")) {
             return data.getInt("DoorState");
         }
         return 0;

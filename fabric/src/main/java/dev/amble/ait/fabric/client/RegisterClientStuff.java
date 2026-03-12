@@ -35,10 +35,9 @@ public class RegisterClientStuff {
         var x = IClientXplatAbstractions.INSTANCE;
         x.registerEntityRenderer(AitEntities.FALLING_TARDIS_BLOCK, FallingTardisBlockRenderer::new);
 
-//        x.registerItemProperty(AitItems.SONIC_SCREWDRIVER, AitAPI.modLoc("sonic_crystal"),
-//                (itemStack, clientLevel, livingEntity, i) -> ItemSonic.getCrystal(itemStack));
     }
 
+    @SuppressWarnings("EmptyMethod")
     public static void registerColorProviders(BiConsumer<ItemColor, Item> itemColorRegistry,
                                               BiConsumer<BlockColor, Block> blockColorRegistry) {
 
@@ -53,6 +52,6 @@ public class RegisterClientStuff {
     @FunctionalInterface
     public interface BlockEntityRendererRegisterer {
         <T extends BlockEntity> void registerBlockEntityRenderer(BlockEntityType<T> type,
-            BlockEntityRendererProvider<? super T> berp);
+            BlockEntityRendererProvider<? super T> provider);
     }
 }

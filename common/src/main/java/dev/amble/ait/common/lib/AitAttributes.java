@@ -20,6 +20,7 @@ public class AitAttributes {
 
     //
 
+    @SuppressWarnings("unused")
     private static <T extends Attribute> T make(String id, T attr) {
         var old = ATTRIBUTES.put(modLoc(id), attr);
         if (old != null) {

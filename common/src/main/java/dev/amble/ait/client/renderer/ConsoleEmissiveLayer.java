@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoRenderer;
@@ -23,8 +24,8 @@ public class ConsoleEmissiveLayer extends GeoRenderLayer<ConsoleBlockEntity> {
 
     @Override
     public void render(PoseStack poseStack, ConsoleBlockEntity entity, BakedGeoModel bakedModel,
-                       RenderType renderType, MultiBufferSource bufferSource,
-                       VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+                       @Nullable RenderType renderType, MultiBufferSource bufferSource,
+                       @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
         ResourceLocation baseTexture = getGeoModel().getTextureResource(entity, getRenderer());
         String basePath = baseTexture.getPath();
         String emissivePath = basePath.replace(".png", "_e.png");

@@ -15,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 
 @Config(name = AitAPI.MOD_ID)
 @Config.Gui.Background("minecraft:textures/block/calcite.png")
-@SuppressWarnings({"FieldMayBeFinal", "FieldCanBeLocal"})
 public class FabricAitConfig extends PartitioningSerializer.GlobalData {
     @ConfigEntry.Category("common")
     @ConfigEntry.Gui.TransitiveObject
@@ -54,7 +53,7 @@ public class FabricAitConfig extends PartitioningSerializer.GlobalData {
     public static final class Common implements AitConfig.CommonConfigAccess, ConfigData {
 
         @Override
-        public void validatePostLoad() throws ValidationException {
+        public void validatePostLoad() {
         }
     }
 
@@ -62,7 +61,7 @@ public class FabricAitConfig extends PartitioningSerializer.GlobalData {
     public static final class Client implements AitConfig.ClientConfigAccess, ConfigData {
 
         @Override
-        public void validatePostLoad() throws ValidationException {
+        public void validatePostLoad() {
         }
     }
 
@@ -70,7 +69,7 @@ public class FabricAitConfig extends PartitioningSerializer.GlobalData {
     public static final class Server implements AitConfig.ServerConfigAccess, ConfigData {
 
         @Override
-        public void validatePostLoad() throws ValidationException {
+        public void validatePostLoad() {
         }
     }
 }

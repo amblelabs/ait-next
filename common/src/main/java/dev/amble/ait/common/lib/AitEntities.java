@@ -31,6 +31,7 @@ public class AitEntities {
                     .updateInterval(20)
                     .build("falling_tardis_block"));
 
+    @SuppressWarnings("SameParameterValue")
     private static <T extends Entity> EntityType<T> register(String id, EntityType<T> type) {
         var old = ENTITIES.put(modLoc(id), type);
         if (old != null) {

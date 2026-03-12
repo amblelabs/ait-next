@@ -56,7 +56,7 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     source(project(":common").sourceSets.main.allSource)
 }
 

@@ -13,6 +13,7 @@ import java.util.function.Function;
 
 import static dev.amble.ait.api.AitAPI.modLoc;
 
+@SuppressWarnings("unused")
 public class AitParticles {
     public static void registerParticles(BiConsumer<ParticleType<?>, ResourceLocation> r) {
         for (var e : PARTICLES.entrySet()) {
@@ -33,12 +34,14 @@ public class AitParticles {
     }
 
     public static class FactoryHandler {
-        public interface Consumer {
-            <T extends ParticleOptions> void register(ParticleType<T> type,
+        @FunctionalInterface
+        public interface Consumer<T extends ParticleOptions> {
+            void register(ParticleType<T> type,
                 Function<SpriteSet, ParticleProvider<T>> constructor);
         }
 
-        public static void registerFactories(Consumer consumer) {
+        @SuppressWarnings("EmptyMethod")
+        public static <T extends ParticleOptions> void registerFactories(Consumer<T> consumer) {
 
         }
     }

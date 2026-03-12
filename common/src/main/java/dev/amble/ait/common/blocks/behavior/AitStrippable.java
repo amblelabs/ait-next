@@ -5,9 +5,12 @@ import net.minecraft.world.level.block.Block;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AitStrippables {
-    public static final Map<Block, Block> STRIPPABLES = new HashMap<>();
+public class AitStrippable {
 
+    public static final Map<Block, Block> STRIPPABLE = new HashMap<>();
+
+    @SuppressWarnings("EmptyMethod")
     public static void init() {
+
     }
 }

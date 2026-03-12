@@ -27,7 +27,6 @@ public class FallingTardisGeoModel extends GeoModel<FallingTardisBlockEntity> {
     @SuppressWarnings("removal")
     @Override
     public ResourceLocation getTextureResource(FallingTardisBlockEntity entity) {
-        if (entity == null) return TEXTURES[0];
         return TEXTURES[entity.getTextureIndex() % TEXTURES.length];
     }
 

@@ -8,16 +8,14 @@ import dev.amble.ait.common.blocks.DoorBlock;
 import dev.amble.ait.common.blocks.DoorBlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class DoorBlockEntityRenderer extends GeoBlockRenderer<DoorBlockEntity> {
 
-    public DoorBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public DoorBlockEntityRenderer(BlockEntityRendererProvider.Context ignoredContext) {
         super(new DoorGeoModel());
         addRenderLayer(new DoorEmissiveLayer(this));
     }
@@ -28,7 +26,7 @@ public class DoorBlockEntityRenderer extends GeoBlockRenderer<DoorBlockEntity> {
 
     @Override
     public void preRender(PoseStack poseStack, DoorBlockEntity entity, BakedGeoModel model,
-                          MultiBufferSource bufferSource, VertexConsumer buffer,
+                          @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
                           boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                           int colour) {
         if (!isReRender) {
@@ -68,9 +66,6 @@ public class DoorBlockEntityRenderer extends GeoBlockRenderer<DoorBlockEntity> {
     }
 
     private static void setDoorBoneRotation(BakedGeoModel model, String boneName, float rotY) {
-        GeoBone bone = model.getBone(boneName).orElse(null);
-        if (bone != null) {
-            bone.setRotY(rotY);
-        }
+        model.getBone(boneName).ifPresent(bone -> bone.setRotY(rotY));
     }
 }

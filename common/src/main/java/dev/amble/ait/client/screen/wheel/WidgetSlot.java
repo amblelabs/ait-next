@@ -1,7 +1,6 @@
 package dev.amble.ait.client.screen.wheel;
 
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author drtheodor
@@ -52,16 +51,8 @@ public enum WidgetSlot implements StringRepresentable {
         return (startAngle + endAngle) / 2f;
     }
 
-    /**
-     * Mid-angle in radians, converted from screen coordinates (0=top, CW)
-     * to math coordinates (0=right, CCW).
-     */
-    public double midAngleRad() {
-        return Math.toRadians(midAngle() - 90);
-    }
-
     @Override
-    public @NotNull String getSerializedName() {
+    public String getSerializedName() {
         return this.toString().toLowerCase();
     }
 }

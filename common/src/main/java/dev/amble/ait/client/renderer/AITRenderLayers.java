@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class AITRenderLayers extends RenderType {
+public abstract class AITRenderLayers extends RenderType {
 
-    public AITRenderLayers(String string, VertexFormat vertexFormat, VertexFormat.Mode mode, int i, boolean bl, boolean bl2, Runnable runnable, Runnable runnable2) {
+    private AITRenderLayers(String string, VertexFormat vertexFormat, VertexFormat.Mode mode, int i, boolean bl, boolean bl2, Runnable runnable, Runnable runnable2) {
         super(string, vertexFormat, mode, i, bl, bl2, runnable, runnable2);
     }
 

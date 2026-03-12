@@ -1,6 +1,6 @@
 package dev.amble.ait.fabric.mixin;
 
-import dev.amble.ait.common.blocks.behavior.AitStrippables;
+import dev.amble.ait.common.blocks.behavior.AitStrippable;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +17,7 @@ public class FabricAxeItemMixin {
     @Inject(method = "getStripped", at = @At("RETURN"), cancellable = true)
     private void stripBlock(BlockState state, CallbackInfoReturnable<Optional<BlockState>> cir) {
         if (cir.getReturnValue().isEmpty()) {
-            var block = AitStrippables.STRIPPABLES.get(state.getBlock());
+            var block = AitStrippable.STRIPPABLE.get(state.getBlock());
 
             if (block != null) {
                 cir.setReturnValue(Optional.of(block.withPropertiesOf(state)));

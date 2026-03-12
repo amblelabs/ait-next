@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup;
 
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("SameParameterValue")
 public class FabricAmbleLangProvider extends FabricLanguageProvider {
 
     protected FabricAmbleLangProvider(FabricDataOutput dataOutput, String languageCode, CompletableFuture<HolderLookup.Provider> registryLookup) {

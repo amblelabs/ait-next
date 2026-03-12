@@ -40,6 +40,7 @@ public record SonicCrystal(SonicFunction... functions) {
             return 0;
         }
 
+        @SuppressWarnings("EmptyMethod")
         default void stopUsing(ItemStack stack, Level level, LivingEntity user, int ticks, int ticksLeft) { }
 
         default void finishUsing(ItemStack stack, Level level, LivingEntity user) {
@@ -59,52 +60,40 @@ public record SonicCrystal(SonicFunction... functions) {
 
         // FIXME: ported from AIT 1.x
         static HitResult getHitResultForOutline(LivingEntity user, double distance) {
-            BlockHitResult hitResult = null;
+            Vec3 eyePos = user.getEyePosition(1.0F);
+            Vec3 rotation = user.getViewVector(1.0F);
+            Vec3 end = eyePos.add(rotation.scale(distance));
 
-            if (user instanceof Player player) {
-                Vec3 eyePos = player.getEyePosition(1.0F);
-                Vec3 rotation = player.getViewVector(1.0F);
-                Vec3 end = eyePos.add(rotation.scale(distance));
-
-                hitResult = player.level().clip(new ClipContext(eyePos, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
-            }
-
-            return hitResult;
+            return user.level().clip(new ClipContext(eyePos, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, user));
         }
 
         static HitResult getHitResult(LivingEntity user, double distance) {
-            HitResult hitResult = null;
+            Vec3 eyePos = user.getEyePosition(1.0F);
+            Vec3 rotation = user.getViewVector(1.0F);
+            Vec3 end = eyePos.add(rotation.scale(distance));
 
-            if (user instanceof Player player) {
-                Vec3 eyePos = player.getEyePosition(1.0F);
-                Vec3 rotation = player.getViewVector(1.0F);
-                Vec3 end = eyePos.add(rotation.scale(distance));
+            BlockHitResult blockHit = user.level().clip(new ClipContext(eyePos, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, user));
 
-                BlockHitResult blockHit = player.level().clip(new ClipContext(eyePos, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+            double blockDist = blockHit.getType() != HitResult.Type.MISS
+                    ? blockHit.getLocation().distanceToSqr(eyePos) : distance * distance;
 
-                double blockDist = blockHit.getType() != HitResult.Type.MISS
-                        ? blockHit.getLocation().distanceToSqr(eyePos) : distance * distance;
+            EntityHitResult entityHit = null;
+            double closestEntityDist = blockDist;
 
-                EntityHitResult entityHit = null;
-                double closestEntityDist = blockDist;
+            for (var entity : user.level().getEntities(user, user.getBoundingBox().expandTowards(rotation.scale(distance)).inflate(1.0))) {
+                var aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
+                var optional = aabb.clip(eyePos, end);
 
-                for (var entity : player.level().getEntities(player, player.getBoundingBox().expandTowards(rotation.scale(distance)).inflate(1.0))) {
-                    var aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
-                    var optional = aabb.clip(eyePos, end);
-
-                    if (optional.isPresent()) {
-                        double entityDist = eyePos.distanceToSqr(optional.get());
-                        if (entityDist < closestEntityDist) {
-                            closestEntityDist = entityDist;
-                            entityHit = new EntityHitResult(entity, optional.get());
-                        }
+                if (optional.isPresent()) {
+                    double entityDist = eyePos.distanceToSqr(optional.get());
+                    if (entityDist < closestEntityDist) {
+                        closestEntityDist = entityDist;
+                        entityHit = new EntityHitResult(entity, optional.get());
                     }
                 }
-
-                hitResult = entityHit != null ? entityHit : blockHit;
             }
 
-            return hitResult;
+            return entityHit != null ? entityHit : blockHit;
         }
     }
 }

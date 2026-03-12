@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings({"SameParameterValue", "unused"})
 public abstract class AmbleRecipeProvider extends RecipeProvider {
 
     protected final String modId;

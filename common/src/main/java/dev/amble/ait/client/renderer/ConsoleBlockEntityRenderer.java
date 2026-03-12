@@ -11,12 +11,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class ConsoleBlockEntityRenderer extends GeoBlockRenderer<ConsoleBlockEntity> {
 
-    public ConsoleBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public ConsoleBlockEntityRenderer(BlockEntityRendererProvider.Context ignoredContext) {
         super(new ConsoleGeoModel());
         addRenderLayer(new ConsoleEmissiveLayer(this));
     }
@@ -28,13 +29,13 @@ public class ConsoleBlockEntityRenderer extends GeoBlockRenderer<ConsoleBlockEnt
 
     @Override
     public RenderType getRenderType(ConsoleBlockEntity entity, ResourceLocation texture,
-                                    MultiBufferSource bufferSource, float partialTick) {
+                                    @Nullable MultiBufferSource bufferSource, float partialTick) {
         return RenderType.entityCutoutNoCull(texture);
     }
 
     @Override
     public void preRender(PoseStack poseStack, ConsoleBlockEntity entity, BakedGeoModel model,
-                          MultiBufferSource bufferSource, VertexConsumer buffer,
+                          @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
                           boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                           int colour) {
         if (!isReRender) {

@@ -24,6 +24,7 @@ public class AitCreativeTabs {
     public static final CreativeModeTab AIT = register("main", CreativeModeTab.builder(CreativeModeTab.Row.TOP, 7)
             .icon(() -> new ItemStack(AitItems.SCREWDRIVER)));
 
+    @SuppressWarnings("SameParameterValue")
     private static CreativeModeTab register(String name, CreativeModeTab.Builder tabBuilder) {
         var tab = tabBuilder.title(Component.translatable("itemGroup." + AitAPI.MOD_ID + "." + name)).build();
         var old = TABS.put(modLoc(name), tab);

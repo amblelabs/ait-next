@@ -9,12 +9,14 @@ import java.util.function.Supplier;
 import static dev.amble.ait.api.AitAPI.modLoc;
 
 // https://github.com/VazkiiMods/Botania/blob/1.19.x/Xplat/src/main/java/vazkii/botania/client/model/BotaniaModelLayers.java
+@SuppressWarnings("unused")
 public class AitModelLayers {
 
     private static ModelLayerLocation make(String name) {
         return make(name, "main");
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static ModelLayerLocation make(String name, String layer) {
         // Don't add to vanilla's ModelLayers. It seems to only be used for error checking
         // And would be annoying to do under Forge's parallel mod loading
@@ -23,6 +25,7 @@ public class AitModelLayers {
 
     // moving this stuff into the same file:
     // https://github.com/VazkiiMods/Botania/blob/1.19.x/Xplat/src/main/java/vazkii/botania/client/model/BotaniaLayerDefinitions.java
+    @SuppressWarnings("EmptyMethod")
     public static void init(BiConsumer<ModelLayerLocation, Supplier<LayerDefinition>> consumer) {
 
     }

@@ -2,7 +2,7 @@ package dev.amble.ait.fabric;
 
 import dev.amble.ait.api.mod.AitStatistics;
 import dev.amble.ait.common.blocks.behavior.AitComposting;
-import dev.amble.ait.common.blocks.behavior.AitStrippables;
+import dev.amble.ait.common.blocks.behavior.AitStrippable;
 import dev.amble.ait.common.lib.*;
 import dev.amble.ait.fabric.network.FabricPacketHandler;
 import dev.amble.ait.interop.AitInterop;
@@ -14,13 +14,14 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import software.bernie.geckolib.GeckoLib;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 
 public final class FabricAitInit implements ModInitializer {
 
-    private FabricAitConfig CONFIG;
+    @SuppressWarnings("FieldCanBeLocal")
+    private @Nullable FabricAitConfig CONFIG;
 
     @Override
     public void onInitialize() {
@@ -31,7 +32,7 @@ public final class FabricAitInit implements ModInitializer {
         this.initRegistries();
 
         AitComposting.setup();
-        AitStrippables.init();
+        AitStrippable.init();
 
         AitInterop.init();
     }

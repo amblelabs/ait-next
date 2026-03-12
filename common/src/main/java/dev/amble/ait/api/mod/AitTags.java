@@ -25,6 +25,7 @@ public class AitTags {
 
     public static final class Blocks {
 
+        @SuppressWarnings("unused")
         public static TagKey<Block> create(String name) {
             return TagKey.create(Registries.BLOCK, modLoc(name));
         }
@@ -32,6 +33,7 @@ public class AitTags {
 
     public static final class Entities {
 
+        @SuppressWarnings("unused")
         public static TagKey<EntityType<?>> create(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, modLoc(name));
         }

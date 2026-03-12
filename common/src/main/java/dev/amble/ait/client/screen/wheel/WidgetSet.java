@@ -1,5 +1,7 @@
 package dev.amble.ait.client.screen.wheel;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Arrays;
 import java.util.function.BiConsumer;
 
@@ -9,22 +11,23 @@ import java.util.function.BiConsumer;
  */
 public class WidgetSet {
     public static final int SET_SIZE = 8;
-    protected final Widget[] widgets = new Widget[SET_SIZE];
+    protected final @Nullable Widget[] widgets = new Widget[SET_SIZE];
 
     private WidgetSet() { }
 
-    public Widget get(int index) {
+    @SuppressWarnings("unused")
+    public @Nullable Widget get(int index) {
         if (index < 0 || index > widgets.length - 1)
             return null;
 
         return widgets[index];
     }
 
-    public static WidgetSet create(Widget[] list) {
+    public static WidgetSet create(@Nullable Widget[] list) {
         return create(list, null);
     }
 
-    public static WidgetSet create(Widget[] list, Widget filler) {
+    public static WidgetSet create(@Nullable Widget[] list, @Nullable Widget filler) {
         WidgetSet set = new WidgetSet();
 
         if (filler != null)
@@ -45,7 +48,7 @@ public class WidgetSet {
         return set;
     }
 
-    public void forEach(BiConsumer<WidgetSlot, Widget> action) {
+    public void forEach(BiConsumer<WidgetSlot, @Nullable Widget> action) {
         for (int i = 0; i < SET_SIZE; i++) {
             action.accept(WidgetSlot.VALUES[i], widgets[i]);
         }

@@ -33,6 +33,7 @@ public class TrinketsApiInterop {
     }
 
     @Environment(EnvType.CLIENT)
+    @SuppressWarnings("EmptyMethod")
     public static void clientInit() {
 //        TrinketRendererRegistry.registerRenderer
     }

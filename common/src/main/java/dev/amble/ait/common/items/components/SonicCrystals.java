@@ -11,12 +11,10 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.math.Fraction;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public record SonicCrystals(List<ItemStack> items, Fraction weight) implements TooltipComponent {
     
@@ -24,6 +22,8 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
     public static final StreamCodec<RegistryFriendlyByteBuf, SonicCrystals> STREAM_CODEC = ItemStack.STREAM_CODEC.apply(ByteBufCodecs.list()).map(SonicCrystals::new, SonicCrystals::items);
 
     public static final SonicCrystals EMPTY = new SonicCrystals(List.of());
+
+    private static final Fraction WEIGHT = Fraction.getFraction(1, ItemSonic.TOOLTIP_MAX_WEIGHT);
 
     public SonicCrystals(List<ItemStack> list) {
         this(list, computeContentWeight(list));
@@ -33,14 +33,10 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
         Fraction fraction = Fraction.ZERO;
 
         for(ItemStack itemstack : list) {
-            fraction = fraction.add(getWeight(itemstack).multiplyBy(Fraction.getFraction(itemstack.getCount(), 1)));
+            fraction = fraction.add(WEIGHT.multiplyBy(Fraction.getFraction(itemstack.getCount(), 1)));
         }
 
         return fraction;
-    }
-
-    static Fraction getWeight(ItemStack arg) {
-        return Fraction.getFraction(1, ItemSonic.TOOLTIP_MAX_WEIGHT);
     }
 
     public ItemStack getItemUnsafe(int i) {
@@ -52,10 +48,6 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
             return null;
 
         return getItemUnsafe(i);
-    }
-
-    public Stream<ItemStack> itemCopyStream() {
-        return this.items.stream().map(ItemStack::copy);
     }
 
     public Iterable<ItemStack> itemsCopy() {
@@ -75,6 +67,7 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean equals(Object object) {
         if (this == object) return true;
 
@@ -85,12 +78,13 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public int hashCode() {
         return ItemStack.hashStackList(this.items);
     }
 
     @Override
-    public @NotNull String toString() {
+    public String toString() {
         return "SonicCrystals" + this.items;
     }
 
@@ -109,21 +103,21 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
             return this;
         }
 
-        private int getMaxAmountToAdd(ItemStack arg) {
+        private int getMaxAmountToAdd() {
             Fraction fraction = Fraction.ONE.subtract(this.weight);
-            return Math.max(fraction.divideBy(SonicCrystals.getWeight(arg)).intValue(), 0);
+            return Math.max(fraction.divideBy(WEIGHT).intValue(), 0);
         }
 
         public int tryInsert(ItemStack arg) {
             if (arg.isEmpty() || !arg.getItem().canFitInsideContainerItems())
                 return 0;
 
-            int i = Math.min(arg.getCount(), this.getMaxAmountToAdd(arg));
+            int i = Math.min(arg.getCount(), this.getMaxAmountToAdd());
 
             if (i == 0) {
                 return 0;
             } else {
-                this.weight = this.weight.add(SonicCrystals.getWeight(arg).multiplyBy(Fraction.getFraction(i, 1)));
+                this.weight = this.weight.add(WEIGHT.multiplyBy(Fraction.getFraction(i, 1)));
                 this.items.addFirst(arg.split(i));
 
                 return i;
@@ -132,7 +126,7 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
 
         public int tryTransfer(Slot arg, Player arg2) {
             ItemStack itemstack = arg.getItem();
-            int i = this.getMaxAmountToAdd(itemstack);
+            int i = this.getMaxAmountToAdd();
             return this.tryInsert(arg.safeTake(itemstack.getCount(), i, arg2));
         }
 
@@ -142,7 +136,7 @@ public record SonicCrystals(List<ItemStack> items, Fraction weight) implements T
                 return null;
 
             ItemStack itemstack = this.items.removeFirst().copy();
-            this.weight = this.weight.subtract(SonicCrystals.getWeight(itemstack).multiplyBy(Fraction.getFraction(itemstack.getCount(), 1)));
+            this.weight = this.weight.subtract(WEIGHT.multiplyBy(Fraction.getFraction(itemstack.getCount(), 1)));
 
             return itemstack;
         }
