@@ -31,6 +31,7 @@ public class RegisterClientStuff {
             return null;
         });
 
+        //noinspection CodeBlock2Expr
         CoreShaderRegistrationCallback.EVENT.register(context -> {
             context.register(
                     AitAPI.modLoc("rendertype_accumulation"),

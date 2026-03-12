@@ -13,7 +13,7 @@ public class AitAdditionalRenderers {
 
     private static final ItemStack ITEM_ICON = new ItemStack(AitItems.SHARD_GRAVITY);
 
-    @SuppressWarnings({"EmptyMethod", "unused"})
+    @SuppressWarnings("unused")
     public static void overlayGui(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
 

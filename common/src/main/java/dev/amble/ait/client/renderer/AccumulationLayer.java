@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.joml.Matrix4f;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -50,8 +51,8 @@ public class AccumulationLayer<T extends GeoAnimatable> extends GeoRenderLayer<T
 
     @Override
     public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel,
-                       RenderType renderType, MultiBufferSource bufferSource,
-                       VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+                       @Nullable RenderType renderType, MultiBufferSource bufferSource,
+                       @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
 
         ShaderInstance shader = AITShaders.getAccumulationShader();
         if (shader == null) return;
@@ -74,7 +75,8 @@ public class AccumulationLayer<T extends GeoAnimatable> extends GeoRenderLayer<T
         if (textureResUniform != null) textureResUniform.set(textureRes);
 
         Uniform heightUniform = shader.getUniform("HeightParams");
-        if (heightUniform != null) heightUniform.set(bottomY, topY);
+        if (heightUniform != null) //noinspection SuspiciousNameCombination
+            heightUniform.set(bottomY, topY);
 
         Uniform densityUniform = shader.getUniform("Density");
         if (densityUniform != null) densityUniform.set(density);

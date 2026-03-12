@@ -44,13 +44,6 @@ public enum WidgetSlot implements StringRepresentable {
         return endAngle;
     }
 
-    /**
-     * Mid-angle in degrees.
-     */
-    public float midAngle() {
-        return (startAngle + endAngle) / 2f;
-    }
-
     @Override
     public String getSerializedName() {
         return this.toString().toLowerCase();
