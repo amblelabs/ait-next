@@ -16,7 +16,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity {
+public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
 
     public enum DoorState {
         CLOSED,
@@ -37,12 +37,12 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
     private float alpha = 1.0f;
     private DoorState doorState = DoorState.CLOSED;
 
-    public PoliceBoxBlockEntity(BlockPos pos, BlockState state) {
-        super(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, pos, state);
+    public DoorBlockEntity(BlockPos pos, BlockState state) {
+        super(AitBlockEntities.DOOR_BLOCK_ENTITY, pos, state);
     }
 
     public int getTextureIndex() {
-        return this.getBlockState().getValue(PoliceBoxBlock.TEXTURE);
+        return this.getBlockState().getValue(DoorBlock.TEXTURE);
     }
 
     public DoorState getDoorState() {
@@ -53,21 +53,25 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
         return alpha;
     }
 
-    public boolean isOnSlab() {
-        return this.getBlockState().getValue(PoliceBoxBlock.ON_SLAB);
-    }
-
     public void setAlpha(float alpha) {
         this.alpha = Math.clamp(alpha, 0.0f, 1.0f);
         this.setChanged();
         if (this.level != null) {
             int light = Math.round(this.alpha * 7.0f);
             BlockState current = this.getBlockState();
-            if (current.getValue(PoliceBoxBlock.LIGHT) != light) {
-                this.level.setBlock(this.worldPosition, current.setValue(PoliceBoxBlock.LIGHT, light), 3);
+            if (current.getValue(DoorBlock.LIGHT) != light) {
+                this.level.setBlock(this.worldPosition, current.setValue(DoorBlock.LIGHT, light), 3);
             }
             this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
         }
+    }
+
+    public boolean isOnSlab() {
+        return this.getBlockState().getValue(DoorBlock.ON_SLAB);
+    }
+
+    public boolean isBetween() {
+        return this.getBlockState().getValue(DoorBlock.BETWEEN);
     }
 
     public void interact(boolean crouching) {
@@ -149,5 +153,4 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
         return cache;
     }
 }
-
 

@@ -22,26 +22,59 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class PoliceBoxBlock extends BaseEntityBlock {
+public class DoorBlock extends BaseEntityBlock {
 
     public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 7);
     public static final IntegerProperty TEXTURE = IntegerProperty.create("texture", 0, 4);
     public static final IntegerProperty LIGHT = IntegerProperty.create("light", 0, 7);
     public static final BooleanProperty ON_SLAB = BooleanProperty.create("on_slab");
-    public static final MapCodec<PoliceBoxBlock> CODEC = simpleCodec(PoliceBoxBlock::new);
+    public static final BooleanProperty BETWEEN = BooleanProperty.create("between");
+    public static final MapCodec<DoorBlock> CODEC = simpleCodec(DoorBlock::new);
 
-    private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
-    private static final VoxelShape SHAPE_SLAB = SHAPE.move(0, -0.5, 0);
+    public static final double[][] BETWEEN_OFFSETS = {
+            { 0.5,   0,  0},
+            { 0.354, 0,  0.354},
+            { 0,     0,  0.5},
+            { 0.354, 0, -0.354},
+            { 0.5,   0,  0},
+            { 0.354, 0,  0.354},
+            { 0,     0,  0.5},
+            { 0.354, 0, -0.354}
+    };
 
-    public PoliceBoxBlock(Properties properties) {
+    private static final VoxelShape[] SHAPES = new VoxelShape[8];
+    private static final VoxelShape[] SHAPES_SLAB = new VoxelShape[8];
+    private static final VoxelShape[] SHAPES_BETWEEN = new VoxelShape[8];
+    private static final VoxelShape[] SHAPES_BETWEEN_SLAB = new VoxelShape[8];
+
+    static {
+        SHAPES[0] = Block.box(0, 0, 0, 16, 39, 5);
+        SHAPES[1] = Block.box(4, 0, 4, 16, 39, 16);
+        SHAPES[2] = Block.box(11, 0, 0, 16, 39, 16);
+        SHAPES[3] = Block.box(4, 0, 0, 16, 39, 12);
+        SHAPES[4] = Block.box(0, 0, 11, 16, 39, 16);
+        SHAPES[5] = Block.box(0, 0, 0, 12, 39, 12);
+        SHAPES[6] = Block.box(0, 0, 0, 5, 39, 16);
+        SHAPES[7] = Block.box(0, 0, 4, 12, 39, 16);
+
+        for (int i = 0; i < 8; i++) {
+            SHAPES_SLAB[i] = SHAPES[i].move(0, -0.5, 0);
+            SHAPES_BETWEEN[i] = SHAPES[i].move(BETWEEN_OFFSETS[i][0], 0, BETWEEN_OFFSETS[i][2]);
+            SHAPES_BETWEEN_SLAB[i] = SHAPES_BETWEEN[i].move(0, -0.5, 0);
+        }
+    }
+
+    public DoorBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(ROTATION, 0)
                 .setValue(TEXTURE, 0)
                 .setValue(LIGHT, 7)
-                .setValue(ON_SLAB, false));
+                .setValue(ON_SLAB, false)
+                .setValue(BETWEEN, false));
     }
 
     public static Properties defaultProps() {
@@ -50,6 +83,7 @@ public class PoliceBoxBlock extends BaseEntityBlock {
                 .strength(50f, 1200f)
                 .noOcclusion()
                 .dynamicShape()
+                .noCollission()
                 .lightLevel(state -> state.getValue(LIGHT));
     }
 
@@ -60,18 +94,20 @@ public class PoliceBoxBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(ROTATION, TEXTURE, LIGHT, ON_SLAB);
+        builder.add(ROTATION, TEXTURE, LIGHT, ON_SLAB, BETWEEN);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        int rotation = Mth.floor((context.getRotation()) / 45.0f + 0.5f) & 7;
+        int rotation = (Mth.floor((context.getRotation()) / 45.0f + 0.5f) + 4) & 7;
         BlockPos below = context.getClickedPos().below();
         BlockState belowState = context.getLevel().getBlockState(below);
+        boolean crouching = context.getPlayer() != null && context.getPlayer().isShiftKeyDown();
 
         return this.defaultBlockState()
                 .setValue(ROTATION, rotation)
-                .setValue(ON_SLAB, isSlabBottom(belowState));
+                .setValue(ON_SLAB, isSlabBottom(belowState))
+                .setValue(BETWEEN, crouching);
     }
 
     private boolean isSlabBottom(BlockState state) {
@@ -84,12 +120,24 @@ public class PoliceBoxBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return state.getValue(ON_SLAB) ? SHAPE_SLAB : SHAPE;
+        int rotation = state.getValue(ROTATION);
+        boolean slab = state.getValue(ON_SLAB);
+        boolean between = state.getValue(BETWEEN);
+
+        if (between && slab) return SHAPES_BETWEEN_SLAB[rotation];
+        if (between) return SHAPES_BETWEEN[rotation];
+        if (slab) return SHAPES_SLAB[rotation];
+        return SHAPES[rotation];
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return Shapes.empty();
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new PoliceBoxBlockEntity(pos, state);
+        return new DoorBlockEntity(pos, state);
     }
 
     @Override
@@ -102,8 +150,8 @@ public class PoliceBoxBlock extends BaseEntityBlock {
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof PoliceBoxBlockEntity policeBox) {
-            policeBox.interact(player.isShiftKeyDown());
+        if (be instanceof DoorBlockEntity door) {
+            door.interact(player.isShiftKeyDown());
         }
 
         return InteractionResult.CONSUME;

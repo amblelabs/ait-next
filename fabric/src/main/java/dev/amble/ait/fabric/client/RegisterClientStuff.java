@@ -1,5 +1,6 @@
 package dev.amble.ait.fabric.client;
 
+import dev.amble.ait.client.renderer.DoorBlockEntityRenderer;
 import dev.amble.ait.client.renderer.PoliceBoxBlockEntityRenderer;
 import dev.amble.ait.client.renderer.ClientSonicTooltip;
 import dev.amble.ait.common.items.components.SonicCrystals;
@@ -41,6 +42,7 @@ public class RegisterClientStuff {
 
     public static void registerBlockEntityRenderers(@NotNull BlockEntityRendererRegisterer registerer) {
         registerer.registerBlockEntityRenderer(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, PoliceBoxBlockEntityRenderer::new);
+        registerer.registerBlockEntityRenderer(AitBlockEntities.DOOR_BLOCK_ENTITY, DoorBlockEntityRenderer::new);
     }
 
     @FunctionalInterface

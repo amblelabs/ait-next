@@ -1,6 +1,7 @@
 package dev.amble.ait.common.lib;
 
 import dev.amble.ait.api.AitAPI;
+import dev.amble.ait.common.blocks.DoorBlockEntity;
 import dev.amble.ait.common.blocks.PoliceBoxBlockEntity;
 import dev.amble.ait.xplat.IXplatAbstractions;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,9 @@ public class AitBlockEntities {
 
     public static final BlockEntityType<PoliceBoxBlockEntity> POLICE_BOX_BLOCK_ENTITY =
             register("police_box", PoliceBoxBlockEntity::new, AitBlocks.POLICE_BOX);
+
+    public static final BlockEntityType<DoorBlockEntity> DOOR_BLOCK_ENTITY =
+            register("police_box_door", DoorBlockEntity::new, AitBlocks.POLICE_BOX_DOOR);
 
     private static <T extends BlockEntity> BlockEntityType<T> register(String id,
         BiFunction<BlockPos, BlockState, T> func, Block... blocks) {

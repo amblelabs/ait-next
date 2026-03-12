@@ -1,0 +1,10 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "ait:block/police_box_door"
+      }
+    }
+  ]
+}
+
