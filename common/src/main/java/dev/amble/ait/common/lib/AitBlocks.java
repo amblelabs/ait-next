@@ -1,5 +1,6 @@
 package dev.amble.ait.common.lib;
 
+import dev.amble.ait.common.blocks.ConsoleBlock;
 import dev.amble.ait.common.blocks.DoorBlock;
 import dev.amble.ait.common.blocks.PoliceBoxBlock;
 import com.mojang.datafixers.util.Pair;
@@ -88,6 +89,7 @@ public class AitBlocks {
 
     public static final PoliceBoxBlock POLICE_BOX = blockItem("police_box", new PoliceBoxBlock(PoliceBoxBlock.defaultProps()));
     public static final DoorBlock POLICE_BOX_DOOR = blockItem("police_box_door", new DoorBlock(DoorBlock.defaultProps()));
+    public static final ConsoleBlock CONSOLE = blockItem("console", new ConsoleBlock(ConsoleBlock.defaultProps()));
 
     private static boolean never(Object... args) {
         return false;

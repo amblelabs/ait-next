@@ -1,0 +1,10 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "ait:block/console"
+      }
+    }
+  ]
+}
+

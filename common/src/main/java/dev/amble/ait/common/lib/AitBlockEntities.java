@@ -1,6 +1,7 @@
 package dev.amble.ait.common.lib;
 
 import dev.amble.ait.api.AitAPI;
+import dev.amble.ait.common.blocks.ConsoleBlockEntity;
 import dev.amble.ait.common.blocks.DoorBlockEntity;
 import dev.amble.ait.common.blocks.PoliceBoxBlockEntity;
 import dev.amble.ait.xplat.IXplatAbstractions;
@@ -32,6 +33,9 @@ public class AitBlockEntities {
 
     public static final BlockEntityType<DoorBlockEntity> DOOR_BLOCK_ENTITY =
             register("police_box_door", DoorBlockEntity::new, AitBlocks.POLICE_BOX_DOOR);
+
+    public static final BlockEntityType<ConsoleBlockEntity> CONSOLE_BLOCK_ENTITY =
+            register("console", ConsoleBlockEntity::new, AitBlocks.CONSOLE);
 
     private static <T extends BlockEntity> BlockEntityType<T> register(String id,
         BiFunction<BlockPos, BlockState, T> func, Block... blocks) {
