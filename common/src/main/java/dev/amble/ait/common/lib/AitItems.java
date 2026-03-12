@@ -38,7 +38,8 @@ public class AitItems {
     public static final Item SCREWDRIVER = make("screwdriver", new ItemScrewdriver(unstackable()));
     public static final Item SONIC_SCREWDRIVER = make("sonic_screwdriver", new ItemSonic(unstackable()
             .component(AitComponents.SONIC_CRYSTALS, SonicCrystals.EMPTY)
-            .component(AitComponents.SONIC_DATA, SonicData.DEFAULT)));
+            .component(AitComponents.SONIC, SonicData.DEFAULT)
+            .component(AitComponents.ARTRON, ItemSonic.ARTRON)));
 
     public static final Item SHARD_BASIC = make("zeiton_shard/basic", new ItemCrystal(unstackable(), SonicCrystal.BASIC));
     public static final Item SHARD_OVERCHARGED = make("zeiton_shard/overcharged", new ItemCrystal(unstackable(), SonicCrystal.OVERCHARGED));

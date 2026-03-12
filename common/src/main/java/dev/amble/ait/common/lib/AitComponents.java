@@ -1,6 +1,7 @@
 package dev.amble.ait.common.lib;
 
 import dev.amble.ait.api.AitAPI;
+import dev.amble.ait.common.items.components.ArtronItemData;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
 import net.minecraft.core.component.DataComponentType;
@@ -25,9 +26,13 @@ public class AitComponents {
             builder -> builder.persistent(SonicCrystals.CODEC)
                     .networkSynchronized(SonicCrystals.STREAM_CODEC).cacheEncoding());
 
-    public static final DataComponentType<SonicData> SONIC_DATA = make("sonic",
+    public static final DataComponentType<SonicData> SONIC = make("sonic",
             builder -> builder.persistent(SonicData.CODEC)
                     .networkSynchronized(SonicData.STREAM_CODEC).cacheEncoding());
+
+    public static final DataComponentType<ArtronItemData> ARTRON = make("artron",
+            builder -> builder.persistent(ArtronItemData.CODEC)
+                    .networkSynchronized(ArtronItemData.STREAM_CODEC).cacheEncoding());
 
     private static <T> DataComponentType<T> make(String name, UnaryOperator<DataComponentType.Builder<T>> unaryOperator) {
         return make(AitAPI.modLoc(name), unaryOperator);

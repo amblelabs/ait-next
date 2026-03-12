@@ -31,4 +31,8 @@ public record SonicData(int function, boolean opened) {
     public SonicData withOpened(boolean opened) {
         return new SonicData(this.function, opened);
     }
+
+    public SonicData toggleOpened() {
+        return withOpened(!opened);
+    }
 }

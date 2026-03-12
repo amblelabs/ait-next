@@ -2,6 +2,7 @@ package dev.amble.ait.common.items;
 
 import dev.amble.ait.api.mod.AitTags;
 import dev.amble.ait.client.renderer.CoralSonicItemRenderer;
+import dev.amble.ait.common.items.components.ArtronItemData;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
@@ -11,6 +12,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -31,16 +33,20 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ItemSonic extends Item implements GeoItem {
 
-    private static final int BAR_COLOR = Mth.color(0.4F, 0.4F, 1.0F);
+    public static final ArtronItemData ARTRON = ArtronItemData.withMaxCharge(50_000);
     public static final int TOOLTIP_MAX_WEIGHT = 4;
+
+    private static final int BAR_COLOR = Mth.color(0.4F, 0.4F, 1.0F);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -69,10 +75,9 @@ public class ItemSonic extends Item implements GeoItem {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "sonic_state", 2, state -> {
-            ItemStack stack = state.getData(software.bernie.geckolib.constant.DataTickets.ITEMSTACK);
-            if (stack != null && isOpened(stack)) {
-                return state.setAndContinue(OPEN);
-            }
+            ItemStack stack = state.getData(DataTickets.ITEMSTACK);
+            if (stack != null && isOpened(stack)) return state.setAndContinue(OPEN);
+
             return state.setAndContinue(CLOSE);
         }));
     }
@@ -98,11 +103,8 @@ public class ItemSonic extends Item implements GeoItem {
 
         SonicCrystals.Mutable mutable = new SonicCrystals.Mutable(contents);
 
-        int i = mutable.tryInsert(other);
-
-        if (i > 0) {
+        if (mutable.tryInsert(other) > 0)
             this.playInsertSound(player);
-        }
 
         screwdriver.set(AitComponents.SONIC_CRYSTALS, mutable.toImmutable());
         return true;
@@ -139,9 +141,11 @@ public class ItemSonic extends Item implements GeoItem {
     }
 
     @Override
-    public int getBarWidth(ItemStack itemStack) {
-        SonicCrystals bundleContents = itemStack.getOrDefault(AitComponents.SONIC_CRYSTALS, SonicCrystals.EMPTY);
-        return Math.min(1 + Mth.mulAndTruncate(bundleContents.weight(), 12), 13);
+    public int getBarWidth(ItemStack stack) {
+        ArtronItemData artron = stack.get(AitComponents.ARTRON);
+        if (artron == null) return 0;
+
+        return artron.charge() / artron.maxCharge() * 13;
     }
 
     @Override
@@ -182,7 +186,7 @@ public class ItemSonic extends Item implements GeoItem {
 
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int slotId, boolean isSelected) {
-        if (!world.isClientSide && world instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+        if (!world.isClientSide && world instanceof ServerLevel serverLevel) {
             GeoItem.getOrAssignId(stack, serverLevel);
         }
     }
@@ -200,7 +204,9 @@ public class ItemSonic extends Item implements GeoItem {
         if (mode == null)
             return InteractionResultHolder.fail(stack);
 
-        if (!checkCharge(stack))
+        ArtronItemData artron = stack.get(AitComponents.ARTRON);
+
+        if (artron == null || artron.empty())
             return InteractionResultHolder.fail(stack);
 
         if (mode.startUsing(stack, world, user, hand)) {
@@ -217,7 +223,6 @@ public class ItemSonic extends Item implements GeoItem {
         if (mode == null) return;
 
         int ticks = mode.maxTime() - remainingUseTicks;
-
         int fuelUsed = mode.tick(stack, world, user, ticks, remainingUseTicks);
 
         if (fuelUsed == SonicCrystal.SonicFunction.HALT) {
@@ -225,9 +230,10 @@ public class ItemSonic extends Item implements GeoItem {
             return;
         }
 
-        removeCharge(stack, fuelUsed);
+        ArtronItemData artron = stack.update(AitComponents.ARTRON, ARTRON,
+                a -> a.remove(fuelUsed));
 
-        if (!checkCharge(stack))
+        if (Objects.requireNonNull(artron, "updated artron must not be null").empty())
             user.stopUsingItem();
     }
 
@@ -254,24 +260,16 @@ public class ItemSonic extends Item implements GeoItem {
         return function != null ? function.maxTime() : 0;
     }
 
-    @SuppressWarnings({"EmptyMethod", "unused"})
-    private static void removeCharge(ItemStack stack, int amount) {
-        // TODO: implement this
+    private void playRemoveOneSound(Entity entity) {
+        entity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
     }
 
-    @SuppressWarnings({"EmptyMethod", "unused"})
-    private static void addCharge(ItemStack stack, int amount) {
-        // TODO: implement this
+    private void playInsertSound(Entity entity) {
+        entity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
     }
 
-    @SuppressWarnings({"BooleanMethodIsAlwaysInverted", "unused", "SameReturnValue"})
-    private static boolean checkCharge(ItemStack stack) {
-        // TODO: implement this
-        return true;
-    }
-
-    private static @Nullable SonicCrystal.SonicFunction function(ItemStack stack) {
-        int funcIdx = getFunction(stack);
+    public static @Nullable SonicCrystal.SonicFunction function(ItemStack stack) {
+        int funcIdx = stack.getOrDefault(AitComponents.SONIC, SonicData.DEFAULT).function();
         if (funcIdx == -1) return null;
 
         int relFuncIdx = funcIdx % 8;
@@ -294,34 +292,20 @@ public class ItemSonic extends Item implements GeoItem {
         return crystalItem.getCrystal();
     }
 
-    public static int getFunction(ItemStack itemStack) {
-        return itemStack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT).function();
-    }
-
     public static void setFunction(ItemStack stack, int funcIdx) {
-        stack.update(AitComponents.SONIC_DATA, SonicData.DEFAULT, t -> t.withFunction(funcIdx));
+        stack.update(AitComponents.SONIC, SonicData.DEFAULT, t -> t.withFunction(funcIdx));
     }
 
     public static boolean isOpened(ItemStack stack) {
-        return stack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT).opened();
+        return stack.getOrDefault(AitComponents.SONIC, SonicData.DEFAULT).opened();
     }
 
     public static void setOpened(ItemStack stack, boolean opened) {
-        SonicData current = stack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT);
-        stack.set(AitComponents.SONIC_DATA, current.withOpened(opened));
+        stack.update(AitComponents.SONIC, SonicData.DEFAULT, sonic -> sonic.withOpened(opened));
     }
 
     public static boolean toggleOpened(ItemStack stack) {
-        boolean newState = !isOpened(stack);
-        setOpened(stack, newState);
-        return newState;
-    }
-
-    private void playRemoveOneSound(Entity entity) {
-        entity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
-    }
-
-    private void playInsertSound(Entity entity) {
-        entity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
+        return Objects.requireNonNull(stack.update(AitComponents.SONIC, SonicData.DEFAULT, SonicData::toggleOpened),
+                "updated sonic data must not be null").opened();
     }
 }
