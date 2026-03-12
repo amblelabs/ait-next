@@ -36,6 +36,9 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
 
     private float alpha = 1.0f;
     private DoorState doorState = DoorState.CLOSED;
+    private boolean rightHasOpened = false;
+    private boolean leftHasOpened = false;
+    private boolean needsSnap = false;
 
     public PoliceBoxBlockEntity(BlockPos pos, BlockState state) {
         super(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, pos, state);
@@ -55,6 +58,14 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
 
     public boolean isOnSlab() {
         return this.getBlockState().getValue(PoliceBoxBlock.ON_SLAB);
+    }
+
+    public boolean needsSnap() {
+        return needsSnap;
+    }
+
+    public void clearSnap() {
+        this.needsSnap = false;
     }
 
     public void setAlpha(float alpha) {
@@ -114,6 +125,14 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
         this.alpha = tag.contains(ALPHA_KEY) ? tag.getFloat(ALPHA_KEY) : 1.0f;
         int doorOrdinal = tag.getInt(DOOR_STATE_KEY);
         this.doorState = DoorState.values()[Math.clamp(doorOrdinal, 0, DoorState.values().length - 1)];
+
+        if (doorState != DoorState.CLOSED) {
+            needsSnap = true;
+            rightHasOpened = true;
+            if (doorState == DoorState.BOTH_OPEN) {
+                leftHasOpened = true;
+            }
+        }
     }
 
     @Override
@@ -130,16 +149,22 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "right_door", 2, state -> {
+        controllers.add(new AnimationController<>(this, "right_door", 0, state -> {
+            if (needsSnap) return PlayState.STOP;
             if (doorState == DoorState.RIGHT_OPEN || doorState == DoorState.BOTH_OPEN) {
+                rightHasOpened = true;
                 return state.setAndContinue(RIGHT_OPEN);
             }
+            if (!rightHasOpened) return PlayState.STOP;
             return state.setAndContinue(RIGHT_CLOSE);
         }));
-        controllers.add(new AnimationController<>(this, "left_door", 2, state -> {
+        controllers.add(new AnimationController<>(this, "left_door", 0, state -> {
+            if (needsSnap) return PlayState.STOP;
             if (doorState == DoorState.BOTH_OPEN) {
+                leftHasOpened = true;
                 return state.setAndContinue(LEFT_OPEN);
             }
+            if (!leftHasOpened) return PlayState.STOP;
             return state.setAndContinue(LEFT_CLOSE);
         }));
     }

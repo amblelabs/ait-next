@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBlockEntity> {
@@ -42,6 +43,29 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
             boolean onSlab = entity.isOnSlab();
             poseStack.translate(0.5, onSlab ? -0.5 : 0, 0.5);
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation * -45f));
+        }
+
+        if (entity.needsSnap()) {
+            PoliceBoxBlockEntity.DoorState state = entity.getDoorState();
+            float rightY = (float) Math.toRadians(77.5);
+            float leftY = (float) Math.toRadians(-77.5);
+
+            if (state == PoliceBoxBlockEntity.DoorState.RIGHT_OPEN || state == PoliceBoxBlockEntity.DoorState.BOTH_OPEN) {
+                setDoorBoneRotation(model, "door_r", rightY);
+                setDoorBoneRotation(model, "RDoor", rightY);
+            }
+            if (state == PoliceBoxBlockEntity.DoorState.BOTH_OPEN) {
+                setDoorBoneRotation(model, "door_l", leftY);
+                setDoorBoneRotation(model, "LDoor", leftY);
+            }
+            entity.clearSnap();
+        }
+    }
+
+    private static void setDoorBoneRotation(BakedGeoModel model, String boneName, float rotY) {
+        GeoBone bone = model.getBone(boneName).orElse(null);
+        if (bone != null) {
+            bone.setRotY(rotY);
         }
     }
 
