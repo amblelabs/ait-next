@@ -35,6 +35,8 @@ public final class FabricAitInit implements ModInitializer {
         AitStrippable.init();
 
         AitInterop.init();
+
+        AitEcs.init();
     }
 
     private void initListeners() {

@@ -22,6 +22,9 @@
     "client": [
       "dev.amble.ait.fabric.FabricAitClientInit"
     ],
+    "server": [
+      "dev.amble.ait.fabric.FabricAitServerInit"
+    ],
     "fabric-datagen": [
       "dev.amble.ait.fabric.datagen.FabricAitDataGenerators"
     ],

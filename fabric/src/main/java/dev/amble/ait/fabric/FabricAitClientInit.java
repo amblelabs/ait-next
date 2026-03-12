@@ -2,6 +2,7 @@ package dev.amble.ait.fabric;
 
 import dev.amble.ait.client.AitKeybinds;
 import dev.amble.ait.client.SonicInputHandler;
+import dev.amble.ait.client.lib.AitClientEcs;
 import dev.amble.ait.client.model.AitModelLayers;
 import dev.amble.ait.client.renderer.AitAdditionalRenderers;
 import dev.amble.ait.common.lib.AitParticles;
@@ -42,5 +43,7 @@ public final class FabricAitClientInit implements ClientModInitializer {
                 ColorProviderRegistry.ITEM::register,
                 ColorProviderRegistry.BLOCK::register
         );
+
+        AitClientEcs.registerAll();
     }
 }

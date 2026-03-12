@@ -22,12 +22,15 @@ import java.util.ServiceLoader;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public interface IXplatAbstractions {
     Platform platform();
 
     boolean isModPresent(String id);
 
     String getModName(String namespace);
+
+    boolean isDev();
 
     boolean isPhysicalClient();
 
