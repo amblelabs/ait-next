@@ -26,12 +26,6 @@ public class DoorBlockEntityRenderer extends GeoBlockRenderer<DoorBlockEntity> {
     }
 
     @Override
-    public RenderType getRenderType(DoorBlockEntity entity, ResourceLocation texture,
-                                    MultiBufferSource bufferSource, float partialTick) {
-        return AITRenderLayers.tardisTranslucent(texture);
-    }
-
-    @Override
     public void preRender(PoseStack poseStack, DoorBlockEntity entity, BakedGeoModel model,
                           MultiBufferSource bufferSource, VertexConsumer buffer,
                           boolean isReRender, float partialTick, int packedLight, int packedOverlay,
@@ -55,32 +49,4 @@ public class DoorBlockEntityRenderer extends GeoBlockRenderer<DoorBlockEntity> {
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation * -45f));
         }
     }
-
-    @Override
-    public void actuallyRender(PoseStack poseStack, DoorBlockEntity entity, BakedGeoModel model,
-                               RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer,
-                               boolean isReRender, float partialTick, int packedLight, int packedOverlay,
-                               int colour) {
-        float alpha = entity.getAlpha();
-        int packedColor = ((int) (alpha * 255) << 24) | 0xFFFFFF;
-
-        if (alpha < 1.0f && bufferSource instanceof MultiBufferSource.BufferSource immediate) {
-            ResourceLocation texture = getGeoModel().getTextureResource(entity, this);
-
-            RenderType depthType = AITRenderLayers.tardisDepth(texture);
-            VertexConsumer depthConsumer = bufferSource.getBuffer(depthType);
-            super.actuallyRender(poseStack, entity, model, depthType, bufferSource, depthConsumer,
-                    isReRender, partialTick, packedLight, packedOverlay, 0xFFFFFFFF);
-            immediate.endBatch(depthType);
-
-            VertexConsumer frontConsumer = bufferSource.getBuffer(renderType);
-            super.actuallyRender(poseStack, entity, model, renderType, bufferSource, frontConsumer,
-                    isReRender, partialTick, packedLight, packedOverlay, packedColor);
-            immediate.endBatch(renderType);
-        } else {
-            super.actuallyRender(poseStack, entity, model, renderType, bufferSource, buffer,
-                    isReRender, partialTick, packedLight, packedOverlay, packedColor);
-        }
-    }
 }
-

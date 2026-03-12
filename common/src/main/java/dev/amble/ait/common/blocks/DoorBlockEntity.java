@@ -24,7 +24,6 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
         BOTH_OPEN
     }
 
-    private static final String ALPHA_KEY = "Alpha";
     private static final String DOOR_STATE_KEY = "DoorState";
 
     private static final RawAnimation RIGHT_OPEN = RawAnimation.begin().thenPlay("right door open");
@@ -34,7 +33,6 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private float alpha = 1.0f;
     private DoorState doorState = DoorState.CLOSED;
 
     public DoorBlockEntity(BlockPos pos, BlockState state) {
@@ -47,23 +45,6 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
 
     public DoorState getDoorState() {
         return doorState;
-    }
-
-    public float getAlpha() {
-        return alpha;
-    }
-
-    public void setAlpha(float alpha) {
-        this.alpha = Math.clamp(alpha, 0.0f, 1.0f);
-        this.setChanged();
-        if (this.level != null) {
-            int light = Math.round(this.alpha * 7.0f);
-            BlockState current = this.getBlockState();
-            if (current.getValue(DoorBlock.LIGHT) != light) {
-                this.level.setBlock(this.worldPosition, current.setValue(DoorBlock.LIGHT, light), 3);
-            }
-            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
-        }
     }
 
     public boolean isOnSlab() {
@@ -108,14 +89,12 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.putFloat(ALPHA_KEY, this.alpha);
         tag.putInt(DOOR_STATE_KEY, this.doorState.ordinal());
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        this.alpha = tag.contains(ALPHA_KEY) ? tag.getFloat(ALPHA_KEY) : 1.0f;
         int doorOrdinal = tag.getInt(DOOR_STATE_KEY);
         this.doorState = DoorState.values()[Math.clamp(doorOrdinal, 0, DoorState.values().length - 1)];
     }
@@ -153,4 +132,3 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
         return cache;
     }
 }
-
