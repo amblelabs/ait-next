@@ -16,8 +16,13 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -158,11 +163,7 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
 
                 if (!stateAtPos.is(Blocks.MOVING_PISTON)) {
                     if (stateAtPos.canBeReplaced()) {
-                        BlockState toPlace = this.blockState;
-
-                        if (toPlace.hasProperty(PoliceBoxBlock.ON_SLAB)) {
-                            toPlace = toPlace.setValue(PoliceBoxBlock.ON_SLAB, false);
-                        }
+                        BlockState toPlace = setOnSlab(this.blockState, false);
 
                         if (this.level().setBlock(landingPos, toPlace, Block.UPDATE_ALL)) {
                             this.discard();
@@ -179,9 +180,33 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
                             }
                             return;
                         }
+                    } else if (isBottomSlab(stateAtPos)) {
+                        BlockPos abovePos = landingPos.above();
+                        BlockState aboveState = this.level().getBlockState(abovePos);
+
+                        if (aboveState.canBeReplaced()) {
+                            BlockState toPlace = setOnSlab(this.blockState, true);
+
+                            if (this.level().setBlock(abovePos, toPlace, Block.UPDATE_ALL)) {
+                                this.discard();
+
+                                this.level().playSound(null, abovePos, AitSounds.LAND_THUD, SoundSource.BLOCKS, 1.0f, 1.0f);
+
+                                if (this.blockEntityData != null) {
+                                    BlockEntity be = this.level().getBlockEntity(abovePos);
+                                    if (be != null) {
+                                        be.loadWithComponents(this.blockEntityData, this.level().registryAccess());
+                                        be.setChanged();
+                                        this.level().sendBlockUpdated(abovePos, toPlace, toPlace, 3);
+                                    }
+                                }
+                                return;
+                            }
+                        }
                     }
 
                     this.discard();
+                    Block.dropResources(this.blockState, this.level(), landingPos);
                 }
             }
 
@@ -191,6 +216,20 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
         }
 
         this.setDeltaMovement(this.getDeltaMovement().scale(0.98));
+    }
+
+    private static boolean isBottomSlab(BlockState state) {
+        return state.getBlock() instanceof SlabBlock
+                && state.hasProperty(BlockStateProperties.SLAB_TYPE)
+                && state.getValue(BlockStateProperties.SLAB_TYPE) == SlabType.BOTTOM;
+    }
+
+    private static BlockState setOnSlab(BlockState state, boolean onSlab) {
+        Property<?> prop = state.getBlock().getStateDefinition().getProperty("on_slab");
+        if (prop instanceof BooleanProperty bp) {
+            return state.setValue(bp, onSlab);
+        }
+        return state;
     }
 
     @Override
