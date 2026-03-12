@@ -299,8 +299,7 @@ public class ItemSonic extends Item implements GeoItem {
     }
 
     public static void setFunction(ItemStack stack, int funcIdx) {
-        SonicData current = stack.getOrDefault(AitComponents.SONIC_DATA, SonicData.DEFAULT);
-        stack.set(AitComponents.SONIC_DATA, current.withFunction(funcIdx));
+        stack.update(AitComponents.SONIC_DATA, SonicData.DEFAULT, t -> t.withFunction(funcIdx));
     }
 
     public static boolean isOpened(ItemStack stack) {
