@@ -20,6 +20,8 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
     public PoliceBoxBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         super(new PoliceBoxGeoModel());
         addRenderLayer(new PoliceBoxEmissiveLayer(this));
+        addRenderLayer(new AccumulationLayer<PoliceBoxBlockEntity>(this,
+                ResourceLocation.withDefaultNamespace("textures/block/sand.png"), 256));
     }
 
     @Override

@@ -78,4 +78,29 @@ public class AITRenderLayers extends RenderType {
     public static RenderType tardisEmissiveCullZOffset(ResourceLocation texture, boolean affectsOutline) {
         return EMISSIVE_CULL_Z_OFFSET.apply(texture, affectsOutline);
     }
+
+    private static final ShaderStateShard ACCUMULATION_SHADER =
+            new ShaderStateShard(AITShaders::getAccumulationShader);
+
+    private static final Function<ResourceLocation, RenderType> ACCUMULATION = Util
+            .memoize((texture) -> {
+                CompositeState compositeState = CompositeState.builder()
+                        .setShaderState(ACCUMULATION_SHADER)
+                        .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+                        .setCullState(CULL)
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                        .setLightmapState(LIGHTMAP)
+                        .setOverlayState(OVERLAY)
+                        .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                        .setDepthTestState(LEQUAL_DEPTH_TEST)
+                        .setWriteMaskState(COLOR_DEPTH_WRITE)
+                        .createCompositeState(false);
+                return new CompositeRenderType("accumulation",
+                        DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,
+                        true, true, compositeState);
+            });
+
+    public static RenderType accumulation(ResourceLocation texture) {
+        return ACCUMULATION.apply(texture);
+    }
 }
