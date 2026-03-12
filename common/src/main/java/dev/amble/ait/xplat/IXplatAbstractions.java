@@ -32,6 +32,8 @@ public interface IXplatAbstractions {
 
     boolean isDev();
 
+    boolean isUnstable();
+
     boolean isPhysicalClient();
 
     void initPlatformSpecific();

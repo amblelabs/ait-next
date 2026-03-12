@@ -1,5 +1,7 @@
 package dev.amble.ait.fabric.xplat;
 
+import com.google.common.base.Suppliers;
+import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.api.mod.AitTags;
 import dev.amble.ait.fabric.interop.trinkets.TrinketsApiInterop;
 import dev.amble.ait.interop.AitInterop;
@@ -42,6 +44,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class FabricXplatImpl implements IXplatAbstractions {
 
@@ -173,7 +176,17 @@ public class FabricXplatImpl implements IXplatAbstractions {
         return FabricLoader.getInstance().isDevelopmentEnvironment();
     }
 
-//    private static final Supplier<Registry<>>  = Suppliers.memoize(() ->
+    @Override
+    public boolean isUnstable() {
+        return UNSTABLE.get();
+    }
+
+    private static final Supplier<Boolean> UNSTABLE = Suppliers.memoize(() ->
+            !FabricLoader.getInstance().getModContainer(AitAPI.MOD_ID)
+                    .orElseThrow().getMetadata().getVersion()
+                    .getFriendlyString().contains("release"));
+
+    //    private static final Supplier<Registry<>>  = Suppliers.memoize(() ->
 //        FabricRegistryBuilder.from(new DefaultedMappedRegistry<>(
 //                LiquorAPI.MOD_ID + ":nothing", LiquorRegistries.,
 //                Lifecycle.stable(), false))

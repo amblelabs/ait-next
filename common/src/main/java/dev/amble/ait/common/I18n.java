@@ -17,4 +17,6 @@ public class I18n {
     public static final Component FUNC_ON_DISARM = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_disarm");
     public static final Component FUNC_ON_LASER = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_laser");
     public static final Component FUNC_ON_HIGH_FREQ = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_high_freq");
+
+    public static final Component UNSTABLE_OVERLAY = Component.literal("AIT 2.x (unstable): SUBJECT TO CHANGE");
 }
