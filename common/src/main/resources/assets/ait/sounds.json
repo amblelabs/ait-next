@@ -10,6 +10,12 @@
     "sounds": [
       "ait:tardis/door_close"
     ]
+  },
+  "tardis/land_thud": {
+    "subtitle": "subtitles.ait.tardis.land_thud",
+    "sounds": [
+      "ait:tardis/land_thud"
+    ]
   }
 }
 

@@ -1,11 +1,13 @@
 package dev.amble.ait.fabric.client;
 
 import dev.amble.ait.client.renderer.DoorBlockEntityRenderer;
+import dev.amble.ait.client.renderer.FallingTardisBlockRenderer;
 import dev.amble.ait.client.renderer.PoliceBoxBlockEntityRenderer;
 import dev.amble.ait.client.renderer.ClientSonicTooltip;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitBlockEntities;
+import dev.amble.ait.common.lib.AitEntities;
 import dev.amble.ait.xplat.IClientXplatAbstractions;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.color.block.BlockColor;
@@ -30,6 +32,7 @@ public class RegisterClientStuff {
         });
 
         var x = IClientXplatAbstractions.INSTANCE;
+        x.registerEntityRenderer(AitEntities.FALLING_TARDIS_BLOCK, FallingTardisBlockRenderer::new);
 
 //        x.registerItemProperty(AitItems.SONIC_SCREWDRIVER, AitAPI.modLoc("sonic_crystal"),
 //                (itemStack, clientLevel, livingEntity, i) -> ItemSonic.getCrystal(itemStack));

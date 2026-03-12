@@ -21,6 +21,7 @@ public class AitSounds {
     //
     public static final SoundEvent DOOR_OPEN = sound("tardis/door_open");
     public static final SoundEvent DOOR_CLOSE = sound("tardis/door_close");
+    public static final SoundEvent LAND_THUD = sound("tardis/land_thud");
 
     private static SoundEvent sound(String name) {
         var id = modLoc(name);

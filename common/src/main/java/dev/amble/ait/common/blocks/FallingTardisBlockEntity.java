@@ -1,0 +1,233 @@
+package dev.amble.ait.common.blocks;
+
+import dev.amble.ait.common.lib.AitEntities;
+import dev.amble.ait.common.lib.AitSounds;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+public class FallingTardisBlockEntity extends Entity implements GeoEntity {
+
+    private static final EntityDataAccessor<CompoundTag> DATA_BLOCK_STATE_TAG =
+            SynchedEntityData.defineId(FallingTardisBlockEntity.class, EntityDataSerializers.COMPOUND_TAG);
+    private static final EntityDataAccessor<CompoundTag> DATA_BLOCK_ENTITY_TAG =
+            SynchedEntityData.defineId(FallingTardisBlockEntity.class, EntityDataSerializers.COMPOUND_TAG);
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+    private BlockState blockState = Blocks.AIR.defaultBlockState();
+    private CompoundTag blockEntityData;
+    private int time;
+
+    public FallingTardisBlockEntity(EntityType<?> type, Level level) {
+        super(type, level);
+    }
+
+    public FallingTardisBlockEntity(Level level, double x, double y, double z, BlockState state, CompoundTag blockEntityData) {
+        this(AitEntities.FALLING_TARDIS_BLOCK, level);
+        this.blockState = state;
+        this.blockEntityData = blockEntityData;
+        this.blocksBuilding = true;
+        this.setPos(x, y, z);
+        this.setDeltaMovement(Vec3.ZERO);
+        this.xo = x;
+        this.yo = y;
+        this.zo = z;
+        syncToClient();
+    }
+
+    public static FallingTardisBlockEntity fall(Level level, BlockPos pos, BlockState state) {
+        CompoundTag beData = null;
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be != null) {
+            beData = be.saveWithoutMetadata(level.registryAccess());
+        }
+
+        level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+
+        FallingTardisBlockEntity entity = new FallingTardisBlockEntity(
+                level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state, beData);
+        level.addFreshEntity(entity);
+        return entity;
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DATA_BLOCK_STATE_TAG, new CompoundTag());
+        builder.define(DATA_BLOCK_ENTITY_TAG, new CompoundTag());
+    }
+
+    public BlockState getFallingBlockState() {
+        return this.blockState;
+    }
+
+    public CompoundTag getBlockEntityData() {
+        return this.blockEntityData;
+    }
+
+    private void syncToClient() {
+        this.entityData.set(DATA_BLOCK_STATE_TAG, NbtUtils.writeBlockState(this.blockState));
+        this.entityData.set(DATA_BLOCK_ENTITY_TAG, this.blockEntityData != null ? this.blockEntityData : new CompoundTag());
+    }
+
+    public BlockState getClientBlockState() {
+        if (!this.level().isClientSide()) return this.blockState;
+        CompoundTag tag = this.entityData.get(DATA_BLOCK_STATE_TAG);
+        if (tag.isEmpty()) return this.blockState;
+        return NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), tag);
+    }
+
+    public CompoundTag getClientBlockEntityData() {
+        CompoundTag tag = this.entityData.get(DATA_BLOCK_ENTITY_TAG);
+        return tag.isEmpty() ? null : tag;
+    }
+
+    public int getTextureIndex() {
+        BlockState state = this.level().isClientSide() ? getClientBlockState() : this.blockState;
+        if (state.hasProperty(PoliceBoxBlock.TEXTURE)) {
+            return state.getValue(PoliceBoxBlock.TEXTURE);
+        }
+        return 0;
+    }
+
+    public int getRotation() {
+        BlockState state = this.level().isClientSide() ? getClientBlockState() : this.blockState;
+        if (state.hasProperty(PoliceBoxBlock.ROTATION)) {
+            return state.getValue(PoliceBoxBlock.ROTATION);
+        }
+        return 0;
+    }
+
+    public float getAlpha() {
+        CompoundTag data = this.level().isClientSide() ? getClientBlockEntityData() : this.blockEntityData;
+        if (data != null && data.contains("Alpha")) {
+            return data.getFloat("Alpha");
+        }
+        return 1.0f;
+    }
+
+    public int getDoorStateOrdinal() {
+        CompoundTag data = this.level().isClientSide() ? getClientBlockEntityData() : this.blockEntityData;
+        if (data != null && data.contains("DoorState")) {
+            return data.getInt("DoorState");
+        }
+        return 0;
+    }
+
+    @Override
+    public void tick() {
+        if (!this.level().isClientSide() && this.blockState.isAir()) {
+            this.discard();
+            return;
+        }
+
+        this.time++;
+
+        if (!this.isNoGravity()) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.04, 0.0));
+        }
+
+        this.move(MoverType.SELF, this.getDeltaMovement());
+
+        if (!this.level().isClientSide()) {
+            BlockPos landingPos = this.blockPosition();
+
+            if (this.onGround()) {
+                BlockState stateAtPos = this.level().getBlockState(landingPos);
+                this.setDeltaMovement(this.getDeltaMovement().multiply(0.7, -0.5, 0.7));
+
+                if (!stateAtPos.is(Blocks.MOVING_PISTON)) {
+                    if (stateAtPos.canBeReplaced()) {
+                        BlockState toPlace = this.blockState;
+
+                        if (toPlace.hasProperty(PoliceBoxBlock.ON_SLAB)) {
+                            toPlace = toPlace.setValue(PoliceBoxBlock.ON_SLAB, false);
+                        }
+
+                        if (this.level().setBlock(landingPos, toPlace, Block.UPDATE_ALL)) {
+                            this.discard();
+
+                            this.level().playSound(null, landingPos, AitSounds.LAND_THUD, SoundSource.BLOCKS, 1.0f, 1.0f);
+
+                            if (this.blockEntityData != null) {
+                                BlockEntity be = this.level().getBlockEntity(landingPos);
+                                if (be != null) {
+                                    be.loadWithComponents(this.blockEntityData, this.level().registryAccess());
+                                    be.setChanged();
+                                    this.level().sendBlockUpdated(landingPos, toPlace, toPlace, 3);
+                                }
+                            }
+                            return;
+                        }
+                    }
+
+                    this.discard();
+                }
+            }
+
+            if (this.time > 600) {
+                this.discard();
+            }
+        }
+
+        this.setDeltaMovement(this.getDeltaMovement().scale(0.98));
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.put("BlockState", NbtUtils.writeBlockState(this.blockState));
+        tag.putInt("Time", this.time);
+        if (this.blockEntityData != null) {
+            tag.put("TileEntityData", this.blockEntityData);
+        }
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        this.blockState = NbtUtils.readBlockState(
+                this.level().holderLookup(Registries.BLOCK), tag.getCompound("BlockState"));
+        this.time = tag.getInt("Time");
+        if (tag.contains("TileEntityData", 10)) {
+            this.blockEntityData = tag.getCompound("TileEntityData");
+        }
+        if (this.blockState.isAir()) {
+            this.blockState = Blocks.AIR.defaultBlockState();
+        }
+        syncToClient();
+    }
+
+    @Override
+    public boolean isAttackable() {
+        return false;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "idle", 0, state -> PlayState.STOP));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+}
