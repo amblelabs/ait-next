@@ -7,7 +7,9 @@ import dev.amble.ait.common.items.ItemCrystal;
 import dev.amble.ait.common.items.ItemSonic;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.lib.AitComponents;
+import dev.amble.ait.common.network.SonicFunctionPayload;
 import dev.amble.ait.common.sonic.SonicCrystal;
+import dev.amble.ait.xplat.IClientXplatAbstractions;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
@@ -128,6 +130,7 @@ public class SonicWheelScreen extends AbstractWheelScreen {
 
         @Override
         public void run(Minecraft client, Widget widget) {
+            IClientXplatAbstractions.INSTANCE.sendPacketToServer(new SonicFunctionPayload(funcIdx));
             ItemSonic.setFunction(sonic, funcIdx);
         }
     }

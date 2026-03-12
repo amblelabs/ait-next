@@ -7,13 +7,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-public record SonicTogglePayload(boolean opened) implements CustomPacketPayload {
+public record SonicFunctionPayload(int funcIdx) implements CustomPacketPayload {
 
-    public static final ResourceLocation ID = AitAPI.modLoc("sonic/toggle");
-    public static final Type<SonicTogglePayload> TYPE = new Type<>(ID);
+    public static final ResourceLocation ID = AitAPI.modLoc("sonic/func");
+    public static final Type<SonicFunctionPayload> TYPE = new Type<>(ID);
 
-    public static final StreamCodec<FriendlyByteBuf, SonicTogglePayload> STREAM_CODEC =
-            StreamCodec.composite(ByteBufCodecs.BOOL, SonicTogglePayload::opened, SonicTogglePayload::new);
+    public static final StreamCodec<FriendlyByteBuf, SonicFunctionPayload> STREAM_CODEC =
+            StreamCodec.composite(ByteBufCodecs.INT, SonicFunctionPayload::funcIdx, SonicFunctionPayload::new);
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
