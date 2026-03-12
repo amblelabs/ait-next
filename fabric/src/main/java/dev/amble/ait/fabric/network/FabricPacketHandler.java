@@ -10,6 +10,9 @@ import net.minecraft.world.item.ItemStack;
 public class FabricPacketHandler {
 
     public static void init() {
+        PayloadTypeRegistry.playC2S().register(SonicTogglePayload.TYPE, SonicTogglePayload.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(SonicFunctionPayload.TYPE, SonicFunctionPayload.STREAM_CODEC);
+
         ServerPlayNetworking.registerGlobalReceiver(SonicTogglePayload.TYPE, (payload, context) -> context.player().server.execute(() -> {
             ItemStack mainHand = context.player().getMainHandItem();
 
@@ -28,7 +31,5 @@ public class FabricPacketHandler {
     }
 
     public static void initClient() {
-        PayloadTypeRegistry.playC2S().register(SonicTogglePayload.TYPE, SonicTogglePayload.STREAM_CODEC);
-        PayloadTypeRegistry.playC2S().register(SonicFunctionPayload.TYPE, SonicFunctionPayload.STREAM_CODEC);
     }
 }
