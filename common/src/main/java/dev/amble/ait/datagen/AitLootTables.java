@@ -15,6 +15,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class AitLootTables extends AmbleLootTableSubProvider {
 
     public AitLootTables() {

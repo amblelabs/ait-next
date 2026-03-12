@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings({"SameParameterValue", "unused"})
 public class FabricAitDataGenerators implements DataGeneratorEntrypoint {
 
     @Override

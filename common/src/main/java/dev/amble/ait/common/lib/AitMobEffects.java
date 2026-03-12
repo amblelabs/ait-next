@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
 
 import static dev.amble.ait.api.AitAPI.modLoc;
 
+@SuppressWarnings("unused")
 public class AitMobEffects {
     public static void register(BiConsumer<MobEffect, ResourceLocation> r) {
         for (var e : EFFECTS.entrySet()) {

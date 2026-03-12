@@ -10,8 +10,6 @@ import java.util.List;
 public class AitInterop {
     public static final String PATCHOULI_ANY_INTEROP_FLAG = "ait:any_interop";
 
-    public static final String PEHKUI_ID = "pehkui";
-
     public static final class Forge {
         public static final String CURIOS_API_ID = "curios";
     }
@@ -32,6 +30,7 @@ public class AitInterop {
         IClientXplatAbstractions.INSTANCE.initPlatformSpecific();
     }
 
+    @SuppressWarnings({"RedundantOperationOnEmptyContainer", "ReassignedVariable", "ConstantValue"})
     private static void initPatchouli() {
         List<String> integrations = List.of();
 

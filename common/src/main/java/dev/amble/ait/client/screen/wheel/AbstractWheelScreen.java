@@ -3,6 +3,8 @@ package dev.amble.ait.client.screen.wheel;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
+import java.util.Objects;
+
 /**
  * @author drtheodor
  * From hex-spell-wheel
@@ -18,7 +20,7 @@ public abstract class AbstractWheelScreen extends Screen implements WheelScreen 
         if (super.keyPressed(i, j, k))
             return true;
 
-        if (minecraft.options.keyInventory.matches(i, j)) {
+        if (Objects.requireNonNull(minecraft).options.keyInventory.matches(i, j)) {
             super.onClose();
             return true;
         }
@@ -36,11 +38,11 @@ public abstract class AbstractWheelScreen extends Screen implements WheelScreen 
         if (!widget.keepOpened() && !Screen.hasShiftDown())
             this.onClose();
 
-        widget.run(minecraft);
+        widget.run(Objects.requireNonNull(minecraft));
     }
 
     @Override
     public void altClick(Widget widget) {
-        widget.runAlt(minecraft);
+        widget.runAlt(Objects.requireNonNull(minecraft));
     }
 }

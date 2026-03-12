@@ -41,14 +41,13 @@ public class WheelOptionWidget extends Button {
 
         // Compute a tight bounding box around the actual arc segment
         float sa = this.startAngle;
-        float ea = this.endAngle;
         float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;
         float maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;
 
         int steps = 16;
         for (int i = 0; i <= steps; i++) {
             float t = (float) i / steps;
-            float deg = sa + t * (ea - sa);
+            float deg = sa + t * (this.endAngle - sa);
             double rad = Math.toRadians(deg - 90);
             float cos = (float) Math.cos(rad);
             float sin = (float) Math.sin(rad);

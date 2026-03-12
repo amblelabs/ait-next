@@ -97,7 +97,8 @@ public class ClientSonicTooltip implements ClientTooltipComponent {
 		public final int w;
 		public final int h;
 
-		Texture(final ResourceLocation resourceLocation, final int j, final int k) {
+		@SuppressWarnings("SameParameterValue")
+        Texture(final ResourceLocation resourceLocation, final int j, final int k) {
 			this.sprite = resourceLocation;
 			this.w = j;
 			this.h = k;

@@ -7,10 +7,12 @@ import net.minecraft.world.level.block.ComposterBlock;
 
 public final class AitComposting {
 
+    @SuppressWarnings("EmptyMethod")
     public static void setup() {
 
     }
 
+    @SuppressWarnings("unused")
     private static void compost(ItemLike itemLike, float chance) {
         Item item = itemLike.asItem();
 

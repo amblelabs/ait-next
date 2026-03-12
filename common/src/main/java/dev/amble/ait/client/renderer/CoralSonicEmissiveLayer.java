@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoRenderer;
@@ -26,8 +27,8 @@ public class CoralSonicEmissiveLayer extends GeoRenderLayer<ItemSonic> {
 
     @Override
     public void render(PoseStack poseStack, ItemSonic animatable, BakedGeoModel bakedModel,
-                       RenderType renderType, MultiBufferSource bufferSource,
-                       VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+                       @Nullable RenderType renderType, MultiBufferSource bufferSource,
+                       @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
 

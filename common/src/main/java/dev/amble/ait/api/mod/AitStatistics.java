@@ -8,11 +8,13 @@ import net.minecraft.stats.Stats;
 
 import static dev.amble.ait.api.AitAPI.modLoc;
 
+@SuppressWarnings("unused")
 public class AitStatistics {
+
     //
 
+    @SuppressWarnings("EmptyMethod")
     public static void register() {
-        // wake up java
     }
 
     private static ResourceLocation makeCustomStat(String key, StatFormatter formatter) {

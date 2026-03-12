@@ -10,7 +10,7 @@ import net.minecraft.world.level.ItemLike;
 
 import java.util.Optional;
 
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "SameParameterValue", "unused"})
 public abstract class AmbleAdvancementSubProvider implements AdvancementSubProvider {
 
     protected final String modId;

@@ -96,6 +96,7 @@ public class FabricXplatImpl implements IXplatAbstractions {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public <T extends BlockEntity> BlockEntityType<T> createBlockEntityType(BiFunction<BlockPos, BlockState, T> func, Block... blocks) {
         return FabricBlockEntityTypeBuilder.create(func::apply, blocks).build();
     }
@@ -159,14 +160,17 @@ public class FabricXplatImpl implements IXplatAbstractions {
 
     @Override
     public String getModName(String namespace) {
-        if (namespace.equals("c")) {
-            return "Common";
-        }
+        if (namespace.equals("c")) return "Common";
+
         Optional<ModContainer> container = FabricLoader.getInstance().getModContainer(namespace);
-        if (container.isPresent()) {
-            return container.get().getMetadata().getName();
-        }
+        if (container.isPresent()) return container.get().getMetadata().getName();
+
         return namespace;
+    }
+
+    @Override
+    public boolean isDev() {
+        return FabricLoader.getInstance().isDevelopmentEnvironment();
     }
 
 //    private static final Supplier<Registry<>>  = Suppliers.memoize(() ->

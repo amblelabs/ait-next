@@ -3,6 +3,7 @@ package dev.amble.ait.client.model;
 import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.common.blocks.PoliceBoxBlockEntity;
 import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 
 public class PoliceBoxGeoModel extends GeoModel<PoliceBoxBlockEntity> {
@@ -26,7 +27,7 @@ public class PoliceBoxGeoModel extends GeoModel<PoliceBoxBlockEntity> {
 
     @SuppressWarnings("removal")
     @Override
-    public ResourceLocation getTextureResource(PoliceBoxBlockEntity entity) {
+    public ResourceLocation getTextureResource(@Nullable PoliceBoxBlockEntity entity) {
         if (entity == null) return TEXTURES[0];
         return TEXTURES[entity.getTextureIndex() % TEXTURES.length];
     }

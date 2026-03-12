@@ -12,8 +12,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 public class AitXplatRecipes extends AmbleRecipeProvider {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final IXplatIngredients ingredients;
 
     public AitXplatRecipes(PackOutput output, CompletableFuture<HolderLookup.Provider> future, IXplatIngredients ingredients) {

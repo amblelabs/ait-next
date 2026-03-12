@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 import static dev.amble.ait.api.AitAPI.modLoc;
 
 // https://github.com/VazkiiMods/Botania/blob/2c4f7fdf9ebf0c0afa1406dfe1322841133d75fa/Common/src/main/java/vazkii/botania/common/item/ModItems.java
+@SuppressWarnings("unused")
 public class AitItems {
     public static void registerItems(BiConsumer<Item, ResourceLocation> r) {
         for (var e : ITEMS.entrySet()) {
@@ -66,6 +67,7 @@ public class AitItems {
         return item;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static <T extends Item> T make(String id, T item, @Nullable CreativeModeTab tab) {
         return make(modLoc(id), item, tab);
     }

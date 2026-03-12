@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import java.util.concurrent.CompletableFuture;
 
 public class AitBlockTagProvider extends FabricAmbleBlockTagProvider {
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final IXplatTags xtags;
 
     public AitBlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, IXplatTags xtags) {

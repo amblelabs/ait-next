@@ -72,9 +72,7 @@ public class ConsoleBlockEntity extends BlockEntity implements GeoBlockEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "console", 5, state -> {
-            return state.setAndContinue(ANIMATIONS[this.animationIndex % ANIMATIONS.length]);
-        }));
+        controllers.add(new AnimationController<>(this, "console", 5, state -> state.setAndContinue(ANIMATIONS[this.animationIndex % ANIMATIONS.length])));
     }
 
     @Override

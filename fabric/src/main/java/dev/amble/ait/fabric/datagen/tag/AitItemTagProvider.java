@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class AitItemTagProvider extends FabricAmbleItemTagProvider {
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final IXplatTags xtags;
 
     public AitItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable BlockTagProvider blockTagProvider, IXplatTags xtags) {

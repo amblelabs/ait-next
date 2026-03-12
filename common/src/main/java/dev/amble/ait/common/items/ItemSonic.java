@@ -26,7 +26,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.math.Fraction;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -55,12 +54,13 @@ public class ItemSonic extends Item implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private CoralSonicItemRenderer renderer;
+            private @Nullable CoralSonicItemRenderer renderer;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (this.renderer == null)
                     this.renderer = new CoralSonicItemRenderer();
+
                 return this.renderer;
             }
         });
@@ -150,7 +150,7 @@ public class ItemSonic extends Item implements GeoItem {
     }
 
     @Override
-    public @NotNull Optional<TooltipComponent> getTooltipImage(ItemStack itemStack) {
+    public Optional<TooltipComponent> getTooltipImage(ItemStack itemStack) {
         return !itemStack.has(DataComponents.HIDE_TOOLTIP) && !itemStack.has(DataComponents.HIDE_ADDITIONAL_TOOLTIP)
                 ? Optional.ofNullable(itemStack.get(AitComponents.SONIC_CRYSTALS)).map(SonicTooltip::new) : Optional.empty();
     }
@@ -188,7 +188,7 @@ public class ItemSonic extends Item implements GeoItem {
     }
 
     @Override
-    public @NotNull UseAnim getUseAnimation(ItemStack itemStack) {
+    public UseAnim getUseAnimation(ItemStack itemStack) {
         return UseAnim.BOW;
     }
 
@@ -240,7 +240,7 @@ public class ItemSonic extends Item implements GeoItem {
     }
 
     @Override
-    public @NotNull ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
         SonicCrystal.SonicFunction mode = function(stack);
         if (mode == null) return stack;
 
@@ -254,14 +254,17 @@ public class ItemSonic extends Item implements GeoItem {
         return function != null ? function.maxTime() : 0;
     }
 
+    @SuppressWarnings({"EmptyMethod", "unused"})
     private static void removeCharge(ItemStack stack, int amount) {
         // TODO: implement this
     }
 
+    @SuppressWarnings({"EmptyMethod", "unused"})
     private static void addCharge(ItemStack stack, int amount) {
         // TODO: implement this
     }
 
+    @SuppressWarnings({"BooleanMethodIsAlwaysInverted", "unused", "SameReturnValue"})
     private static boolean checkCharge(ItemStack stack) {
         // TODO: implement this
         return true;

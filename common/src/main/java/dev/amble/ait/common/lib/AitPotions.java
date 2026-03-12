@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
 
 import static dev.amble.ait.api.AitAPI.modLoc;
 
+@SuppressWarnings("unused")
 public class AitPotions {
     public static void register(BiConsumer<Potion, ResourceLocation> r) {
         for (var e : POTIONS.entrySet()) {
@@ -21,8 +22,9 @@ public class AitPotions {
 
     //
 
+    @SuppressWarnings("EmptyMethod")
     public static void addRecipes() {
-//        AccessorPotionBrewing.addMix(SHRINK_GRID, Items.REDSTONE, SHRINK_GRID_LONG);
+
     }
 
     private static <T extends Potion> T make(String id, T potion) {

@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
 
 import static dev.amble.ait.api.AitAPI.modLoc;
 
+@SuppressWarnings("unused")
 public class AitLootFunctions {
     public static void registerSerializers(BiConsumer<LootItemFunctionType<?>, ResourceLocation> r) {
         for (var e : LOOT_FUNCS.entrySet()) {

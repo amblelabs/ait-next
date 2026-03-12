@@ -8,7 +8,7 @@
 <!-- Summary of code changes for easier review. -->
 
 ## Media
-<!-- Attach media if the PR makes ingame changes (blocks, items, features, etc). 
+<!-- Attach media if the PR makes in-game changes (blocks, items, features, etc). 
 Small fixes/refactors are exempt. Media may be used in #teasers with credit. -->
 
 ## Requirements

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 public class AitBlockSetTypes {
     public static void registerBlocks(Consumer<BlockSetType> r) {
         for (var type : TYPES) {

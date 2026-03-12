@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+@SuppressWarnings({"SameParameterValue", "unused"})
 public abstract class AmbleLootTableSubProvider implements LootTableSubProvider {
 
     protected final String modId;
@@ -38,8 +39,9 @@ public abstract class AmbleLootTableSubProvider implements LootTableSubProvider 
         lootTables.forEach(register);
     }
 
+    @SuppressWarnings({"EmptyMethod", "unused"})
     protected abstract void makeLootTables(Map<Block, LootTable.Builder> blockTables,
-        Map<ResourceKey<LootTable>, LootTable.Builder> lootTables);
+                                           Map<ResourceKey<LootTable>, LootTable.Builder> lootTables);
 
     protected LootPool.Builder dropThisPool(ItemLike item, int count) {
         return dropThisPool(item, ConstantValue.exactly(count));

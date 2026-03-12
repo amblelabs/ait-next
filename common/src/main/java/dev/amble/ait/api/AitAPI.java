@@ -16,7 +16,7 @@ public interface AitAPI {
             return (AitAPI) Class.forName("dev.amble.ait.common.impl.AitAPIImpl")
                     .getDeclaredConstructor().newInstance();
         } catch (ReflectiveOperationException e) {
-            LogManager.getLogger().warn("Unable to find AITAPIImpl, using a dummy");
+            LogManager.getLogger().warn("Unable to find AitAPIImpl, using a dummy");
             return new AitAPI() {
             };
         }

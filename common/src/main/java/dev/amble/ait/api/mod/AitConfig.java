@@ -2,8 +2,10 @@ package dev.amble.ait.api.mod;
 
 import dev.amble.ait.api.AitAPI;
 import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AitConfig {
 
@@ -30,29 +32,31 @@ public class AitConfig {
         return false;
     }
 
+    @SuppressWarnings("unused")
     public static boolean noneMatch(List<? extends String> keys, ResourceLocation key) {
         return !anyMatch(keys, key);
     }
 
+    @SuppressWarnings("unused")
     public static boolean anyMatchResLoc(List<? extends ResourceLocation> keys, ResourceLocation key) {
         return keys.stream().anyMatch(key::equals);
     }
 
     // oh man this is aesthetically pleasing
-    private static CommonConfigAccess common = null;
-    private static ClientConfigAccess client = null;
-    private static ServerConfigAccess server = null;
+    private static @Nullable CommonConfigAccess common = null;
+    private static @Nullable ClientConfigAccess client = null;
+    private static @Nullable ServerConfigAccess server = null;
 
     public static CommonConfigAccess common() {
-        return common;
+        return Objects.requireNonNull(common, "accessed config too early");
     }
 
     public static ClientConfigAccess client() {
-        return client;
+        return Objects.requireNonNull(client, "accessed config too early");
     }
 
     public static ServerConfigAccess server() {
-        return server;
+        return Objects.requireNonNull(server, "accessed config too early");
     }
 
     public static void setCommon(CommonConfigAccess access) {

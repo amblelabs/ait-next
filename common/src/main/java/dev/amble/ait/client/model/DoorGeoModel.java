@@ -27,7 +27,6 @@ public class DoorGeoModel extends GeoModel<DoorBlockEntity> {
     @SuppressWarnings("removal")
     @Override
     public ResourceLocation getTextureResource(DoorBlockEntity entity) {
-        if (entity == null) return TEXTURES[0];
         return TEXTURES[entity.getTextureIndex() % TEXTURES.length];
     }
 

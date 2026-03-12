@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public interface IClientXplatAbstractions {
     void sendPacketToServer(CustomPacketPayload packet);
 
@@ -23,6 +24,7 @@ public interface IClientXplatAbstractions {
 
     <T extends Entity> void registerEntityRenderer(EntityType<? extends T> type, EntityRendererProvider<T> renderer);
 
+    @SuppressWarnings("deprecation")
     void registerItemProperty(Item item, ResourceLocation id, ItemPropertyFunction func);
 
     IClientXplatAbstractions INSTANCE = find();
@@ -35,7 +37,7 @@ public interface IClientXplatAbstractions {
             throw new IllegalStateException(
                 "There should be exactly one IClientXplatAbstractions implementation on the classpath. Found: " + names);
         } else {
-            var provider = providers.get(0);
+            var provider = providers.getFirst();
             AitAPI.LOGGER.debug("Instantiating client xplat impl: {}", provider.type().getName());
             return provider.get();
         }

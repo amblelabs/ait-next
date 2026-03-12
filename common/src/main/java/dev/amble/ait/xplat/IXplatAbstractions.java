@@ -5,13 +5,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.common.ClientCommonPacketListener;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -25,12 +22,15 @@ import java.util.ServiceLoader;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public interface IXplatAbstractions {
     Platform platform();
 
     boolean isModPresent(String id);
 
     String getModName(String namespace);
+
+    boolean isDev();
 
     boolean isPhysicalClient();
 
@@ -73,7 +73,7 @@ public interface IXplatAbstractions {
             throw new IllegalStateException(
                 "There should be exactly one IXplatAbstractions implementation on the classpath. Found: " + names);
         } else {
-            var provider = providers.get(0);
+            var provider = providers.getFirst();
             AitAPI.LOGGER.debug("Instantiating xplat impl: {}", provider.type().getName());
             return provider.get();
         }

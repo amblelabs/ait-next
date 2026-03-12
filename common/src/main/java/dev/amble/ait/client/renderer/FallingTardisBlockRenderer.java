@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -33,13 +34,13 @@ public class FallingTardisBlockRenderer extends GeoEntityRenderer<FallingTardisB
 
     @Override
     public RenderType getRenderType(FallingTardisBlockEntity entity, ResourceLocation texture,
-                                    MultiBufferSource bufferSource, float partialTick) {
+                                    @Nullable MultiBufferSource bufferSource, float partialTick) {
         return AITRenderLayers.tardisTranslucent(texture);
     }
 
     @Override
     public void preRender(PoseStack poseStack, FallingTardisBlockEntity entity, BakedGeoModel model,
-                          MultiBufferSource bufferSource, VertexConsumer buffer,
+                          @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
                           boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                           int colour) {
         if (!isReRender) {
@@ -59,7 +60,7 @@ public class FallingTardisBlockRenderer extends GeoEntityRenderer<FallingTardisB
 
     @Override
     public void actuallyRender(PoseStack poseStack, FallingTardisBlockEntity entity, BakedGeoModel model,
-                               RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer,
+                               @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
                                boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                                int colour) {
         float alpha = entity.getAlpha();
@@ -98,8 +99,8 @@ public class FallingTardisBlockRenderer extends GeoEntityRenderer<FallingTardisB
 
         @Override
         public void render(PoseStack poseStack, FallingTardisBlockEntity entity, BakedGeoModel bakedModel,
-                           RenderType renderType, MultiBufferSource bufferSource,
-                           VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+                           @Nullable RenderType renderType, MultiBufferSource bufferSource,
+                           @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
             ResourceLocation baseTexture = getGeoModel().getTextureResource(entity, getRenderer());
             String basePath = baseTexture.getPath();
             String emissivePath = basePath.replace(".png", "_e.png");
