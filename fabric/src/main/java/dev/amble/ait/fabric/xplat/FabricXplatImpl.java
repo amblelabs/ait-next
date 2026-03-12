@@ -170,6 +170,11 @@ public class FabricXplatImpl implements IXplatAbstractions {
         return namespace;
     }
 
+    @Override
+    public boolean isDev() {
+        return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
 //    private static final Supplier<Registry<>>  = Suppliers.memoize(() ->
 //        FabricRegistryBuilder.from(new DefaultedMappedRegistry<>(
 //                LiquorAPI.MOD_ID + ":nothing", LiquorRegistries.,
