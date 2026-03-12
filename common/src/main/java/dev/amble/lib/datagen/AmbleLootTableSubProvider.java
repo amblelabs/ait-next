@@ -39,7 +39,7 @@ public abstract class AmbleLootTableSubProvider implements LootTableSubProvider 
         lootTables.forEach(register);
     }
 
-    @SuppressWarnings("EmptyMethod")
+    @SuppressWarnings({"EmptyMethod", "unused"})
     protected abstract void makeLootTables(Map<Block, LootTable.Builder> blockTables,
                                            Map<ResourceKey<LootTable>, LootTable.Builder> lootTables);
 

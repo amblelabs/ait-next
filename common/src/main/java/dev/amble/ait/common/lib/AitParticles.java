@@ -40,7 +40,7 @@ public class AitParticles {
                 Function<SpriteSet, ParticleProvider<T>> constructor);
         }
 
-        @SuppressWarnings("EmptyMethod")
+        @SuppressWarnings({"EmptyMethod", "unused"})
         public static <T extends ParticleOptions> void registerFactories(Consumer<T> consumer) {
 
         }
