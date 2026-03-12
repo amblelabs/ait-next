@@ -1,15 +1,14 @@
 package dev.amble.ait.fabric.client;
 
-import dev.amble.ait.client.renderer.ConsoleBlockEntityRenderer;
-import dev.amble.ait.client.renderer.DoorBlockEntityRenderer;
-import dev.amble.ait.client.renderer.FallingTardisBlockRenderer;
-import dev.amble.ait.client.renderer.PoliceBoxBlockEntityRenderer;
-import dev.amble.ait.client.renderer.ClientSonicTooltip;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import dev.amble.ait.api.AitAPI;
+import dev.amble.ait.client.renderer.*;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitBlockEntities;
 import dev.amble.ait.common.lib.AitEntities;
 import dev.amble.ait.xplat.IClientXplatAbstractions;
+import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
@@ -30,6 +29,14 @@ public class RegisterClientStuff {
                 return new ClientSonicTooltip(contents);
 
             return null;
+        });
+
+        CoreShaderRegistrationCallback.EVENT.register(context -> {
+            context.register(
+                    AitAPI.modLoc("rendertype_accumulation"),
+                    DefaultVertexFormat.NEW_ENTITY,
+                    AITShaders::setAccumulationShader
+            );
         });
 
         var x = IClientXplatAbstractions.INSTANCE;
