@@ -66,7 +66,7 @@ If you have confusion about special blocks you are able to check the items toolt
 ### Artists:
 - Tright
 - b2
-- Ouro
+- [Ouro](https://ouro-theartist.carrd.co/)
 - Maggie
 
 ---
