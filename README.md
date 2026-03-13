@@ -68,6 +68,7 @@ If you have confusion about special blocks you are able to check the items toolt
 - b2
 - [Ouro](https://ouro-theartist.carrd.co/)
 - Maggie
+- Wazzaki_Wanzz
 
 ---
 
@@ -78,6 +79,7 @@ If you have confusion about special blocks you are able to check the items toolt
 - Uriel_N_Diaz 
 - Classic
 - Lucien
+- RatZoomie
   
 ---
 
