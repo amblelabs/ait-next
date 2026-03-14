@@ -1,6 +1,7 @@
 package dev.amble.ait.common.lib;
 
 import dev.amble.ait.api.AitAPI;
+import dev.amble.ait.common.items.ItemKeychain;
 import dev.amble.ait.common.items.components.ArtronItemData;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
@@ -33,6 +34,11 @@ public class AitComponents {
     public static final DataComponentType<ArtronItemData> ARTRON = make("artron",
             builder -> builder.persistent(ArtronItemData.CODEC)
                     .networkSynchronized(ArtronItemData.STREAM_CODEC).cacheEncoding());
+
+    public static final DataComponentType<ItemKeychain.KeychainContents> KEYCHAIN_CONTENTS = make("keychain_contents",
+            builder -> builder.persistent(ItemKeychain.KeychainContents.CODEC)
+                    .networkSynchronized(ItemKeychain.KeychainContents.STREAM_CODEC)
+                    .cacheEncoding());
 
     private static <T> DataComponentType<T> make(String name, UnaryOperator<DataComponentType.Builder<T>> unaryOperator) {
         return make(AitAPI.modLoc(name), unaryOperator);

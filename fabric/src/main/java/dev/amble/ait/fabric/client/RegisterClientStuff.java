@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.client.renderer.*;
 import dev.amble.ait.common.items.components.SonicCrystals;
+import dev.amble.ait.common.items.tooltips.KeychainTooltip;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitBlockEntities;
 import dev.amble.ait.common.lib.AitEntities;
@@ -30,6 +31,14 @@ public class RegisterClientStuff {
 
             return null;
         });
+
+        TooltipComponentCallback.EVENT.register(component -> {
+            if (component instanceof KeychainTooltip tooltip) {
+                return new ClientKeychainTooltip(tooltip);
+            }
+            return null;
+        });
+
 
         //noinspection CodeBlock2Expr
         CoreShaderRegistrationCallback.EVENT.register(context -> {

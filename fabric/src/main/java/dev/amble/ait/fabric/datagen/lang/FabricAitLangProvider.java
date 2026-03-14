@@ -41,6 +41,15 @@ public class FabricAitLangProvider {
             builder.add(AitItems.SHARD_RESONATING, "Resonating Zeiton Shard");
             builder.add(AitItems.SHARD_SCULK, "Sculk Zeiton Shard");
 
+            // Keys
+            builder.add(AitTags.Items.KEYS, "Keys");
+
+            builder.add(AitItems.IRON_KEY, "Iron Key");
+            builder.add(AitItems.GOLD_KEY, "Gold Key");
+            builder.add(AitItems.NETHERITE_KEY, "Netherite Key");
+            builder.add(AitItems.CLASSIC_KEY, "Classic Key");
+            builder.add(AitItems.KEY_CHAIN, "Key Chain");
+
             // Widgets
             builder.add("widget." + AitAPI.MOD_ID + ".empty", "Empty");
             builder.add("widget." + AitAPI.MOD_ID + ".empty.desc", "...");
