@@ -52,7 +52,7 @@ public class RegisterClientStuff {
     }
 
     public static void registerBlockEntityRenderers(@NotNull BlockEntityRendererRegisterer registerer) {
-        registerer.registerBlockEntityRenderer(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, PoliceBoxBlockEntityRenderer::new);
+        registerer.registerBlockEntityRenderer(AitBlockEntities.EXTERIOR_BLOCK_ENTITY, ExteriorBlockEntityRenderer::new);
         registerer.registerBlockEntityRenderer(AitBlockEntities.DOOR_BLOCK_ENTITY, DoorBlockEntityRenderer::new);
         registerer.registerBlockEntityRenderer(AitBlockEntities.CONSOLE_BLOCK_ENTITY, ConsoleBlockEntityRenderer::new);
     }

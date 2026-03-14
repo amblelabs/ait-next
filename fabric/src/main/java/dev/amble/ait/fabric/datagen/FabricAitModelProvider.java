@@ -24,7 +24,7 @@ public class FabricAitModelProvider extends FabricAmbleModelProvider {
         gen.generateFlatItem(AitItems.SCREWDRIVER, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
 
         // Police box item
-        gen.generateFlatItem(AitBlocks.POLICE_BOX.asItem(), ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitBlocks.EXTERIOR_BLOCK.asItem(), ModelTemplates.FLAT_ITEM);
 
         // Zeiton shards
         gen.generateFlatItem(AitItems.SHARD_AMETHYST, ModelTemplates.FLAT_ITEM);
