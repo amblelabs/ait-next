@@ -50,6 +50,10 @@ public class FabricAitLangProvider {
             builder.add(AitItems.CLASSIC_KEY, "Classic Key");
             builder.add(AitItems.KEY_CHAIN, "Key Chain");
 
+
+            // Tardis Components idk
+            builder.add(AitItems.LIGHTBULB, "LightBulb");
+
             // Widgets
             builder.add("widget." + AitAPI.MOD_ID + ".empty", "Empty");
             builder.add("widget." + AitAPI.MOD_ID + ".empty.desc", "...");

@@ -54,6 +54,9 @@ public class AitItems {
     public static final Item CLASSIC_KEY = make("classic_key", new ItemKey(unstackable()));
     public static final Item KEY_CHAIN = make("key_chain", new ItemKeychain(unstackable()));
 
+    public static final Item LIGHTBULB = make("lightbulb",
+            new Item(new Item.Properties().food(AitComponents.LIGHTBULB_FOOD_COMPONENT)));
+
     public static Item.Properties props() {
         return new Item.Properties();
     }

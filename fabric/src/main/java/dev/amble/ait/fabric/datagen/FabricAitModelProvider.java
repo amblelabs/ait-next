@@ -42,5 +42,8 @@ public class FabricAitModelProvider extends FabricAmbleModelProvider {
         gen.generateFlatItem(AitItems.NETHERITE_KEY, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
         gen.generateFlatItem(AitItems.CLASSIC_KEY, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
         gen.generateFlatItem(AitItems.KEY_CHAIN, ModelTemplates.FLAT_ITEM);
+
+        // Tardis components
+        gen.generateFlatItem(AitItems.LIGHTBULB, ModelTemplates.FLAT_ITEM);
     }
 }
