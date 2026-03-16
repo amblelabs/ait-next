@@ -1,5 +1,6 @@
 package dev.amble.ait.common.sonic;
 
+import dev.amble.ait.api.mod.sonic.SonicCrystal;
 import dev.amble.ait.common.I18n;
 import net.minecraft.core.particles.DustColorTransitionOptions;
 import net.minecraft.network.chat.Component;

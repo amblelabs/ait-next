@@ -1,5 +1,6 @@
-package dev.amble.ait.common.sonic;
+package dev.amble.ait.api.mod.sonic;
 
+import dev.amble.ait.common.sonic.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;

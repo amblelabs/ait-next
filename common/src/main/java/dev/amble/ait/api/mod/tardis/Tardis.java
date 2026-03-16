@@ -1,9 +1,9 @@
-package dev.amble.ait.common.tardis;
+package dev.amble.ait.api.mod.tardis;
 
 import dev.amble.ait.common.lib.AitEcs;
-import dev.amble.ait.common.tardis.event.init.TardisLifecycleEvents;
-import dev.amble.ait.common.tardis.event.state.TardisStateEvents;
-import dev.amble.ait.common.tardis.event.tick.TardisTickEvents;
+import dev.amble.ait.api.mod.tardis.event.init.TardisLifecycleEvents;
+import dev.amble.ait.api.mod.tardis.event.state.TardisStateEvents;
+import dev.amble.ait.api.mod.tardis.event.tick.TardisTickEvents;
 import dev.drtheo.ecs.state.NbtSerializer;
 import dev.drtheo.ecs.state.TState;
 import dev.drtheo.ecs.state.TStateContainer;
@@ -19,7 +19,8 @@ import java.util.UUID;
 
 public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
 
-    private static final String ID_TAG = "Id";
+    public static final String ID_TAG = "Id";
+    public static final String STATES_TAG = "States";
 
     protected final UUID id;
 
@@ -35,22 +36,26 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
 
     public static Tardis fromNbt(CompoundTag nbt, boolean isClient) {
         UUID id = nbt.getUUID(ID_TAG);
-        return new Tardis(id, nbt, isClient);
+        return new Tardis(id, nbt, isClient, false);
     }
 
-    public Tardis(UUID id, CompoundTag nbt, boolean isClient) {
+    public Tardis(UUID id, CompoundTag nbt, boolean isClient, boolean fix) {
         super(AitEcs.States.createArrayHolder());
 
         this.id = id;
         this.isClient = isClient;
 
-        this.updateStates(nbt, isClient);
+        this.updateStates(nbt, isClient, fix);
 
         TardisLifecycleEvents.handleLoaded(this);
     }
 
     public void tick() {
         TardisTickEvents.handleTick(this);
+    }
+
+    public UUID id() {
+        return id;
     }
 
     public boolean isClient() {
@@ -70,15 +75,15 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
         this.dirty = false;
     }
 
-    public void updateStates(CompoundTag nbt, boolean isClient) {
-        CompoundTag states = nbt.getCompound("States");
+    public void updateStates(CompoundTag nbt, boolean isClient, boolean fix) {
+        CompoundTag states = nbt.getCompound(STATES_TAG);
 
         for (String key : states.getAllKeys()) {
             if (AitEcs.States.get(ResourceLocation.parse(key)) instanceof TState.NbtBacked<?> serializable) {
                 Tag state = states.get(key);
 
                 if (state instanceof CompoundTag compound) {
-                    this.addState(serializable.decode(compound, isClient));
+                    this.addState(serializable.decode(fix ? serializable.update(compound, 0) : compound, isClient));
                 } else {
                     this.removeState(serializable);
                 }
@@ -120,7 +125,7 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
         CompoundTag states = new CompoundTag();
         this.forEachState((i, state) -> stateToNbt(states, i, state, isClient));
 
-        nbt.put("States", states);
+        nbt.put(STATES_TAG, states);
     }
 
     @SuppressWarnings("rawtypes")

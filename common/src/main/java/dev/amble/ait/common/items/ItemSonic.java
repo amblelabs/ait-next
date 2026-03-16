@@ -8,7 +8,7 @@ import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitComponents;
-import dev.amble.ait.common.sonic.SonicCrystal;
+import dev.amble.ait.api.mod.sonic.SonicCrystal;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;

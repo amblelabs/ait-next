@@ -2,6 +2,7 @@ package dev.drtheo.ecs.state;
 
 import dev.drtheo.ecs.event.TEventsRegistry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -28,9 +29,17 @@ public interface TState<Self extends TState<Self>> {
      */
     abstract class NbtBacked<T extends TState<T> & NbtSerializer> extends SerializableType<T, CompoundTag> implements NbtDeserializer<T> {
 
+        public static final String VERSION_TAG = "DataVersion";
+
+        private final int version;
+        private final Fix[] fixes;
+
         @Contract(pure = true)
-        public NbtBacked(@NotNull ResourceLocation id) {
+        public NbtBacked(@NotNull ResourceLocation id, int version, Fix... fix) {
             super(id);
+
+            this.version = version;
+            this.fixes = fix;
         }
 
         @Override
@@ -38,6 +47,8 @@ public interface TState<Self extends TState<Self>> {
         public @NotNull CompoundTag encode(@NotNull T t, boolean isClient) {
             CompoundTag nbt = new CompoundTag();
             t.toNbt(nbt, isClient);
+
+            nbt.putInt(VERSION_TAG, this.version);
             return nbt;
         }
 
@@ -50,6 +61,29 @@ public interface TState<Self extends TState<Self>> {
                 TEventsRegistry.LOGGER.info(element.toString());
                 throw e;
             }
+        }
+
+        public CompoundTag update(CompoundTag tag, int defaultVersion) {
+            int version = tag.contains(VERSION_TAG, Tag.TAG_ANY_NUMERIC) ? tag.getInt(VERSION_TAG) : defaultVersion;
+            return update(version, tag);
+        }
+
+        public CompoundTag update(int version, CompoundTag tag) {
+            if (version < this.version) {
+                for (Fix fix : fixes) {
+                    if (version <= fix.version) {
+                        tag = fix.fixer().update(tag);
+                    }
+                }
+            }
+
+            return tag;
+        }
+
+        public record Fix(int version, Fixer fixer) { }
+
+        public interface Fixer {
+            CompoundTag update(CompoundTag tag);
         }
     }
 
