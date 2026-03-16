@@ -21,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ServiceLoader;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public interface IXplatAbstractions {
@@ -39,6 +40,8 @@ public interface IXplatAbstractions {
     void initPlatformSpecific();
 
     void sendPacketToPlayer(ServerPlayer target, CustomPacketPayload packet);
+
+    void sendPacketToAll(Stream<ServerPlayer> targets, CustomPacketPayload packet);
 
     void sendPacketNear(Vec3 pos, double radius, ServerLevel dimension, CustomPacketPayload packet);
 

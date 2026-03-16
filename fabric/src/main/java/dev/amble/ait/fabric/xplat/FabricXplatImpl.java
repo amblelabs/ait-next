@@ -41,10 +41,10 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Collection;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class FabricXplatImpl implements IXplatAbstractions {
 
@@ -76,21 +76,19 @@ public class FabricXplatImpl implements IXplatAbstractions {
     }
 
     @Override
+    public void sendPacketToAll(Stream<ServerPlayer> targets, CustomPacketPayload packet) {
+        Packet<?> pkt = this.toVanilla(packet);
+        targets.forEach(player -> player.connection.send(pkt));
+    }
+
+    @Override
     public void sendPacketNear(Vec3 pos, double radius, ServerLevel dimension, CustomPacketPayload packet) {
-        sendPacketToPlayers(PlayerLookup.around(dimension, pos, radius), packet);
+        sendPacketToAll(PlayerLookup.around(dimension, pos, radius).stream(), packet);
     }
 
     @Override
     public void sendPacketTracking(Entity entity, CustomPacketPayload packet) {
-        sendPacketToPlayers(PlayerLookup.tracking(entity), packet);
-    }
-
-    private void sendPacketToPlayers(Collection<ServerPlayer> players, CustomPacketPayload packet) {
-        Packet<?> pkt = this.toVanilla(packet);
-
-        for (var p : players) {
-            p.connection.send(pkt);
-        }
+        sendPacketToAll(PlayerLookup.tracking(entity).stream(), packet);
     }
 
     @Override

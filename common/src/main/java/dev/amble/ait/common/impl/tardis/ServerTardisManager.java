@@ -3,14 +3,18 @@ package dev.amble.ait.common.impl.tardis;
 import dev.amble.ait.api.mod.storage.PlainLazyDirectoryDimensionDataStorage;
 import dev.amble.ait.api.mod.tardis.ServerTardis;
 import dev.amble.ait.api.mod.tardis.TardisManager;
+import dev.amble.ait.common.network.tardis.manager.TardisSyncPayload;
+import dev.amble.ait.xplat.IXplatAbstractions;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.Stream;
 
 public class ServerTardisManager implements TardisManager<ServerTardis> {
 
@@ -27,32 +31,20 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 
 			tardis.tick();
 
-//			if (tardis.dirty()) {
-//				this.syncPartial(tardis.id(), tardis, tracking(tardis));
-//				tardis.unmarkDirty();
-//			}
+			if (tardis.dirty()) {
+				this.syncPartial(tardis, this.level.players().stream());
+				tardis.unmarkDirty();
+			}
 		}
 	}
 
-//	public void syncAll(Collection<ServerPlayer> targets) {
-//		PacketByteBuf buf = PacketByteBufs.create();
-//		buf.writeNbt(this.toNbt(true));
-//
-//		targets.forEach(player ->
-//				ServerPlayNetworking.send(player, SYNC_ALL, buf));
-//	}
-//
-//	public void syncPartial(long id, ServerTardis gate, Stream<ServerPlayer> targets) {
-//		NbtCompound nbt = new NbtCompound();
-//		gate.toNbt(nbt, true);
-//
-//		PacketByteBuf buf = PacketByteBufs.create();
-//		buf.writeVarLong(id);
-//		buf.writeNbt(nbt);
-//
-//		targets.forEach(player ->
-//				ServerPlayNetworking.send(player, SYNC, buf));
-//	}
+	public void syncPartial(ServerTardis tardis, Stream<ServerPlayer> targets) {
+		CompoundTag nbt = new CompoundTag();
+		tardis.toNbt(nbt, true);
+
+		TardisSyncPayload payload = new TardisSyncPayload(nbt);
+		IXplatAbstractions.INSTANCE.sendPacketToAll(targets, payload);
+	}
 
 	@Override
 	public boolean contains(UUID id) {
