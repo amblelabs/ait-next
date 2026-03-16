@@ -16,7 +16,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity {
+public class ExteriorBlockEntity extends BlockEntity implements GeoBlockEntity {
 
     public enum DoorState {
         CLOSED,
@@ -40,8 +40,8 @@ public class PoliceBoxBlockEntity extends BlockEntity implements GeoBlockEntity 
     private boolean leftHasOpened = false;
     private boolean needsSnap = false;
 
-    public PoliceBoxBlockEntity(BlockPos pos, BlockState state) {
-        super(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, pos, state);
+    public ExteriorBlockEntity(BlockPos pos, BlockState state) {
+        super(AitBlockEntities.EXTERIOR_BLOCK_ENTITY, pos, state);
     }
 
     public int getTextureIndex() {

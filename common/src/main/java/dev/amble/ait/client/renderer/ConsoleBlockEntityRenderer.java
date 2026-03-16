@@ -41,7 +41,20 @@ public class ConsoleBlockEntityRenderer extends GeoBlockRenderer<ConsoleBlockEnt
         if (!isReRender) {
             int rotation = entity.getBlockState().getValue(ConsoleBlock.ROTATION);
             boolean onSlab = entity.isOnSlab();
-            poseStack.translate(0.5, onSlab ? -0.5 : 0, 0.5);
+            boolean between = entity.isBetween();
+            int betweenCorner = entity.getBlockState().getValue(ConsoleBlock.BETWEEN_CORNER);
+
+            double xOff = 0.5;
+            double yOff = onSlab ? -0.5 : 0;
+            double zOff = 0.5;
+
+            if (between) {
+                double[][] offsets = ConsoleBlock.BETWEEN_OFFSETS;
+                xOff += offsets[betweenCorner][0];
+                zOff += offsets[betweenCorner][1];
+            }
+
+            poseStack.translate(xOff, yOff, zOff);
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation * -45f));
         }
     }

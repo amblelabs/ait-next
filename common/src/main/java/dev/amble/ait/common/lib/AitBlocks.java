@@ -88,8 +88,8 @@ public class AitBlocks {
 
     //
 
-    public static final PoliceBoxBlock POLICE_BOX = blockItem("police_box", new PoliceBoxBlock(PoliceBoxBlock.defaultProps()));
-    public static final DoorBlock POLICE_BOX_DOOR = blockItem("police_box_door", new DoorBlock(DoorBlock.defaultProps()));
+    public static final PoliceBoxBlock EXTERIOR_BLOCK = blockItem("exterior", new PoliceBoxBlock(PoliceBoxBlock.defaultProps()));
+    public static final DoorBlock TARDIS_DOOR = blockItem("tardis_door", new DoorBlock(DoorBlock.defaultProps()));
     public static final ConsoleBlock CONSOLE = blockItem("console", new ConsoleBlock(ConsoleBlock.defaultProps()));
 
     @SuppressWarnings("SameReturnValue") // intended

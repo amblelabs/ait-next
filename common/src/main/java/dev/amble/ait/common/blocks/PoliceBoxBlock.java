@@ -91,7 +91,7 @@ public class PoliceBoxBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new PoliceBoxBlockEntity(pos, state);
+        return new ExteriorBlockEntity(pos, state);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class PoliceBoxBlock extends BaseEntityBlock {
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof PoliceBoxBlockEntity policeBox) {
+        if (be instanceof ExteriorBlockEntity policeBox) {
             policeBox.interact(player.isShiftKeyDown());
         }
 

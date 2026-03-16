@@ -12,7 +12,6 @@
 [<img alt="fabric" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/fabric_vector.svg">](https://fabricmc.net/) <!-- SVG version -->
 [<img alt="forge" height="56" src="https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/supported/forge_vector.svg">](https://files.minecraftforge.net) <!-- SVG version -->
 [<img alt="amble" height="56" src="https://raw.githubusercontent.com/amblelabs/modkit/refs/heads/main/promo/cozy_vector_requires.svg">](https://modrinth.com/mod/amblekit)
-
 </div>
 
 ## Summary
@@ -29,10 +28,9 @@
   What does this mod add?
 </h2>
 
-* A functional Tardis
-* A lot more
-
-Available for Fabric + Forge on 1.21.1
+* A fully customizable, upgradable, and growable TARDIS that can be used for transportation, storage, and more!
+* A variety of different blocks and items to help you customize your TARDIS, from different types of walls and floors to different types of controls and consoles.
+* A unique growth system that allows your TARDIS to grow and learn from you, becoming more powerful and versatile over time.
 
 Recommended to play with 8GB of RAM **minimum** singleplayer.
 
@@ -47,14 +45,19 @@ Recommended to have 8GB of RAM **allocated** to the multiplayer servers.
   Need Help? Confused? Don't know what a feature does?
 </h2>
 
-If you have confusion about special blocks you are able to check the items tooltip for more info on what conditions you need to be to place the block. We also have a [wiki](https://amblelabs.github.io/ait-wiki/) which documents on most things in the mod from blocks and items right to how to add custom datapack exteriors and consoles.
+If you become confused, don't forget to check the item tooltip for special blocks and items, as they often contain important information about how to use them or what they do.
+Otherwise, we have [wiki](https://amblelabs.github.io/ait-wiki/) that documents everything in the mod, including resources on custom datapack creations for further customization, including but not limited to:
+- Custom consoles
+- Custom exteriors
+- Custom desktops
+- Custom EVERYTHING!
 
 ![The Sonic Screwdriver can see what controls do what!](https://cdn.modrinth.com/data/cached_images/e9a7d7247bd2c74f8690fa99caf30acda381c37d.png)
 
 ### Developers:
 - [Loqor](https://loqor.dev/)
-- [duzo](https://duzo.is-a.dev/)
 - [theoretically](https://theo.is-a.dev/)
+- [duzo](https://duzo.is-a.dev/)
 - [AddieDaBaddie](https://addi3.github.io/index)
 - [Saturn](https://github.com/Saturnorsomthing)
 - [Monke](https://github.com/rapbattlegod32)
@@ -65,28 +68,26 @@ If you have confusion about special blocks you are able to check the items toolt
 
 ### Artists:
 - Tright
-- b2
-- Ouro
+- Wazzaki_Wanzz
+- [Ouro](https://ouro-theartist.carrd.co/)
+- [AddieDaBaddie](https://github.com/Addi3)
 - Maggie
 
 ---
 
 ### Sound Design:
 - Dian
-- [Radio](https://im-radio.bandcamp.com/album/ait-mod-music-disc-drifting)
 - TARDISSFX (the YouTube channel)
 - Uriel_N_Diaz 
 - Classic
 - Lucien
+- RatZoomie
   
 ---
 
 ### Junior Developers:
-- [K King](https://x.com/ItsKKing)
-- [Cosmic](https://github.com/Cosmic-Fires)
-- [Nanowu](https://nanuwo.github.io/)
-- Ember
-
+- Ember808
+- KKing
 ---
 
 ### Wiki Curators:
@@ -97,15 +98,14 @@ If you have confusion about special blocks you are able to check the items toolt
 
 
 ### Thank You's:
-- [MagicMan(?)](https://magicmaan.github.io/) (Help with modeling)
-- Bug1312 (Help with code)
-- DocArcane (Credit for the Steampunk console design)
-- Creativious (Help with code)
-- nitrogenez (Ukrainian Translations)
-- Codiak (Help with code)
-- Maketendo (Help with code)
-- Krang (Art)
 - Rhyno (Minecraft Server Host)
+- nitrogenez (Ukrainian Translations)
+- Maketendo (Content creation)
+- Krang (Art)
+- Codiak (Help with code)
+- [MagicMan(?)](https://magicmaan.github.io/) (Help with modeling)
+- DocArcane (Credit for the Steampunk console design)
+- b2bmrww2 (Art)
 
 ---
 

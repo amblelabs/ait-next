@@ -1,12 +1,12 @@
 package dev.amble.ait.client.model;
 
 import dev.amble.ait.api.AitAPI;
-import dev.amble.ait.common.blocks.PoliceBoxBlockEntity;
+import dev.amble.ait.common.blocks.ExteriorBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 
-public class PoliceBoxGeoModel extends GeoModel<PoliceBoxBlockEntity> {
+public class PoliceBoxGeoModel extends GeoModel<ExteriorBlockEntity> {
 
     private static final ResourceLocation MODEL = AitAPI.modLoc("geo/blockentities/police_box.geo.json");
     private static final ResourceLocation ANIMATION = AitAPI.modLoc("animations/blockentities/police_box.animation.json");
@@ -21,19 +21,19 @@ public class PoliceBoxGeoModel extends GeoModel<PoliceBoxBlockEntity> {
 
     @SuppressWarnings("removal")
     @Override
-    public ResourceLocation getModelResource(PoliceBoxBlockEntity entity) {
+    public ResourceLocation getModelResource(ExteriorBlockEntity entity) {
         return MODEL;
     }
 
     @SuppressWarnings("removal")
     @Override
-    public ResourceLocation getTextureResource(@Nullable PoliceBoxBlockEntity entity) {
+    public ResourceLocation getTextureResource(@Nullable ExteriorBlockEntity entity) {
         if (entity == null) return TEXTURES[0];
         return TEXTURES[entity.getTextureIndex() % TEXTURES.length];
     }
 
     @Override
-    public ResourceLocation getAnimationResource(PoliceBoxBlockEntity entity) {
+    public ResourceLocation getAnimationResource(ExteriorBlockEntity entity) {
         return ANIMATION;
     }
 }

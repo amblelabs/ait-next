@@ -1,11 +1,14 @@
 package dev.amble.ait.common.lib;
 
 import dev.amble.ait.api.AitAPI;
+import dev.amble.ait.common.items.ItemKeychain;
 import dev.amble.ait.common.items.components.ArtronItemData;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -33,6 +36,17 @@ public class AitComponents {
     public static final DataComponentType<ArtronItemData> ARTRON = make("artron",
             builder -> builder.persistent(ArtronItemData.CODEC)
                     .networkSynchronized(ArtronItemData.STREAM_CODEC).cacheEncoding());
+
+    public static final DataComponentType<ItemKeychain.KeychainContents> KEYCHAIN_CONTENTS = make("keychain_contents",
+            builder -> builder.persistent(ItemKeychain.KeychainContents.CODEC)
+                    .networkSynchronized(ItemKeychain.KeychainContents.STREAM_CODEC)
+                    .cacheEncoding());
+
+    public static final FoodProperties LIGHTBULB_FOOD_COMPONENT = new FoodProperties.Builder()
+            .nutrition(5)
+            .saturationModifier(0.6f)
+            .fast()
+            .build();
 
     private static <T> DataComponentType<T> make(String name, UnaryOperator<DataComponentType.Builder<T>> unaryOperator) {
         return make(AitAPI.modLoc(name), unaryOperator);

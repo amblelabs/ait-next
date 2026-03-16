@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.amble.ait.client.model.PoliceBoxGeoModel;
 import dev.amble.ait.common.blocks.PoliceBoxBlock;
-import dev.amble.ait.common.blocks.PoliceBoxBlockEntity;
+import dev.amble.ait.common.blocks.ExteriorBlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,13 +15,14 @@ import org.jspecify.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBlockEntity> {
+public class ExteriorBlockEntityRenderer extends GeoBlockRenderer<ExteriorBlockEntity> {
 
-    public PoliceBoxBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public ExteriorBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         super(new PoliceBoxGeoModel());
-        addRenderLayer(new PoliceBoxEmissiveLayer(this));
-        addRenderLayer(new AccumulationLayer<PoliceBoxBlockEntity>(this,
-                ResourceLocation.withDefaultNamespace("textures/block/sand.png"), 256));
+        addRenderLayer(new ExteriorEmissiveLayer(this));
+        // TODO finish this someday lel
+        // addRenderLayer(new AccumulationLayer<PoliceBoxBlockEntity>(this,
+        //         ResourceLocation.withDefaultNamespace("textures/block/sand.png"), 256));
     }
 
     @Override
@@ -30,13 +31,13 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
     }
 
     @Override
-    public RenderType getRenderType(PoliceBoxBlockEntity entity, ResourceLocation texture,
+    public RenderType getRenderType(ExteriorBlockEntity entity, ResourceLocation texture,
                                     @Nullable MultiBufferSource bufferSource, float partialTick) {
         return AITRenderLayers.tardisTranslucent(texture);
     }
 
     @Override
-    public void preRender(PoseStack poseStack, PoliceBoxBlockEntity entity, BakedGeoModel model,
+    public void preRender(PoseStack poseStack, ExteriorBlockEntity entity, BakedGeoModel model,
                           @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
                           boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                           int colour) {
@@ -48,15 +49,15 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
         }
 
         if (entity.needsSnap()) {
-            PoliceBoxBlockEntity.DoorState state = entity.getDoorState();
+            ExteriorBlockEntity.DoorState state = entity.getDoorState();
             float rightY = (float) Math.toRadians(77.5);
             float leftY = (float) Math.toRadians(-77.5);
 
-            if (state == PoliceBoxBlockEntity.DoorState.RIGHT_OPEN || state == PoliceBoxBlockEntity.DoorState.BOTH_OPEN) {
+            if (state == ExteriorBlockEntity.DoorState.RIGHT_OPEN || state == ExteriorBlockEntity.DoorState.BOTH_OPEN) {
                 setDoorBoneRotation(model, "door_r", rightY);
                 setDoorBoneRotation(model, "RDoor", rightY);
             }
-            if (state == PoliceBoxBlockEntity.DoorState.BOTH_OPEN) {
+            if (state == ExteriorBlockEntity.DoorState.BOTH_OPEN) {
                 setDoorBoneRotation(model, "door_l", leftY);
                 setDoorBoneRotation(model, "LDoor", leftY);
             }
@@ -69,7 +70,7 @@ public class PoliceBoxBlockEntityRenderer extends GeoBlockRenderer<PoliceBoxBloc
     }
 
     @Override
-    public void actuallyRender(PoseStack poseStack, PoliceBoxBlockEntity entity, BakedGeoModel model,
+    public void actuallyRender(PoseStack poseStack, ExteriorBlockEntity entity, BakedGeoModel model,
                                @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer,
                                boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                                int colour) {
