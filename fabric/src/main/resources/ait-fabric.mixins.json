@@ -7,8 +7,7 @@
   ],
   "mixins": [
     "FabricAxeItemMixin",
-    "FabricPlayerMixin",
-    "MultiDimServerLevelMixin"
+    "FabricPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

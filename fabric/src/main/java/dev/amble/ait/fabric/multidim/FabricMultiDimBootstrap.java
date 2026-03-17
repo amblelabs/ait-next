@@ -3,7 +3,6 @@ package dev.amble.ait.fabric.multidim;
 import dev.amble.lib.multidim.MultiDim;
 import dev.amble.lib.multidim.MultiDimFileManager;
 import dev.amble.lib.multidim.event.ServerCrashEvent;
-import dev.amble.lib.multidim.event.WorldSaveEvent;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -37,7 +36,6 @@ public final class FabricMultiDimBootstrap {
             }
         });
 
-        WorldSaveEvent.EVENT.register(world -> MultiDimFileManager.writeIfNeeded(world.getServer(), world));
         initialized = true;
     }
 }

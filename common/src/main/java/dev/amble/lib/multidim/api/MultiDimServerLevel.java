@@ -1,9 +1,11 @@
 package dev.amble.lib.multidim.api;
 
+import dev.amble.lib.multidim.MultiDimFileManager;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.progress.ChunkProgressListener;
+import net.minecraft.util.ProgressListener;
 import net.minecraft.world.RandomSequences;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.CustomSpawner;
@@ -33,6 +35,12 @@ public class MultiDimServerLevel extends ServerLevel {
 
     public WorldBlueprint getBlueprint() {
         return blueprint;
+    }
+
+    @Override
+    public void save(@Nullable ProgressListener progress, boolean flush, boolean skipSave) {
+        MultiDimFileManager.writeIfNeeded(this.getServer(), this);
+        super.save(progress, flush, skipSave);
     }
 }
 
