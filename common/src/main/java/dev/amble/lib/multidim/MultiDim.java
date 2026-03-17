@@ -151,7 +151,11 @@ public class MultiDim {
     public MultiDimServerLevel addOrLoad(WorldBlueprint blueprint, ResourceKey<Level> id, boolean created) {
         ServerLevel existing = this.server.getLevel(id);
         if (existing != null) {
-            return (MultiDimServerLevel) existing;
+            if (existing instanceof MultiDimServerLevel multiDimServerLevel) {
+                return multiDimServerLevel;
+            }
+
+            throw new IllegalStateException("World " + id.location() + " is already loaded as " + existing.getClass().getName());
         }
 
         MutableRegistry<LevelStem> dimensionsRegistry = MultiDimUtil.getMutableDimensionsRegistry(this.server);
@@ -195,6 +199,7 @@ public class MultiDim {
         world.save(new SimpleWorldProgressListener(() -> {
             onWorldUnload.accept(this.server, world);
             MultiDimUtil.getMutableDimensionsRegistry(this.server).multidim$remove(key.location());
+            this.refreshCommandTrees();
         }), true, false);
     }
 
@@ -217,6 +222,7 @@ public class MultiDim {
 
         onWorldUnload.accept(this.server, world);
         MultiDimUtil.getMutableDimensionsRegistry(this.server).multidim$remove(key.location());
+        this.refreshCommandTrees();
 
         Path worldDirectory = ((MultiDimServer) this.server).multidim$getSession().getDimensionPath(key);
         if (!Files.exists(worldDirectory)) {
@@ -247,6 +253,11 @@ public class MultiDim {
         ((MultiDimServer) this.server).multidim$addWorld(world);
         onWorldLoad.accept(this.server, world);
         world.tick(() -> true);
+        this.refreshCommandTrees();
+    }
+
+    private void refreshCommandTrees() {
+        this.server.getPlayerList().getPlayers().forEach(player -> this.server.getCommands().sendCommands(player));
     }
 
     public WorldBlueprint getBlueprint(ResourceLocation id) {
