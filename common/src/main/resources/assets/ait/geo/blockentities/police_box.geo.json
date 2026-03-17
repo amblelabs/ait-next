@@ -7,12 +7,17 @@
 				"texture_width": 256,
 				"texture_height": 256,
 				"visible_bounds_width": 3,
-				"visible_bounds_height": 4.5,
-				"visible_bounds_offset": [0, 1.75, 0]
+				"visible_bounds_height": 5.5,
+				"visible_bounds_offset": [0, 2.25, 0]
 			},
 			"bones": [
 				{
+					"name": "tardis",
+					"pivot": [0, 0, 0]
+				},
+				{
 					"name": "base",
+					"parent": "tardis",
 					"pivot": [0, 24.125, 0],
 					"cubes": [
 						{"origin": [-12, 0, -12], "size": [24, 2, 24], "uv": [0, 0]}
