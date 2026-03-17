@@ -159,7 +159,8 @@ public class PoliceBoxBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        int rotation = state.getValue(ROTATION);
+        // Geometry in SHAPES is defined 180 degrees opposite the renderer's base orientation.
+        int rotation = (state.getValue(ROTATION) + 4) & 7;
         return state.getValue(ON_SLAB) ? SLAB_SHAPES[rotation] : SHAPES[rotation];
     }
 
