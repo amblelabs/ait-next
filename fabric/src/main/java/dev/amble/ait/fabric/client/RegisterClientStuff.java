@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.client.renderer.*;
 import dev.amble.ait.common.items.components.SonicCrystals;
+import dev.amble.ait.common.items.tooltips.KeychainTooltip;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitBlockEntities;
 import dev.amble.ait.common.lib.AitEntities;
@@ -31,6 +32,14 @@ public class RegisterClientStuff {
             return null;
         });
 
+        TooltipComponentCallback.EVENT.register(component -> {
+            if (component instanceof KeychainTooltip tooltip) {
+                return new ClientKeychainTooltip(tooltip);
+            }
+            return null;
+        });
+
+
         //noinspection CodeBlock2Expr
         CoreShaderRegistrationCallback.EVENT.register(context -> {
             context.register(
@@ -52,7 +61,7 @@ public class RegisterClientStuff {
     }
 
     public static void registerBlockEntityRenderers(@NotNull BlockEntityRendererRegisterer registerer) {
-        registerer.registerBlockEntityRenderer(AitBlockEntities.POLICE_BOX_BLOCK_ENTITY, PoliceBoxBlockEntityRenderer::new);
+        registerer.registerBlockEntityRenderer(AitBlockEntities.EXTERIOR_BLOCK_ENTITY, ExteriorBlockEntityRenderer::new);
         registerer.registerBlockEntityRenderer(AitBlockEntities.DOOR_BLOCK_ENTITY, DoorBlockEntityRenderer::new);
         registerer.registerBlockEntityRenderer(AitBlockEntities.CONSOLE_BLOCK_ENTITY, ConsoleBlockEntityRenderer::new);
     }

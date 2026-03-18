@@ -8,7 +8,7 @@ import dev.amble.ait.common.items.ItemSonic;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.lib.AitComponents;
 import dev.amble.ait.common.network.SonicFunctionPayload;
-import dev.amble.ait.common.sonic.SonicCrystal;
+import dev.amble.ait.api.mod.sonic.SonicCrystal;
 import dev.amble.ait.xplat.IClientXplatAbstractions;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;

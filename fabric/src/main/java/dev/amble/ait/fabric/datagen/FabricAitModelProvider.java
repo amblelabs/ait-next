@@ -24,7 +24,7 @@ public class FabricAitModelProvider extends FabricAmbleModelProvider {
         gen.generateFlatItem(AitItems.SCREWDRIVER, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
 
         // Police box item
-        gen.generateFlatItem(AitBlocks.POLICE_BOX.asItem(), ModelTemplates.FLAT_ITEM);
+        gen.generateFlatItem(AitBlocks.EXTERIOR_BLOCK.asItem(), ModelTemplates.FLAT_ITEM);
 
         // Zeiton shards
         gen.generateFlatItem(AitItems.SHARD_AMETHYST, ModelTemplates.FLAT_ITEM);
@@ -35,5 +35,15 @@ public class FabricAitModelProvider extends FabricAmbleModelProvider {
         gen.generateFlatItem(AitItems.SHARD_REFRACTION, ModelTemplates.FLAT_ITEM);
         gen.generateFlatItem(AitItems.SHARD_RESONATING, ModelTemplates.FLAT_ITEM);
         gen.generateFlatItem(AitItems.SHARD_SCULK, ModelTemplates.FLAT_ITEM);
+
+        // Keys
+        gen.generateFlatItem(AitItems.IRON_KEY, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
+        gen.generateFlatItem(AitItems.GOLD_KEY, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
+        gen.generateFlatItem(AitItems.NETHERITE_KEY, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
+        gen.generateFlatItem(AitItems.CLASSIC_KEY, ModelTemplates.FLAT_HANDHELD_ROD_ITEM);
+        gen.generateFlatItem(AitItems.KEY_CHAIN, ModelTemplates.FLAT_ITEM);
+
+        // Tardis components
+        gen.generateFlatItem(AitItems.LIGHTBULB, ModelTemplates.FLAT_ITEM);
     }
 }

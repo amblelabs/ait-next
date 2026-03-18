@@ -2,12 +2,13 @@ package dev.amble.ait.common.items;
 
 import dev.amble.ait.api.mod.AitTags;
 import dev.amble.ait.client.renderer.CoralSonicItemRenderer;
+import dev.amble.ait.common.blocks.ConsoleBlockEntity;
 import dev.amble.ait.common.items.components.ArtronItemData;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitComponents;
-import dev.amble.ait.common.sonic.SonicCrystal;
+import dev.amble.ait.api.mod.sonic.SonicCrystal;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.component.DataComponents;
@@ -16,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +28,7 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.math.Fraction;
 import org.jetbrains.annotations.Nullable;
@@ -215,6 +218,22 @@ public class ItemSonic extends Item implements GeoItem {
         }
 
         return InteractionResultHolder.fail(stack);
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        Level level = context.getLevel();
+
+        if (!(level.getBlockEntity(context.getClickedPos()) instanceof ConsoleBlockEntity console)) {
+            return super.useOn(context);
+        }
+
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        console.cycleLight();
+        return InteractionResult.CONSUME;
     }
 
     @Override

@@ -27,5 +27,11 @@ public class AitItemTagProvider extends FabricAmbleItemTagProvider {
                 AitItems.SHARD_OVERCHARGED, AitItems.SHARD_QUARTZ, AitItems.SHARD_REFRACTION,
                 AitItems.SHARD_RESONATING, AitItems.SHARD_SCULK
         );
+
+
+        getOrCreateTagBuilder(AitTags.Items.KEYS).add(
+                AitItems.IRON_KEY, AitItems.GOLD_KEY, AitItems.NETHERITE_KEY,
+                AitItems.CLASSIC_KEY
+        );
     }
 }

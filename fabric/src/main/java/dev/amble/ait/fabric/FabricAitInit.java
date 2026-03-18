@@ -4,6 +4,8 @@ import dev.amble.ait.api.mod.AitStatistics;
 import dev.amble.ait.common.blocks.behavior.AitComposting;
 import dev.amble.ait.common.blocks.behavior.AitStrippable;
 import dev.amble.ait.common.lib.*;
+import dev.amble.ait.fabric.multidim.AitMultiDimDemo;
+import dev.amble.ait.fabric.multidim.FabricMultiDimBootstrap;
 import dev.amble.ait.fabric.network.FabricPacketHandler;
 import dev.amble.ait.interop.AitInterop;
 import net.fabricmc.api.ModInitializer;
@@ -14,18 +16,13 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import org.jspecify.annotations.Nullable;
-
 import java.util.function.BiConsumer;
 
 public final class FabricAitInit implements ModInitializer {
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private @Nullable FabricAitConfig CONFIG;
-
     @Override
     public void onInitialize() {
-        this.CONFIG = FabricAitConfig.setup();
+        FabricAitConfig.setup();
         FabricPacketHandler.init();
 
         this.initListeners();
@@ -37,10 +34,16 @@ public final class FabricAitInit implements ModInitializer {
         AitInterop.init();
 
         AitEcs.init();
+        FabricMultiDimBootstrap.init();
+        AitMultiDimDemo.init();
     }
 
     private void initListeners() {
-        CommandRegistrationCallback.EVENT.register((dp, a, b) -> AitCommands.register(dp));
+        CommandRegistrationCallback.EVENT.register((dispatcher, a, b) -> {
+            var root = AitCommands.root();
+            AitMultiDimDemo.registerCommands(root);
+            dispatcher.register(root);
+        });
 
         ItemGroupEvents.MODIFY_ENTRIES_ALL.register((tab, entries) -> {
             AitBlocks.registerBlockCreativeTab(entries::accept, tab);
@@ -76,7 +79,7 @@ public final class FabricAitInit implements ModInitializer {
     }
 
     private void dieInAFire() {
-        var flameOn = FlammableBlockRegistry.getDefaultInstance();
+        FlammableBlockRegistry.getDefaultInstance();
     }
 
     private <T> BiConsumer<T, ResourceLocation> bind(Registry<T> registry) {

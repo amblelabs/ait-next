@@ -35,7 +35,8 @@
   },
   "mixins": [
     "ait.mixins.json",
-    "ait-fabric.mixins.json"
+    "ait-fabric.mixins.json",
+    "ait-fabric-multidim.mixins.json"
   ],
   "accessWidener": "ait-fabric.accesswidener",
   "depends": {

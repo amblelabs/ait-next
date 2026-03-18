@@ -1,6 +1,6 @@
 package dev.amble.ait.common.items;
 
-import dev.amble.ait.common.sonic.SonicCrystal;
+import dev.amble.ait.api.mod.sonic.SonicCrystal;
 import net.minecraft.world.item.Item;
 
 public class ItemCrystal extends Item {

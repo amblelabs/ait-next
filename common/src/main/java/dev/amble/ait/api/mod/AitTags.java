@@ -13,6 +13,7 @@ public class AitTags {
     public static final class Items {
 
         public static final TagKey<Item> ZEITON_SHARDS = create("zeiton_shards");
+        public static final TagKey<Item> KEYS = create("keys");
 
         public static TagKey<Item> create(String name) {
             return create(modLoc(name));

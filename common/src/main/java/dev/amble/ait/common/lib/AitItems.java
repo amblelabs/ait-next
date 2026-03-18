@@ -1,12 +1,10 @@
 package dev.amble.ait.common.lib;
 
 import com.google.common.base.Suppliers;
-import dev.amble.ait.common.items.ItemCrystal;
-import dev.amble.ait.common.items.ItemScrewdriver;
-import dev.amble.ait.common.items.ItemSonic;
+import dev.amble.ait.common.items.*;
 import dev.amble.ait.common.items.components.SonicCrystals;
 import dev.amble.ait.common.items.components.SonicData;
-import dev.amble.ait.common.sonic.SonicCrystal;
+import dev.amble.ait.api.mod.sonic.SonicCrystal;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import org.jetbrains.annotations.Nullable;
@@ -49,6 +47,15 @@ public class AitItems {
     public static final Item SHARD_AMETHYST = make("zeiton_shard/amethyst", new ItemCrystal(unstackable(), SonicCrystal.AMETHYST));
     public static final Item SHARD_QUARTZ = make("zeiton_shard/quartz", new ItemCrystal(unstackable(), SonicCrystal.QUARTZ));
     public static final Item SHARD_SCULK = make("zeiton_shard/sculk", new ItemCrystal(unstackable(), SonicCrystal.ECHO_SHARD));
+
+    public static final Item IRON_KEY = make("iron_key", new ItemKey(unstackable()));
+    public static final Item GOLD_KEY = make("gold_key", new ItemKey(unstackable()));
+    public static final Item NETHERITE_KEY = make("netherite_key", new ItemKey(unstackable()));
+    public static final Item CLASSIC_KEY = make("classic_key", new ItemKey(unstackable()));
+    public static final Item KEY_CHAIN = make("key_chain", new ItemKeychain(unstackable()));
+
+    public static final Item LIGHTBULB = make("lightbulb",
+            new Item(new Item.Properties().food(AitComponents.LIGHTBULB_FOOD_COMPONENT)));
 
     public static Item.Properties props() {
         return new Item.Properties();

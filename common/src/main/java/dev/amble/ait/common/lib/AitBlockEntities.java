@@ -3,7 +3,7 @@ package dev.amble.ait.common.lib;
 import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.common.blocks.ConsoleBlockEntity;
 import dev.amble.ait.common.blocks.DoorBlockEntity;
-import dev.amble.ait.common.blocks.PoliceBoxBlockEntity;
+import dev.amble.ait.common.blocks.ExteriorBlockEntity;
 import dev.amble.ait.xplat.IXplatAbstractions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -28,11 +28,11 @@ public class AitBlockEntities {
 
     //
 
-    public static final BlockEntityType<PoliceBoxBlockEntity> POLICE_BOX_BLOCK_ENTITY =
-            register("police_box", PoliceBoxBlockEntity::new, AitBlocks.POLICE_BOX);
+    public static final BlockEntityType<ExteriorBlockEntity> EXTERIOR_BLOCK_ENTITY =
+            register("exterior", ExteriorBlockEntity::new, AitBlocks.EXTERIOR_BLOCK);
 
     public static final BlockEntityType<DoorBlockEntity> DOOR_BLOCK_ENTITY =
-            register("police_box_door", DoorBlockEntity::new, AitBlocks.POLICE_BOX_DOOR);
+            register("tardis_door", DoorBlockEntity::new, AitBlocks.TARDIS_DOOR);
 
     public static final BlockEntityType<ConsoleBlockEntity> CONSOLE_BLOCK_ENTITY =
             register("console", ConsoleBlockEntity::new, AitBlocks.CONSOLE);
