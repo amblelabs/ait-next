@@ -30,7 +30,7 @@ public class ConsoleBlockEntityRenderer extends GeoBlockRenderer<ConsoleBlockEnt
     @Override
     public RenderType getRenderType(ConsoleBlockEntity entity, ResourceLocation texture,
                                     @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityCutoutNoCull(texture);
+        return AITRenderLayers.consoleCutoutNoCullZOffset(texture);
     }
 
     @Override

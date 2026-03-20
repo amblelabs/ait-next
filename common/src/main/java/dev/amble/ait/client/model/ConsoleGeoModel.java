@@ -7,25 +7,21 @@ import software.bernie.geckolib.model.GeoModel;
 
 public class ConsoleGeoModel extends GeoModel<ConsoleBlockEntity> {
 
-    private static final ResourceLocation MODEL = AitAPI.modLoc("geo/blockentities/renaissance_console.geo.json");
-    private static final ResourceLocation ANIMATION = AitAPI.modLoc("animations/blockentities/renaissance_console.animation.json");
-    private static final ResourceLocation TEXTURE = AitAPI.modLoc("textures/blockentities/consoles/renaissance_default.png");
-
     @SuppressWarnings("removal")
     @Override
     public ResourceLocation getModelResource(ConsoleBlockEntity entity) {
-        return MODEL;
+        return AitAPI.modLoc("geo/blockentities/" + entity.getModelName() + ".geo.json");
     }
 
     @SuppressWarnings("removal")
     @Override
     public ResourceLocation getTextureResource(ConsoleBlockEntity entity) {
-        return TEXTURE;
+        return AitAPI.modLoc("textures/blockentities/consoles/" + entity.getTextureName() + ".png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(ConsoleBlockEntity entity) {
-        return ANIMATION;
+        return AitAPI.modLoc("animations/blockentities/" + entity.getAnimationName() + ".animation.json");
     }
 }
 

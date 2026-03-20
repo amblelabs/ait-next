@@ -1,6 +1,7 @@
 package dev.amble.ait.common.blocks;
 
 import dev.amble.ait.common.lib.AitBlockEntities;
+import dev.amble.ait.common.lib.AitVariants;
 import dev.amble.ait.common.lib.AitSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -25,6 +26,8 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
     }
 
     private static final String DOOR_STATE_KEY = "DoorState";
+    private static final String MODEL_KEY = "ModelVariant";
+    private static final String TEXTURE_KEY = "TextureVariant";
 
     private static final RawAnimation RIGHT_OPEN = RawAnimation.begin().thenPlay("right door open");
     private static final RawAnimation LEFT_OPEN = RawAnimation.begin().thenPlay("left door open");
@@ -34,16 +37,47 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private DoorState doorState = DoorState.CLOSED;
+    private int modelVariant = 0;
+    private int textureVariant = 0;
     private boolean rightHasOpened = false;
     private boolean leftHasOpened = false;
     private boolean needsSnap = false;
 
     public DoorBlockEntity(BlockPos pos, BlockState state) {
         super(AitBlockEntities.DOOR_BLOCK_ENTITY, pos, state);
+        this.textureVariant = state.hasProperty(DoorBlock.TEXTURE) ? state.getValue(DoorBlock.TEXTURE) : 0;
     }
 
     public int getTextureIndex() {
-        return this.getBlockState().getValue(DoorBlock.TEXTURE);
+        return this.textureVariant;
+    }
+
+    public String getModelName() {
+        return AitVariants.EXTERIOR_MODEL_NAMES[
+                AitVariants.wrap(this.modelVariant, AitVariants.EXTERIOR_MODEL_NAMES.length)
+                ];
+    }
+
+    public String getTextureName() {
+        return AitVariants.EXTERIOR_TEXTURE_NAMES[
+                AitVariants.wrap(this.textureVariant, AitVariants.EXTERIOR_TEXTURE_NAMES.length)
+                ];
+    }
+
+    public void cycleModelVariant() {
+        this.modelVariant = (this.modelVariant + 1) % AitVariants.EXTERIOR_MODEL_NAMES.length;
+        this.sync();
+    }
+
+    public void cycleTextureVariant() {
+        this.textureVariant = (this.textureVariant + 1) % AitVariants.EXTERIOR_TEXTURE_NAMES.length;
+
+        if (this.level != null && this.getBlockState().hasProperty(DoorBlock.TEXTURE)) {
+            BlockState state = this.getBlockState().setValue(DoorBlock.TEXTURE, this.textureVariant);
+            this.level.setBlock(this.worldPosition, state, 3);
+        }
+
+        this.sync();
     }
 
     public DoorState getDoorState() {
@@ -91,6 +125,10 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
             }
         }
 
+        this.sync();
+    }
+
+    private void sync() {
         this.setChanged();
         if (this.level != null) {
             this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
@@ -101,6 +139,8 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.putInt(DOOR_STATE_KEY, this.doorState.ordinal());
+        tag.putInt(MODEL_KEY, this.modelVariant);
+        tag.putInt(TEXTURE_KEY, this.textureVariant);
     }
 
     @Override
@@ -108,6 +148,14 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
         super.loadAdditional(tag, registries);
         int doorOrdinal = tag.getInt(DOOR_STATE_KEY);
         this.doorState = DoorState.values()[Math.clamp(doorOrdinal, 0, DoorState.values().length - 1)];
+        this.modelVariant = tag.contains(MODEL_KEY)
+                ? AitVariants.wrap(tag.getInt(MODEL_KEY), AitVariants.EXTERIOR_MODEL_NAMES.length)
+                : 0;
+        this.textureVariant = tag.contains(TEXTURE_KEY)
+                ? AitVariants.wrap(tag.getInt(TEXTURE_KEY), AitVariants.EXTERIOR_TEXTURE_NAMES.length)
+                : (this.getBlockState().hasProperty(DoorBlock.TEXTURE)
+                ? this.getBlockState().getValue(DoorBlock.TEXTURE)
+                : 0);
 
         if (doorState != DoorState.CLOSED) {
             needsSnap = true;

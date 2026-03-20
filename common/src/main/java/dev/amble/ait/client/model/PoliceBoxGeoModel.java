@@ -8,32 +8,21 @@ import software.bernie.geckolib.model.GeoModel;
 
 public class PoliceBoxGeoModel extends GeoModel<ExteriorBlockEntity> {
 
-    private static final ResourceLocation MODEL = AitAPI.modLoc("geo/blockentities/police_box.geo.json");
-    private static final ResourceLocation ANIMATION = AitAPI.modLoc("animations/blockentities/police_box.animation.json");
-
-    private static final ResourceLocation[] TEXTURES = {
-            AitAPI.modLoc("textures/blockentities/exteriors/police_box_default.png"),
-            AitAPI.modLoc("textures/blockentities/exteriors/police_box_coral.png"),
-            AitAPI.modLoc("textures/blockentities/exteriors/police_box_renaissance.png"),
-            AitAPI.modLoc("textures/blockentities/exteriors/police_box_crystalline.png"),
-            AitAPI.modLoc("textures/blockentities/exteriors/police_box_future.png"),
-    };
-
     @SuppressWarnings("removal")
     @Override
     public ResourceLocation getModelResource(ExteriorBlockEntity entity) {
-        return MODEL;
+        return AitAPI.modLoc("geo/blockentities/" + entity.getModelName() + ".geo.json");
     }
 
     @SuppressWarnings("removal")
     @Override
     public ResourceLocation getTextureResource(@Nullable ExteriorBlockEntity entity) {
-        if (entity == null) return TEXTURES[0];
-        return TEXTURES[entity.getTextureIndex() % TEXTURES.length];
+        if (entity == null) return AitAPI.modLoc("textures/blockentities/exteriors/police_box_default.png");
+        return AitAPI.modLoc("textures/blockentities/exteriors/" + entity.getTextureName() + ".png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(ExteriorBlockEntity entity) {
-        return ANIMATION;
+        return AitAPI.modLoc("animations/blockentities/" + entity.getModelName() + ".animation.json");
     }
 }

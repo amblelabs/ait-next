@@ -79,6 +79,49 @@ public abstract class AITRenderLayers extends RenderType {
         return EMISSIVE_CULL_Z_OFFSET.apply(texture, affectsOutline);
     }
 
+    private static final BiFunction<ResourceLocation, Boolean, RenderType> EMISSIVE_NO_CULL_Z_OFFSET = Util
+            .memoize((texture, affectsOutline) -> {
+                CompositeState compositeState = CompositeState.builder()
+                        .setShaderState(RENDERTYPE_EYES_SHADER)
+                        .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+                        .setCullState(NO_CULL)
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                        .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                        .setLightmapState(LIGHTMAP)
+                        .setWriteMaskState(COLOR_WRITE)
+                        .setDepthTestState(LEQUAL_DEPTH_TEST)
+                        .createCompositeState(false);
+                return new CompositeRenderType("emissive_no_cull_z_offset",
+                        DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,
+                        false, true, compositeState);
+            });
+
+    public static RenderType tardisEmissiveNoCullZOffset(ResourceLocation texture, boolean affectsOutline) {
+        return EMISSIVE_NO_CULL_Z_OFFSET.apply(texture, affectsOutline);
+    }
+
+    private static final Function<ResourceLocation, RenderType> CONSOLE_CUTOUT_NO_CULL_Z_OFFSET = Util
+            .memoize((texture) -> {
+                CompositeState compositeState = CompositeState.builder()
+                        .setShaderState(RENDERTYPE_ENTITY_CUTOUT_NO_CULL_SHADER)
+                        .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+                        .setCullState(NO_CULL)
+                        .setTransparencyState(NO_TRANSPARENCY)
+                        .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                        .setLightmapState(LIGHTMAP)
+                        .setOverlayState(OVERLAY)
+                        .setDepthTestState(LEQUAL_DEPTH_TEST)
+                        .setWriteMaskState(COLOR_DEPTH_WRITE)
+                        .createCompositeState(true);
+                return new CompositeRenderType("console_cutout_no_cull_z_offset",
+                        DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,
+                        true, true, compositeState);
+            });
+
+    public static RenderType consoleCutoutNoCullZOffset(ResourceLocation texture) {
+        return CONSOLE_CUTOUT_NO_CULL_Z_OFFSET.apply(texture);
+    }
+
     private static final ShaderStateShard ACCUMULATION_SHADER =
             new ShaderStateShard(AITShaders::getAccumulationShader);
 

@@ -33,7 +33,7 @@ public class ConsoleEmissiveLayer extends GeoRenderLayer<ConsoleBlockEntity> {
 
         if (Minecraft.getInstance().getResourceManager().getResource(emissiveTexture).isEmpty()) return;
 
-        RenderType emissiveType = AITRenderLayers.tardisEmissiveCullZOffset(emissiveTexture, true);
+        RenderType emissiveType = AITRenderLayers.tardisEmissiveNoCullZOffset(emissiveTexture, true);
         VertexConsumer emissiveConsumer = bufferSource.getBuffer(emissiveType);
 
         for (GeoBone bone : bakedModel.topLevelBones()) {
