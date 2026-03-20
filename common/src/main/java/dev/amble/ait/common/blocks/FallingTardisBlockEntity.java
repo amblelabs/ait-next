@@ -103,16 +103,16 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
 
     public int getTextureIndex() {
         BlockState state = this.level().isClientSide() ? getClientBlockState() : this.blockState;
-        if (state.hasProperty(PoliceBoxBlock.TEXTURE)) {
-            return state.getValue(PoliceBoxBlock.TEXTURE);
+        if (state.hasProperty(ExteriorBlock.TEXTURE)) {
+            return state.getValue(ExteriorBlock.TEXTURE);
         }
         return 0;
     }
 
     public int getRotation() {
         BlockState state = this.level().isClientSide() ? getClientBlockState() : this.blockState;
-        if (state.hasProperty(PoliceBoxBlock.ROTATION)) {
-            return state.getValue(PoliceBoxBlock.ROTATION);
+        if (state.hasProperty(ExteriorBlock.ROTATION)) {
+            return state.getValue(ExteriorBlock.ROTATION);
         }
         return 0;
     }

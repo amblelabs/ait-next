@@ -1,6 +1,10 @@
 package dev.amble.ait.common.blocks;
 
 import com.mojang.serialization.MapCodec;
+import dev.amble.ait.api.tardis.ServerTardis;
+import dev.amble.ait.api.tardis.Tardis;
+import dev.amble.ait.api.tardis.TardisManager;
+import dev.amble.ait.common.impl.tardis.state.DoorState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -31,13 +35,15 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class PoliceBoxBlock extends BaseEntityBlock {
+import java.util.UUID;
+
+public class ExteriorBlock extends BaseEntityBlock {
 
     public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 7);
     public static final IntegerProperty TEXTURE = IntegerProperty.create("texture", 0, 4);
     public static final IntegerProperty LIGHT = IntegerProperty.create("light", 0, 7);
     public static final BooleanProperty ON_SLAB = BooleanProperty.create("on_slab");
-    public static final MapCodec<PoliceBoxBlock> CODEC = simpleCodec(PoliceBoxBlock::new);
+    public static final MapCodec<ExteriorBlock> CODEC = simpleCodec(ExteriorBlock::new);
 
     // ── Cardinal shapes ──────────────────────────────────────────────────────
     // Each shape is 16 wide × 32 tall (≈2 blocks) × 12 deep, with a 1 px high
@@ -113,7 +119,7 @@ public class PoliceBoxBlock extends BaseEntityBlock {
         }
     }
 
-    public PoliceBoxBlock(Properties properties) {
+    public ExteriorBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(ROTATION, 0)
@@ -205,10 +211,8 @@ public class PoliceBoxBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof ExteriorBlockEntity policeBox) {
+        if (level.getBlockEntity(pos) instanceof ExteriorBlockEntity policeBox)
             policeBox.interact(player.isShiftKeyDown());
-        }
 
         return InteractionResult.CONSUME;
     }
@@ -216,6 +220,17 @@ public class PoliceBoxBlock extends BaseEntityBlock {
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         level.scheduleTick(pos, this, 2);
+
+        if (level.getBlockEntity(pos) instanceof ExteriorBlockEntity exterior) {
+            // FIXME: move this to a proper method.
+            ServerTardis tardis = new ServerTardis(UUID.randomUUID());
+
+            DoorState door = new DoorState();
+            tardis.addState(door);
+
+            TardisManager.getOrCreate(level).add(tardis);
+            exterior.link(tardis);
+        }
     }
 
     @Override

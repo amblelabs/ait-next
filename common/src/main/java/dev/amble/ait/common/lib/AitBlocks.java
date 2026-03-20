@@ -2,7 +2,7 @@ package dev.amble.ait.common.lib;
 
 import dev.amble.ait.common.blocks.ConsoleBlock;
 import dev.amble.ait.common.blocks.DoorBlock;
-import dev.amble.ait.common.blocks.PoliceBoxBlock;
+import dev.amble.ait.common.blocks.ExteriorBlock;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -88,7 +88,7 @@ public class AitBlocks {
 
     //
 
-    public static final PoliceBoxBlock EXTERIOR_BLOCK = blockItem("exterior", new PoliceBoxBlock(PoliceBoxBlock.defaultProps()));
+    public static final ExteriorBlock EXTERIOR_BLOCK = blockItem("exterior", new ExteriorBlock(ExteriorBlock.defaultProps()));
     public static final DoorBlock TARDIS_DOOR = blockItem("tardis_door", new DoorBlock(DoorBlock.defaultProps()));
     public static final ConsoleBlock CONSOLE = blockItem("console", new ConsoleBlock(ConsoleBlock.defaultProps()));
 

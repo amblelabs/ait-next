@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.amble.ait.client.model.PoliceBoxGeoModel;
-import dev.amble.ait.common.blocks.PoliceBoxBlock;
+import dev.amble.ait.common.blocks.ExteriorBlock;
 import dev.amble.ait.common.blocks.ExteriorBlockEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -42,27 +42,27 @@ public class ExteriorBlockEntityRenderer extends GeoBlockRenderer<ExteriorBlockE
                           boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                           int colour) {
         if (!isReRender) {
-            int rotation = entity.getBlockState().getValue(PoliceBoxBlock.ROTATION);
+            int rotation = entity.getBlockState().getValue(ExteriorBlock.ROTATION);
             boolean onSlab = entity.isOnSlab();
             poseStack.translate(0.5, onSlab ? -0.5 : 0, 0.5);
             poseStack.mulPose(Axis.YP.rotationDegrees(rotation * -45f));
         }
 
-        if (entity.needsSnap()) {
-            ExteriorBlockEntity.DoorState state = entity.getDoorState();
-            float rightY = (float) Math.toRadians(77.5);
-            float leftY = (float) Math.toRadians(-77.5);
-
-            if (state == ExteriorBlockEntity.DoorState.RIGHT_OPEN || state == ExteriorBlockEntity.DoorState.BOTH_OPEN) {
-                setDoorBoneRotation(model, "door_r", rightY);
-                setDoorBoneRotation(model, "RDoor", rightY);
-            }
-            if (state == ExteriorBlockEntity.DoorState.BOTH_OPEN) {
-                setDoorBoneRotation(model, "door_l", leftY);
-                setDoorBoneRotation(model, "LDoor", leftY);
-            }
-            entity.clearSnap();
-        }
+//        if (entity.needsSnap()) {
+//            ExteriorBlockEntity.DoorState state = entity.getDoorState();
+//            float rightY = (float) Math.toRadians(77.5);
+//            float leftY = (float) Math.toRadians(-77.5);
+//
+//            if (state == ExteriorBlockEntity.DoorState.RIGHT_OPEN || state == ExteriorBlockEntity.DoorState.BOTH_OPEN) {
+//                setDoorBoneRotation(model, "door_r", rightY);
+//                setDoorBoneRotation(model, "RDoor", rightY);
+//            }
+//            if (state == ExteriorBlockEntity.DoorState.BOTH_OPEN) {
+//                setDoorBoneRotation(model, "door_l", leftY);
+//                setDoorBoneRotation(model, "LDoor", leftY);
+//            }
+//            entity.clearSnap();
+//        }
     }
 
     private static void setDoorBoneRotation(BakedGeoModel model, String boneName, float rotY) {
