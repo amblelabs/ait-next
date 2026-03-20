@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 
 /**
@@ -53,7 +54,7 @@ public class PlainLazyDirectoryDimensionDataStorage {
         return new File(this.dataFolder, name + ".nbt");
     }
 
-    public @Nullable CompoundTag readSavedData(String filename, int defaultVersion) {
+    public @Nullable CompoundTag readSavedData(String filename) {
         try {
             File file = this.getDataFile(filename);
 
@@ -85,7 +86,7 @@ public class PlainLazyDirectoryDimensionDataStorage {
     public void save(String name, CompoundTag tag) {
         try {
             // Again, not great. See NbtIo#SYNC_OUTPUT_OPTIONS
-            Files.writeString(this.getDataFile(name).toPath(), tag.toString());
+            Files.writeString(this.getDataFile(name).toPath(), tag.toString(), StandardOpenOption.CREATE);
         } catch (IOException iOException) {
             LOGGER.error("Could not save data {}", this, iOException);
         }
