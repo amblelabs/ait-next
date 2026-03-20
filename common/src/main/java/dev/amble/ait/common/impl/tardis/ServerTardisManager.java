@@ -19,6 +19,8 @@ import java.util.stream.Stream;
 
 public class ServerTardisManager implements TardisManager<ServerTardis> {
 
+	private static final String STORAGE_PREFIX = "ait/";
+
 	private final Object2ObjectMap<UUID, @Nullable ServerTardis> lookup = new Object2ObjectOpenHashMap<>();
 	private final MinecraftServer server; // lives just as long as the world, shouldn't explode
 
@@ -33,6 +35,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 			tardis.tick();
 
 			if (tardis.dirty()) {
+				// FIXME: dont sync to everyone on the server
 				this.syncPartial(tardis, server.getPlayerList().getPlayers().stream());
 				tardis.unmarkDirty();
 			}
@@ -62,7 +65,9 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 	}
 
 	private @Nullable ServerTardis load(UUID id) {
-		CompoundTag data = PlainLazyDirectoryDimensionDataStorage.get(server).readSavedData(id.toString(), 0);
+		PlainLazyDirectoryDimensionDataStorage storage = PlainLazyDirectoryDimensionDataStorage.get(server);
+
+		CompoundTag data = storage.readSavedData(STORAGE_PREFIX + id);
 		if (data == null) return null;
 
 		return ServerTardis.fromNbt(data);
@@ -81,6 +86,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 	@Override
 	public void add(ServerTardis tardis) {
 		lookup.put(tardis.id(), tardis);
+		this.syncPartial(tardis, server.getPlayerList().getPlayers().stream());
 	}
 
 	public void save() {
@@ -92,7 +98,11 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 			CompoundTag tag = new CompoundTag();
 			tardis.toNbt(tag, false);
 
-			storage.save(tardis.id().toString(), tag);
+			storage.save(STORAGE_PREFIX + tardis.id(), tag);
 		}
+	}
+
+	public static @Nullable ServerTardisManager get(ServerLevel level) {
+		return (ServerTardisManager) TardisManager.<ServerTardis>asManagerLevel(level).ait$getTardisManager();
 	}
 }
