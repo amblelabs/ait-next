@@ -5,12 +5,9 @@ import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
 import dev.amble.ait.common.lib.AitBlockEntities;
 import dev.amble.ait.common.lib.AitVariants;
-import dev.amble.ait.common.lib.AitSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -88,40 +85,6 @@ public class ExteriorBlockEntity extends LinkableBlockEntity implements GeoBlock
 
     public void clearSnap() {
         this.needsSnap = false;
-    }
-
-    public void interact(boolean crouching) {
-        Level level = this.getLevel();
-        Tardis tardis = this.tardis();
-        if (level == null || tardis == null) return;
-
-        DoorState door = tardis.resolveState(DoorState.state);
-
-        if (door.closed()) { // closed
-            door.rightOpen = true;
-
-            if (crouching) {
-                door.leftOpen = true;
-            }
-
-            level.playSound(null, this.getBlockPos(), AitSounds.DOOR_OPEN, SoundSource.BLOCKS, 0.5f, 1.0f);
-        } else if (door.rightOpen && !door.leftOpen) { // only right open
-            if (crouching) {
-                door.rightOpen = false; // if sneaking, close the only open door (right)
-            } else {
-                door.leftOpen = true; // otherwise, open the other door
-            }
-
-            level.playSound(null, this.getBlockPos(), AitSounds.DOOR_OPEN, SoundSource.BLOCKS, 0.5f, 1.0f);
-        } else { // both open
-            door.rightOpen = false;
-            door.leftOpen = false;
-
-            level.playSound(null, this.getBlockPos(), AitSounds.DOOR_CLOSE, SoundSource.BLOCKS, 0.6f, 1.0f);
-        }
-
-        tardis.markDirty();
-        this.sync();
     }
 
     private void sync() {

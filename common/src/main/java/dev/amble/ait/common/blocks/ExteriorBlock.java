@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import dev.amble.ait.api.tardis.ServerTardis;
 import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.TardisManager;
+import dev.amble.ait.api.tardis.event.block.ExteriorInteractionEvents;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -190,30 +191,25 @@ public class ExteriorBlock extends BaseEntityBlock {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
-        if (level.isClientSide()) {
-            return ItemInteractionResult.SUCCESS;
-        }
+        if (!(level.getBlockEntity(pos) instanceof ExteriorBlockEntity policeBox))
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof ExteriorBlockEntity policeBox) {
-            if (player.isShiftKeyDown()) {
-                policeBox.cycleTextureVariant();
-            } else {
-                policeBox.cycleModelVariant();
-            }
-            return ItemInteractionResult.SUCCESS;
-        }
+        Tardis tardis = policeBox.tardis();
+        if (tardis == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
+        ExteriorInteractionEvents.useWithItem(tardis, stack, state, level, pos, player, hand, hit);
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (level.isClientSide()) return InteractionResult.SUCCESS;
+        if (!(level.getBlockEntity(pos) instanceof ExteriorBlockEntity policeBox))
+            return InteractionResult.CONSUME;
 
-        if (level.getBlockEntity(pos) instanceof ExteriorBlockEntity policeBox)
-            policeBox.interact(player.isShiftKeyDown());
+        Tardis tardis = policeBox.tardis();
+        if (tardis == null) return InteractionResult.CONSUME;
 
+        ExteriorInteractionEvents.useWithoutItem(tardis, state, level, pos, player, hit);
         return InteractionResult.CONSUME;
     }
 
