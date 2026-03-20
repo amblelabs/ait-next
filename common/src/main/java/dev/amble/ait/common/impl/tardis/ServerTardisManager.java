@@ -1,5 +1,6 @@
 package dev.amble.ait.common.impl.tardis;
 
+import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.api.mod.storage.PlainLazyDirectoryDimensionDataStorage;
 import dev.amble.ait.api.tardis.ServerTardis;
 import dev.amble.ait.api.tardis.TardisManager;
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
 
 public class ServerTardisManager implements TardisManager<ServerTardis> {
 
-	private static final String STORAGE_PREFIX = "ait/";
+	private static final String STORAGE_PREFIX = AitAPI.MOD_ID;
 
 	private final Object2ObjectMap<UUID, @Nullable ServerTardis> lookup = new Object2ObjectOpenHashMap<>();
 	private final MinecraftServer server; // lives just as long as the world, shouldn't explode
@@ -67,7 +68,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 	private @Nullable ServerTardis load(UUID id) {
 		PlainLazyDirectoryDimensionDataStorage storage = PlainLazyDirectoryDimensionDataStorage.get(server);
 
-		CompoundTag data = storage.readSavedData(STORAGE_PREFIX + id);
+		CompoundTag data = storage.readSavedData(STORAGE_PREFIX, id.toString());
 		if (data == null) return null;
 
 		return ServerTardis.fromNbt(data);
@@ -86,6 +87,8 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 	@Override
 	public void add(ServerTardis tardis) {
 		lookup.put(tardis.id(), tardis);
+
+		// FIXME: dont sync to everyone on the server
 		this.syncPartial(tardis, server.getPlayerList().getPlayers().stream());
 	}
 
@@ -98,7 +101,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 			CompoundTag tag = new CompoundTag();
 			tardis.toNbt(tag, false);
 
-			storage.save(STORAGE_PREFIX + tardis.id(), tag);
+			storage.save(STORAGE_PREFIX, tardis.id().toString(), tag);
 		}
 	}
 

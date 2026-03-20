@@ -25,14 +25,10 @@ public class PlainLazyDirectoryDimensionDataStorage {
 
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    private final DataFixer fixerUpper;
-    private final HolderLookup.Provider registries;
     private final File dataFolder;
 
     public PlainLazyDirectoryDimensionDataStorage(File dataFolder, DataFixer fixerUpper, HolderLookup.Provider registries) {
-        this.fixerUpper = fixerUpper;
         this.dataFolder = dataFolder;
-        this.registries = registries;
     }
 
     public static PlainLazyDirectoryDimensionDataStorage get(MinecraftServer server) {
@@ -50,16 +46,16 @@ public class PlainLazyDirectoryDimensionDataStorage {
         return level.ait$getOrCreate();
     }
 
-    private File getDataFile(String name) {
-        return new File(this.dataFolder, name + ".nbt");
+    private File getDataFile(@Nullable String folder, String name) {
+        return new File(this.dataFolder, (folder != null ? folder + File.pathSeparator : "") + name + ".nbt");
     }
 
-    public @Nullable CompoundTag readSavedData(String filename) {
+    public @Nullable CompoundTag readSavedData(@Nullable String folder, String filename) {
         try {
-            File file = this.getDataFile(filename);
+            File file = this.getDataFile(folder, filename);
 
             if (file.exists()) {
-                CompoundTag compoundTag = this.readTagFromDisk(filename);
+                CompoundTag compoundTag = this.readTagFromDisk(folder, filename);
                 return Objects.requireNonNull(compoundTag, "read tag must not be null");
             }
         } catch (Exception exception) {
@@ -69,8 +65,12 @@ public class PlainLazyDirectoryDimensionDataStorage {
         return null;
     }
 
-    private CompoundTag readTagFromDisk(String filename) throws IOException {
-        File file = this.getDataFile(filename);
+    public @Nullable CompoundTag readSavedData(String filename) {
+        return this.readSavedData(null, filename);
+    }
+
+    private CompoundTag readTagFromDisk(@Nullable String folder, String filename) throws IOException {
+        File file = this.getDataFile(folder, filename);
 
         try (
                 InputStream inputStream = new FileInputStream(file)
@@ -83,13 +83,17 @@ public class PlainLazyDirectoryDimensionDataStorage {
         }
     }
 
-    public void save(String name, CompoundTag tag) {
+    public void save(@Nullable String folder, String name, CompoundTag tag) {
         try {
             // Again, not great. See NbtIo#SYNC_OUTPUT_OPTIONS
-            Files.writeString(this.getDataFile(name).toPath(), tag.toString(), StandardOpenOption.CREATE);
+            Files.writeString(this.getDataFile(folder, name).toPath(), tag.toString(), StandardOpenOption.CREATE);
         } catch (IOException iOException) {
             LOGGER.error("Could not save data {}", this, iOException);
         }
+    }
+
+    public void save(String name, CompoundTag tag) {
+        this.save(null, name, tag);
     }
 
     public interface Provider {
