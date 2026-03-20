@@ -1,10 +1,13 @@
 package dev.amble.ait.common.lib;
 
+import dev.amble.ait.api.tardis.event.ServerLifecycleEvents;
 import dev.amble.ait.api.tardis.event.block.ExteriorInteractionEvents;
 import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
 import dev.amble.ait.api.tardis.event.state.TardisStateEvents;
 import dev.amble.ait.api.tardis.event.tick.TardisTickEvents;
 import dev.amble.ait.common.impl.tardis.behavior.CapsuleExteriorBehavior;
+import dev.amble.ait.common.impl.tardis.behavior.DimensionBehavior;
+import dev.amble.ait.common.impl.tardis.state.DimensionState;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
 import dev.amble.ait.xplat.IXplatAbstractions;
 import dev.drtheo.ecs.behavior.TBehaviorRegistry;
@@ -27,10 +30,13 @@ public class AitEcs {
 
     public static void initState() {
         States.register(DoorState.state);
+        States.register(DimensionState.state);
         States.freeze();
     }
 
     public static void initEvents() {
+        TEventsRegistry.register(ServerLifecycleEvents.event);
+
         TEventsRegistry.register(TardisLifecycleEvents.event);
         TEventsRegistry.register(TardisStateEvents.event);
         TEventsRegistry.register(TardisTickEvents.event);
@@ -41,6 +47,7 @@ public class AitEcs {
 
     public static void initBehavior() {
         TBehaviorRegistry.register(CapsuleExteriorBehavior::new);
+        TBehaviorRegistry.register(DimensionBehavior::new);
         TBehaviorRegistry.freeze();
     }
 }

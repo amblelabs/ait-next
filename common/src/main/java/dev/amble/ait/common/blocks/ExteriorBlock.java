@@ -5,6 +5,8 @@ import dev.amble.ait.api.tardis.ServerTardis;
 import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.TardisManager;
 import dev.amble.ait.api.tardis.event.block.ExteriorInteractionEvents;
+import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
+import dev.amble.ait.common.impl.tardis.state.DimensionState;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -217,14 +219,15 @@ public class ExteriorBlock extends BaseEntityBlock {
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         level.scheduleTick(pos, this, 2);
 
-        if (level.getBlockEntity(pos) instanceof ExteriorBlockEntity exterior) {
+        if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof ExteriorBlockEntity exterior) {
             // FIXME: move this to a proper method.
             ServerTardis tardis = new ServerTardis(UUID.randomUUID());
 
-            DoorState door = new DoorState();
-            tardis.addState(door);
+            tardis.addState(new DoorState());
+            tardis.addState(new DimensionState());
 
             TardisManager.getOrCreate(level).add(tardis);
+            TardisLifecycleEvents.handlePostCreated(tardis, serverLevel.getServer());
             exterior.link(tardis);
         }
     }
