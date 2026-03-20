@@ -23,7 +23,7 @@ public record TardisSyncPayload(CompoundTag tag) implements CustomPacketPayload 
 
     @Environment(EnvType.CLIENT)
     public void handle(Minecraft minecraft, LocalPlayer player) {
-        ClientTardisManager.get().upsert(tag);
+        ClientTardisManager.get(minecraft.level).upsert(tag);
     }
 
     @Override
