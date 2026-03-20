@@ -4,8 +4,6 @@ import dev.amble.ait.api.mod.AitStatistics;
 import dev.amble.ait.common.blocks.behavior.AitComposting;
 import dev.amble.ait.common.blocks.behavior.AitStrippable;
 import dev.amble.ait.common.lib.*;
-import dev.amble.ait.fabric.multidim.AitMultiDimDemo;
-import dev.amble.ait.fabric.multidim.FabricMultiDimBootstrap;
 import dev.amble.ait.fabric.network.FabricPacketHandler;
 import dev.amble.ait.interop.AitInterop;
 import net.fabricmc.api.ModInitializer;
@@ -34,14 +32,11 @@ public final class FabricAitInit implements ModInitializer {
         AitInterop.init();
 
         AitEcs.init();
-        FabricMultiDimBootstrap.init();
-        AitMultiDimDemo.init();
     }
 
     private void initListeners() {
         CommandRegistrationCallback.EVENT.register((dispatcher, a, b) -> {
             var root = AitCommands.root();
-            AitMultiDimDemo.registerCommands(root);
             dispatcher.register(root);
         });
 

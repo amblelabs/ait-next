@@ -1,9 +1,7 @@
-package dev.amble.ait.fabric.mixin.multidim;
+package dev.drtheo.multidim.mixin;
 
 import com.google.common.collect.Maps;
-import dev.amble.lib.multidim.api.MultiDimServer;
-import dev.amble.lib.multidim.event.ServerCrashEvent;
-import net.minecraft.CrashReport;
+import dev.drtheo.multidim.api.MultiDimServer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -13,15 +11,12 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Mixin(MinecraftServer.class)
-public abstract class MinecraftServerMixin implements MultiDimServer {
+public class MinecraftServerMixin implements MultiDimServer {
 
     @Shadow @Final protected LevelStorageSource.LevelStorageAccess storageSource;
     @Shadow @Final @Mutable private Map<ResourceKey<Level>, ServerLevel> levels;
@@ -58,11 +53,4 @@ public abstract class MinecraftServerMixin implements MultiDimServer {
     public LevelStorageSource.LevelStorageAccess multidim$getSession() {
         return this.storageSource;
     }
-
-    @Inject(method = "onServerCrash", at = @At("HEAD"))
-    private void multidim$onServerCrash(CrashReport report, CallbackInfo ci) {
-        ServerCrashEvent.EVENT.invoker().onServerCrash((MinecraftServer) (Object) this, report);
-    }
 }
-
-

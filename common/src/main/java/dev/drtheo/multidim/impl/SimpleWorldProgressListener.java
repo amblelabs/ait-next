@@ -1,4 +1,4 @@
-package dev.amble.lib.multidim.impl;
+package dev.drtheo.multidim.impl;
 
 public class SimpleWorldProgressListener extends AbstractWorldProgressListener {
 

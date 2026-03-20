@@ -1,20 +1,20 @@
-package dev.amble.lib.multidim.api;
+package dev.drtheo.multidim.api;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.amble.lib.multidim.impl.AbstractChunkGenerator;
+import dev.drtheo.multidim.impl.AbstractChunkGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.FixedBiomeSource;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.server.level.ServerLevel;
@@ -46,11 +46,6 @@ public class VoidChunkGenerator extends AbstractChunkGenerator {
         return CODEC;
     }
 
-    @Override
-    public NoiseColumn getBaseColumn(int x, int z, net.minecraft.world.level.LevelHeightAccessor world, net.minecraft.world.level.levelgen.RandomState randomState) {
-        return new NoiseColumn(0, new net.minecraft.world.level.block.state.BlockState[0]);
-    }
-
     @Nullable
     @Override
     public Pair<BlockPos, Holder<Structure>> findNearestMapStructure(ServerLevel world, HolderSet<Structure> structures, BlockPos center, int radius, boolean skipReferencedStructures) {
@@ -58,7 +53,7 @@ public class VoidChunkGenerator extends AbstractChunkGenerator {
     }
 
     @Override
-    public WeightedRandomList<net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory group, BlockPos pos) {
+    public WeightedRandomList<MobSpawnSettings.SpawnerData> getMobsAt(Holder<Biome> biome, StructureManager structureManager, MobCategory group, BlockPos pos) {
         return WeightedRandomList.create();
     }
 }

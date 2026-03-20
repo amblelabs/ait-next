@@ -1,4 +1,4 @@
-package dev.amble.lib.multidim;
+package dev.drtheo.multidim;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

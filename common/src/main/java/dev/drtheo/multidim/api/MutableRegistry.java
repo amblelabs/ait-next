@@ -1,10 +1,9 @@
-package dev.amble.lib.multidim.api;
+package dev.drtheo.multidim.api;
 
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.RegistrationInfo;
 
 public interface MutableRegistry<T> {
     boolean multidim$remove(T entry);

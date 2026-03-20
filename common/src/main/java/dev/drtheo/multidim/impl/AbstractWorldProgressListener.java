@@ -1,4 +1,4 @@
-package dev.amble.lib.multidim.impl;
+package dev.drtheo.multidim.impl;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ProgressListener;

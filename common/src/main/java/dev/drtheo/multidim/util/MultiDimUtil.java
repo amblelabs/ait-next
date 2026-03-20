@@ -1,6 +1,6 @@
-package dev.amble.lib.multidim.util;
+package dev.drtheo.multidim.util;
 
-import dev.amble.lib.multidim.api.MutableRegistry;
+import dev.drtheo.multidim.api.MutableRegistry;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;

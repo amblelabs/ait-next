@@ -1,16 +1,17 @@
-package dev.amble.lib.multidim;
+package dev.drtheo.multidim;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dev.amble.lib.multidim.api.MultiDimServerLevel;
-import dev.amble.lib.multidim.api.WorldBlueprint;
+import dev.drtheo.multidim.api.MultiDimServerLevel;
+import dev.drtheo.multidim.api.WorldBlueprint;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelResource;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -65,9 +66,7 @@ public final class MultiDimFileManager {
     }
 
     public static void readAll(MinecraftServer server) {
-        if (server == null || !server.isRunning()) {
-            return;
-        }
+        if (!server.isRunning()) return;
 
         Path root = getRootSavePath(server);
         if (!Files.exists(root)) {
@@ -91,6 +90,7 @@ public final class MultiDimFileManager {
         try (Stream<Path> stream = Files.list(namespace)) {
             stream.forEach(file -> {
                 Saved saved = readFromFile(multidim, namespace.getFileName().toString(), file);
+
                 if (saved == null) {
                     MultiDimMod.LOGGER.warn("Failed to load world from file {}", file);
                     return;
@@ -110,13 +110,13 @@ public final class MultiDimFileManager {
         }
     }
 
-    public static Saved readFromFile(MultiDim multidim, String namespace, Path file) {
+    public static @Nullable Saved readFromFile(MultiDim multidim, String namespace, Path file) {
         String fileName = file.getFileName().toString();
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace, fileName.substring(0, fileName.length() - 5));
         return read(multidim.server(), id);
     }
 
-    private static Saved read(MinecraftServer server, ResourceLocation id) {
+    private static @Nullable Saved read(MinecraftServer server, ResourceLocation id) {
         Path file = getSavePath(server, id);
 
         try {

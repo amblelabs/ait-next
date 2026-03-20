@@ -1,4 +1,4 @@
-package dev.amble.lib.multidim.impl;
+package dev.drtheo.multidim.impl;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelHeightAccessor;
@@ -6,6 +6,7 @@ import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -59,7 +60,7 @@ public abstract class AbstractChunkGenerator extends ChunkGenerator {
 
     @Override
     public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor world, RandomState randomState) {
-        return new NoiseColumn(0, new net.minecraft.world.level.block.state.BlockState[0]);
+        return new NoiseColumn(0, new BlockState[0]);
     }
 
     @Override

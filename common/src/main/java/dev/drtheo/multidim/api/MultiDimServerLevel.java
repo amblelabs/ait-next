@@ -1,6 +1,6 @@
-package dev.amble.lib.multidim.api;
+package dev.drtheo.multidim.api;
 
-import dev.amble.lib.multidim.MultiDimFileManager;
+import dev.drtheo.multidim.MultiDimFileManager;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;

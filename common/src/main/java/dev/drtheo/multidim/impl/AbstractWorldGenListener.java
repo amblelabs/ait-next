@@ -1,4 +1,4 @@
-package dev.amble.lib.multidim.impl;
+package dev.drtheo.multidim.impl;
 
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.server.level.progress.ChunkProgressListener;

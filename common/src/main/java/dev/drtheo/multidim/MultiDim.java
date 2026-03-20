@@ -1,12 +1,12 @@
-package dev.amble.lib.multidim;
+package dev.drtheo.multidim;
 
 import com.mojang.serialization.Lifecycle;
-import dev.amble.lib.multidim.api.MultiDimServer;
-import dev.amble.lib.multidim.api.MultiDimServerLevel;
-import dev.amble.lib.multidim.api.MutableRegistry;
-import dev.amble.lib.multidim.api.WorldBlueprint;
-import dev.amble.lib.multidim.impl.SimpleWorldProgressListener;
-import dev.amble.lib.multidim.util.MultiDimUtil;
+import dev.drtheo.multidim.api.MultiDimServer;
+import dev.drtheo.multidim.api.MultiDimServerLevel;
+import dev.drtheo.multidim.api.MutableRegistry;
+import dev.drtheo.multidim.api.WorldBlueprint;
+import dev.drtheo.multidim.impl.SimpleWorldProgressListener;
+import dev.drtheo.multidim.util.MultiDimUtil;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -17,41 +17,25 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.LevelStem;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
-import java.util.function.BiConsumer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class MultiDim {
 
-    private static MultiDim instance;
-    private static boolean initialized = false;
-    private static BiConsumer<MinecraftServer, ServerLevel> onWorldLoad = (server, world) -> { };
-    private static BiConsumer<MinecraftServer, ServerLevel> onWorldUnload = (server, world) -> { };
+    private static @Nullable MultiDim instance;
 
     private final Map<ResourceLocation, WorldBlueprint> blueprints = new HashMap<>();
     private final MinecraftServer server;
 
     private final Set<ServerLevel> toDelete = new ReferenceOpenHashSet<>();
     private final Set<ServerLevel> toUnload = new ReferenceOpenHashSet<>();
-
-    public static void init() {
-        if (initialized) {
-            return;
-        }
-        initialized = true;
-    }
-
-    public static void setWorldCallbacks(BiConsumer<MinecraftServer, ServerLevel> load,
-                                         BiConsumer<MinecraftServer, ServerLevel> unload) {
-        onWorldLoad = load != null ? load : (server, world) -> { };
-        onWorldUnload = unload != null ? unload : (server, world) -> { };
-    }
 
     private MultiDim(MinecraftServer server) {
         this.server = server;
@@ -119,8 +103,6 @@ public class MultiDim {
     }
 
     public static MultiDim get(MinecraftServer server) {
-        MultiDim.init();
-
         if (instance == null || instance.server != server) {
             instance = new MultiDim(server);
         }
@@ -192,12 +174,9 @@ public class MultiDim {
 
     private void unload(ResourceKey<Level> key) {
         ServerLevel world = ((MultiDimServer) this.server).multidim$removeWorld(key);
-        if (world == null) {
-            return;
-        }
+        if (world == null) return;
 
         world.save(new SimpleWorldProgressListener(() -> {
-            onWorldUnload.accept(this.server, world);
             MultiDimUtil.getMutableDimensionsRegistry(this.server).multidim$remove(key.location());
             this.refreshCommandTrees();
         }), true, false);
@@ -216,15 +195,14 @@ public class MultiDim {
 
     private void remove(ResourceKey<Level> key) {
         ServerLevel world = ((MultiDimServer) this.server).multidim$removeWorld(key);
-        if (world == null) {
-            return;
-        }
 
-        onWorldUnload.accept(this.server, world);
+        if (world == null) return;
+
         MultiDimUtil.getMutableDimensionsRegistry(this.server).multidim$remove(key.location());
         this.refreshCommandTrees();
 
         Path worldDirectory = ((MultiDimServer) this.server).multidim$getSession().getDimensionPath(key);
+
         if (!Files.exists(worldDirectory)) {
             return;
         }
@@ -251,7 +229,6 @@ public class MultiDim {
         }
 
         ((MultiDimServer) this.server).multidim$addWorld(world);
-        onWorldLoad.accept(this.server, world);
         world.tick(() -> true);
         this.refreshCommandTrees();
     }
@@ -260,7 +237,7 @@ public class MultiDim {
         this.server.getPlayerList().getPlayers().forEach(player -> this.server.getCommands().sendCommands(player));
     }
 
-    public WorldBlueprint getBlueprint(ResourceLocation id) {
+    public @Nullable WorldBlueprint getBlueprint(ResourceLocation id) {
         return this.blueprints.get(id);
     }
 }

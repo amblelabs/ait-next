@@ -1,7 +1,7 @@
-package dev.amble.ait.fabric.mixin.multidim;
+package dev.drtheo.multidim.mixin;
 
 import com.mojang.serialization.Lifecycle;
-import dev.amble.lib.multidim.api.MutableRegistry;
+import dev.drtheo.multidim.api.MutableRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import net.minecraft.core.Holder;
@@ -9,6 +9,7 @@ import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistrationInfo;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,7 +23,7 @@ public abstract class MappedRegistryMixin<T> implements MutableRegistry<T> {
     @Shadow @Final private Map<ResourceLocation, Holder.Reference<T>> byLocation;
     @Shadow @Final private Map<T, Holder.Reference<T>> byValue;
     @Shadow @Final private Reference2IntMap<T> toId;
-    @Shadow @Final private ObjectList<Holder.Reference<T>> byId;
+    @Shadow @Final private ObjectList<Holder.@Nullable Reference<T>> byId;
     @Shadow @Final private Map<ResourceKey<T>, Holder.Reference<T>> byKey;
     @Shadow @Final private Map<T, RegistrationInfo> registrationInfos;
     @Shadow private boolean frozen;

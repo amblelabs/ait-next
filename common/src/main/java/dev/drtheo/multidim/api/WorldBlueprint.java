@@ -1,7 +1,7 @@
-package dev.amble.lib.multidim.api;
+package dev.drtheo.multidim.api;
 
 import com.mojang.serialization.Lifecycle;
-import dev.amble.lib.multidim.impl.AbstractWorldGenListener;
+import dev.drtheo.multidim.impl.AbstractWorldGenListener;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.level.storage.WorldData;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -132,7 +132,7 @@ public class WorldBlueprint {
         );
     }
 
-    private Holder<DimensionType> resolveType(MinecraftServer server) {
+    private @Nullable Holder<DimensionType> resolveType(MinecraftServer server) {
         Registry<DimensionType> typeRegistry = server.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE);
 
         if (this.typeId == null) {
