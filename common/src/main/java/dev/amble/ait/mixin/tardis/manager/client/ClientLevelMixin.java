@@ -24,7 +24,7 @@ public class ClientLevelMixin implements TardisManager.ManagerLevel<Tardis> {
 
     @Override
     public @Nullable TardisManager<Tardis> ait$getTardisManager() {
-        return null;
+        return ait$manager != null ? ait$manager : ait$initTardisManager();
     }
 
     @Inject(method = "tick", at = @At("TAIL"))

@@ -3,9 +3,12 @@ package dev.amble.ait.api.tardis;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -19,7 +22,7 @@ public interface TardisManager<T extends Tardis> {
         consumer.accept(manager);
     }
 
-    static <T extends Tardis, R> @Nullable R apply(Level world, Function<TardisManager<T>, R> func) {
+    static <T extends Tardis, R> @Nullable R apply(Level world, Function<TardisManager<T>, @Nullable R> func) {
         TardisManager<T> manager = get(world);
         if (manager == null) return null;
 
@@ -58,6 +61,17 @@ public interface TardisManager<T extends Tardis> {
         }
     }
 
+    static ChunkTracker asChunkTracker(ServerLevel level) {
+        if (!(level instanceof ChunkTracker tracker)) {
+            CrashReport crashReport = CrashReport.forThrowable(new ClassCastException("Level " + level + " does not implement ChunkTracker!"), "Getting Tardis Manager");
+            CrashReportCategory crashReportCategory = crashReport.addCategory("Tardis Manager");
+            crashReportCategory.setDetail("Level", level);
+            throw new ReportedException(crashReport);
+        }
+
+        return tracker;
+    }
+
     void remove(UUID id);
     void add(T tardis);
 
@@ -67,5 +81,25 @@ public interface TardisManager<T extends Tardis> {
     interface ManagerLevel<T extends Tardis> {
         TardisManager<T> ait$initTardisManager();
         @Nullable TardisManager<T> ait$getTardisManager();
+    }
+
+    interface ChunkTracker {
+        default void ait$mark(ChunkPos pos, ServerTardis tardis) {
+            ait$mark(pos.toLong(), tardis);
+        }
+
+        void ait$mark(long pos, ServerTardis tardis);
+
+        default void ait$unmark(ChunkPos pos, ServerTardis tardis) {
+            ait$unmark(pos.toLong(), tardis);
+        }
+
+        void ait$unmark(long pos, ServerTardis tardis);
+
+        default @Nullable Collection<ServerTardis> ait$getMarked(ChunkPos pos) {
+            return ait$getMarked(pos.toLong());
+        }
+
+        @Nullable Collection<ServerTardis> ait$getMarked(long pos);
     }
 }

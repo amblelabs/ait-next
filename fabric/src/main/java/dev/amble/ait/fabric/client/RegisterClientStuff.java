@@ -3,7 +3,7 @@ package dev.amble.ait.fabric.client;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.client.renderer.*;
-import dev.amble.ait.common.items.components.SonicCrystals;
+import dev.amble.ait.common.components.SonicCrystals;
 import dev.amble.ait.common.items.tooltips.KeychainTooltip;
 import dev.amble.ait.common.items.tooltips.SonicTooltip;
 import dev.amble.ait.common.lib.AitBlockEntities;

@@ -1,4 +1,4 @@
-package dev.amble.ait.common.items.components;
+package dev.amble.ait.common.components;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;

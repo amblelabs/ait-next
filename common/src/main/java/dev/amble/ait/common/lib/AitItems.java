@@ -2,8 +2,8 @@ package dev.amble.ait.common.lib;
 
 import com.google.common.base.Suppliers;
 import dev.amble.ait.common.items.*;
-import dev.amble.ait.common.items.components.SonicCrystals;
-import dev.amble.ait.common.items.components.SonicData;
+import dev.amble.ait.common.components.SonicCrystals;
+import dev.amble.ait.common.components.SonicData;
 import dev.amble.ait.api.mod.sonic.SonicCrystal;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;

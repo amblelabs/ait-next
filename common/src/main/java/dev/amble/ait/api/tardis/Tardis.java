@@ -12,8 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -93,7 +92,7 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
 
     @Override
     @Contract(mutates = "this")
-    public boolean addState(@NotNull TState<?> state) {
+    public boolean addState(TState<?> state) {
         boolean result = super.addState(state);
 
         if (result)
@@ -104,7 +103,7 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
 
     @Override
     @Contract(mutates = "this")
-    public <T extends TState<T>> @Nullable T removeState(@NotNull TState.Type<T> type) {
+    public <T extends TState<T>> @Nullable T removeState(TState.Type<T> type) {
         T result = super.removeState(type);
 
         if (result != null)
@@ -114,12 +113,12 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
     }
 
     @Contract(mutates = "this")
-    public <T extends TState<T>> @Nullable T removeState(@NotNull T state) {
+    public <T extends TState<T>> @Nullable T removeState(T state) {
         return this.removeState(state.type());
     }
 
     @Override
-    public void toNbt(@NotNull CompoundTag nbt, boolean isClient) {
+    public void toNbt(CompoundTag nbt, boolean isClient) {
         nbt.putUUID(ID_TAG, this.id);
 
         CompoundTag states = new CompoundTag();
@@ -146,7 +145,6 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
         nbt.put(type.id().toString(), backed.encode(state, isClient));
     }
     //endregion
-
 
     @Override
     public boolean equals(Object obj) {

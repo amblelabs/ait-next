@@ -1,6 +1,6 @@
 package dev.amble.ait.client.renderer;
 
-import dev.amble.ait.common.items.components.SonicCrystals;
+import dev.amble.ait.common.components.SonicCrystals;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Font;

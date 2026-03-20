@@ -26,8 +26,8 @@ public class MinecraftServerMixin implements TardisManager.ManagerLevel<ServerTa
     }
 
     @Override
-    public @Nullable TardisManager<ServerTardis> ait$getTardisManager() {
-        return ait$manager;
+    public TardisManager<ServerTardis> ait$getTardisManager() {
+        return ait$manager != null ? ait$manager : ait$initTardisManager();
     }
 
     @Inject(method = "tickServer", at = @At("TAIL"))

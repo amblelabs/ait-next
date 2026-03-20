@@ -2,12 +2,11 @@ package dev.amble.ait.common.lib;
 
 import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.common.items.ItemKeychain;
-import dev.amble.ait.common.items.components.ArtronItemData;
-import dev.amble.ait.common.items.components.SonicCrystals;
-import dev.amble.ait.common.items.components.SonicData;
+import dev.amble.ait.common.components.ArtronItemData;
+import dev.amble.ait.common.components.SonicCrystals;
+import dev.amble.ait.common.components.SonicData;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 
 import java.util.LinkedHashMap;

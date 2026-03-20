@@ -5,7 +5,7 @@ import dev.amble.ait.client.screen.wheel.*;
 import dev.amble.ait.client.screen.wheel.action.Action;
 import dev.amble.ait.common.items.ItemCrystal;
 import dev.amble.ait.common.items.ItemSonic;
-import dev.amble.ait.common.items.components.SonicCrystals;
+import dev.amble.ait.common.components.SonicCrystals;
 import dev.amble.ait.common.lib.AitComponents;
 import dev.amble.ait.common.network.SonicFunctionPayload;
 import dev.amble.ait.api.mod.sonic.SonicCrystal;

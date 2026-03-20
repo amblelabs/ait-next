@@ -9,7 +9,9 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.chunk.LevelChunk;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
@@ -34,6 +36,15 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 				this.syncPartial(tardis, server.getPlayerList().getPlayers().stream());
 				tardis.unmarkDirty();
 			}
+		}
+	}
+
+	public void sendInChunk(ServerPlayer player, ServerLevel level, LevelChunk chunk) {
+		Collection<ServerTardis> marked = TardisManager.asChunkTracker(level).ait$getMarked(chunk.getPos());
+		if (marked == null) return;
+
+		for (ServerTardis tardis : marked) {
+			this.syncPartial(tardis, Stream.of(player));
 		}
 	}
 
