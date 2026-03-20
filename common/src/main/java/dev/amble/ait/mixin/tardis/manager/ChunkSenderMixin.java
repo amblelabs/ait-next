@@ -1,7 +1,5 @@
 package dev.amble.ait.mixin.tardis.manager;
 
-import dev.amble.ait.api.tardis.ServerTardis;
-import dev.amble.ait.api.tardis.TardisManager;
 import dev.amble.ait.common.impl.tardis.ServerTardisManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.PlayerChunkSender;
@@ -17,9 +15,6 @@ public class ChunkSenderMixin {
 
     @Inject(method = "sendChunk", at = @At("TAIL"))
     private static void sendChunk(ServerGamePacketListenerImpl packetListener, ServerLevel level, LevelChunk chunk, CallbackInfo ci) {
-        ServerTardisManager manager = (ServerTardisManager) TardisManager.<ServerTardis>get(level);
-        if (manager == null) return;
-
-        manager.sendInChunk(packetListener.player, level, chunk);
+        ServerTardisManager.get(level).sendInChunk(packetListener.player, level, chunk);
     }
 }
