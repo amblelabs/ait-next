@@ -55,7 +55,7 @@ public interface TStateContainer {
      * @throws IllegalStateException if the state is not found.
      */
     @Contract(pure = true)
-    default <T extends TState<T>> T resolveState(@NotNull TState.Type<T> type) {
+    default <T extends TState<T>> @NotNull T resolveState(@NotNull TState.Type<T> type) {
         T res = stateOrNull(type);
 
         if (res == null)
@@ -210,7 +210,7 @@ public interface TStateContainer {
 
         @Override
         @Contract(pure = true)
-        public <T extends TState<T>> T resolveState(@NotNull TState.Type<T> type) {
+        public <T extends TState<T>> @NotNull T resolveState(@NotNull TState.Type<T> type) {
             return parent.resolveState(type);
         }
 
