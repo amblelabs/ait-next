@@ -3,7 +3,6 @@ package dev.amble.ait.common.impl.tardis;
 import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.api.tardis.ServerTardis;
 import dev.drtheo.multidim.MultiDim;
-import dev.drtheo.multidim.MultiDimMod;
 import dev.drtheo.multidim.api.MultiDimServerLevel;
 import dev.drtheo.multidim.api.WorldBlueprint;
 import net.fabricmc.api.EnvType;
@@ -69,11 +68,7 @@ public class TardisServerWorld extends MultiDimServerLevel {
         return this.cachedBiome = super.getBiome(pos);
     }
 
-    public void setTardis(ServerTardis tardis) {
-        this.tardis = tardis;
-    }
-
-    public ServerTardis getTardis() {
+    public @Nullable ServerTardis tardis() {
         return tardis;
     }
 
@@ -83,7 +78,7 @@ public class TardisServerWorld extends MultiDimServerLevel {
         TardisServerWorld created = (TardisServerWorld) MultiDim.get(server)
                 .add(blueprint, idForTardis(tardis));
 
-        created.setTardis(tardis);
+        created.tardis = tardis;
         return created;
     }
 
@@ -92,7 +87,7 @@ public class TardisServerWorld extends MultiDimServerLevel {
         TardisServerWorld result = (TardisServerWorld) server.getLevel(key);
 
         if (result != null) {
-            result.setTardis(tardis);
+            result.tardis = tardis;
             return result;
         }
 
@@ -105,13 +100,7 @@ public class TardisServerWorld extends MultiDimServerLevel {
         ResourceKey<Level> key = keyForTardis(tardis);
         TardisServerWorld result = (TardisServerWorld) multidim.load(blueprint, key);
 
-        if (result == null) {
-            MultiDimMod.LOGGER.info("Failed to load the sub-world, creating a new one instead");
-            result = create(tardis);
-        } else {
-            result.setTardis(tardis);
-        }
-
+        result.tardis = tardis;
         return result;
     }
 

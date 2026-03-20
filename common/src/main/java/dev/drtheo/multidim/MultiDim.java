@@ -132,6 +132,7 @@ public class MultiDim {
 
     public MultiDimServerLevel addOrLoad(WorldBlueprint blueprint, ResourceKey<Level> id, boolean created) {
         ServerLevel existing = this.server.getLevel(id);
+
         if (existing != null) {
             if (existing instanceof MultiDimServerLevel multiDimServerLevel) {
                 return multiDimServerLevel;
