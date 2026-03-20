@@ -122,6 +122,8 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
         nbt.putUUID(ID_TAG, this.id);
 
         CompoundTag states = new CompoundTag();
+
+        // FIXME: this only works once. by this i mean diffing.
         this.forEachState((i, state) -> stateToNbt(states, i, state, isClient));
 
         nbt.put(STATES_TAG, states);
