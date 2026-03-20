@@ -15,15 +15,9 @@ import java.io.File;
 @Mixin(DimensionDataStorage.class)
 public class DimensionDataStorageMixin implements PlainLazyDirectoryDimensionDataStorage.Provider {
 
-    @Shadow
-    @Final
-    private File dataFolder;
-    @Shadow
-    @Final
-    private DataFixer fixerUpper;
-    @Shadow
-    @Final
-    private HolderLookup.Provider registries;
+    @Shadow @Final private File dataFolder;
+    @Shadow @Final private DataFixer fixerUpper;
+    @Shadow @Final private HolderLookup.Provider registries;
 
     @Unique
     private @Nullable PlainLazyDirectoryDimensionDataStorage ait$storage;

@@ -39,7 +39,7 @@ public interface TardisManager<T extends Tardis> {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Tardis> ManagerLevel<T> asManagerLevel(Level world) {
+    static <T extends Tardis> ManagerLevel<T> asManagerLevel(Object world) {
         if (!(world instanceof ManagerLevel<?> level)) {
             CrashReport crashReport = CrashReport.forThrowable(new ClassCastException("Level " + world + " does not implement ManagerLevel!"), "Getting Tardis Manager");
             CrashReportCategory crashReportCategory = crashReport.addCategory("Tardis Manager");

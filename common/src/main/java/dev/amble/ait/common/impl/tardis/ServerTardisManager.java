@@ -8,7 +8,7 @@ import dev.amble.ait.xplat.IXplatAbstractions;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import org.jspecify.annotations.Nullable;
 
@@ -19,10 +19,10 @@ import java.util.stream.Stream;
 public class ServerTardisManager implements TardisManager<ServerTardis> {
 
 	private final Object2ObjectMap<UUID, @Nullable ServerTardis> lookup = new Object2ObjectOpenHashMap<>();
-	private final ServerLevel level; // lives just as long as the world, shouldn't explode
+	private final MinecraftServer server; // lives just as long as the world, shouldn't explode
 
-	public ServerTardisManager(ServerLevel level) {
-		this.level = level;
+	public ServerTardisManager(MinecraftServer server) {
+		this.server = server;
 	}
 
 	public void tick() {
@@ -32,7 +32,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 			tardis.tick();
 
 			if (tardis.dirty()) {
-				this.syncPartial(tardis, this.level.players().stream());
+				this.syncPartial(tardis, server.getPlayerList().getPlayers().stream());
 				tardis.unmarkDirty();
 			}
 		}
@@ -52,7 +52,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 	}
 
 	private @Nullable ServerTardis load(UUID id) {
-		CompoundTag data = PlainLazyDirectoryDimensionDataStorage.get(level).readSavedData(id.toString(), 0);
+		CompoundTag data = PlainLazyDirectoryDimensionDataStorage.get(server).readSavedData(id.toString(), 0);
 		if (data == null) return null;
 
 		return ServerTardis.fromNbt(data);
@@ -74,7 +74,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 	}
 
 	public void save() {
-		PlainLazyDirectoryDimensionDataStorage storage = PlainLazyDirectoryDimensionDataStorage.get(level);
+		PlainLazyDirectoryDimensionDataStorage storage = PlainLazyDirectoryDimensionDataStorage.get(server);
 
 		for (ServerTardis tardis : this.lookup.values()) {
 			if (tardis == null) continue;

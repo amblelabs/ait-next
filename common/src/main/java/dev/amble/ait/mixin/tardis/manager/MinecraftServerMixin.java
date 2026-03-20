@@ -1,0 +1,44 @@
+package dev.amble.ait.mixin.tardis.manager;
+
+import dev.amble.ait.api.mod.tardis.ServerTardis;
+import dev.amble.ait.api.mod.tardis.TardisManager;
+import dev.amble.ait.common.impl.tardis.ServerTardisManager;
+import net.minecraft.server.MinecraftServer;
+import org.jspecify.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.function.BooleanSupplier;
+
+@Mixin(MinecraftServer.class)
+public class MinecraftServerMixin implements TardisManager.ManagerLevel<ServerTardis> {
+
+    @Unique
+    private @Nullable ServerTardisManager ait$manager;
+
+    @Override
+    public TardisManager<ServerTardis> ait$initTardisManager() {
+        return this.ait$manager = new ServerTardisManager((MinecraftServer) (Object) this);
+    }
+
+    @Override
+    public @Nullable TardisManager<ServerTardis> ait$getTardisManager() {
+        return ait$manager;
+    }
+
+    @Inject(method = "tickServer", at = @At("TAIL"))
+    public void tick(BooleanSupplier hasTimeLeft, CallbackInfo ci) {
+        if (this.ait$manager != null)
+            this.ait$manager.tick();
+    }
+
+    @Inject(method = "saveEverything", at = @At("TAIL"))
+    public void save(boolean suppressLog, boolean flush, boolean forced, CallbackInfoReturnable<Boolean> cir) {
+        if (this.ait$manager != null)
+            this.ait$manager.save();
+    }
+}

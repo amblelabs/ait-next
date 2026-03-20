@@ -4,10 +4,11 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
-    "tardis.manager.client.MinecraftClientMixin"
+    "tardis.manager.client.ClientLevelMixin"
   ],
   "mixins": [
     "tardis.manager.DimensionDataStorageMixin",
+    "tardis.manager.MinecraftServerMixin",
     "tardis.manager.ServerLevelMixin"
   ],
   "injectors": {

@@ -8,6 +8,7 @@ import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -31,6 +32,10 @@ public class PlainLazyDirectoryDimensionDataStorage {
         this.fixerUpper = fixerUpper;
         this.dataFolder = dataFolder;
         this.registries = registries;
+    }
+
+    public static PlainLazyDirectoryDimensionDataStorage get(MinecraftServer server) {
+        return get(server.overworld());
     }
 
     public static PlainLazyDirectoryDimensionDataStorage get(ServerLevel world) {
