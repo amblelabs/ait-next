@@ -4,6 +4,7 @@ import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.TardisManager;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import org.jspecify.annotations.Nullable;
 
@@ -64,7 +65,7 @@ public class ClientTardisManager implements TardisManager<Tardis> {
         this.lookup.clear();
     }
 
-    public static ClientTardisManager get() {
-        return INSTANCE;
+    public static @Nullable ClientTardisManager get(ClientLevel level) {
+        return (ClientTardisManager) TardisManager.asManagerLevel(level).ait$getTardisManager();
     }
 }
