@@ -1,6 +1,6 @@
-package dev.amble.ait.api.mod.tardis.event;
+package dev.amble.ait.api.tardis.event;
 
-import dev.amble.ait.api.mod.tardis.Tardis;
+import dev.amble.ait.api.tardis.Tardis;
 import dev.drtheo.ecs.event.TEvent;
 import dev.drtheo.ecs.event.TEvents;
 import dev.drtheo.ecs.state.StateResolveError;

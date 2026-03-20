@@ -1,9 +1,9 @@
-package dev.amble.ait.api.mod.tardis;
+package dev.amble.ait.api.tardis;
 
 import dev.amble.ait.common.lib.AitEcs;
-import dev.amble.ait.api.mod.tardis.event.init.TardisLifecycleEvents;
-import dev.amble.ait.api.mod.tardis.event.state.TardisStateEvents;
-import dev.amble.ait.api.mod.tardis.event.tick.TardisTickEvents;
+import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
+import dev.amble.ait.api.tardis.event.state.TardisStateEvents;
+import dev.amble.ait.api.tardis.event.tick.TardisTickEvents;
 import dev.drtheo.ecs.state.NbtSerializer;
 import dev.drtheo.ecs.state.TState;
 import dev.drtheo.ecs.state.TStateContainer;

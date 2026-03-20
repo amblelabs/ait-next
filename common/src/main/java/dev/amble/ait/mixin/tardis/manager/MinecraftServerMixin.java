@@ -1,7 +1,7 @@
 package dev.amble.ait.mixin.tardis.manager;
 
-import dev.amble.ait.api.mod.tardis.ServerTardis;
-import dev.amble.ait.api.mod.tardis.TardisManager;
+import dev.amble.ait.api.tardis.ServerTardis;
+import dev.amble.ait.api.tardis.TardisManager;
 import dev.amble.ait.common.impl.tardis.ServerTardisManager;
 import net.minecraft.server.MinecraftServer;
 import org.jspecify.annotations.Nullable;

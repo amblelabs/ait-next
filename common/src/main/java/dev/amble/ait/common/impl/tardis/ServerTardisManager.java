@@ -1,8 +1,8 @@
 package dev.amble.ait.common.impl.tardis;
 
 import dev.amble.ait.api.mod.storage.PlainLazyDirectoryDimensionDataStorage;
-import dev.amble.ait.api.mod.tardis.ServerTardis;
-import dev.amble.ait.api.mod.tardis.TardisManager;
+import dev.amble.ait.api.tardis.ServerTardis;
+import dev.amble.ait.api.tardis.TardisManager;
 import dev.amble.ait.common.network.tardis.manager.TardisSyncPayload;
 import dev.amble.ait.xplat.IXplatAbstractions;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jspecify.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.*;
 import java.util.stream.Stream;
 
 public class ServerTardisManager implements TardisManager<ServerTardis> {

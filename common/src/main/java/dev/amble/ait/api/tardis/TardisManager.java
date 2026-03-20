@@ -1,4 +1,4 @@
-package dev.amble.ait.api.mod.tardis;
+package dev.amble.ait.api.tardis;
 
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;

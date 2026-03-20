@@ -41,6 +41,6 @@ To do that, use the `@Resolve` annotation:
 class AlarmsBehavior implements TBehavior {
     
     @Resolve
-    private final ArtronSystem _artron = behavior();
+    private final ArtronBehavior _artron = behavior();
 }
 ```

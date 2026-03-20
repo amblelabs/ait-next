@@ -1,7 +1,7 @@
 package dev.amble.ait.client.impl.tardis;
 
-import dev.amble.ait.api.mod.tardis.Tardis;
-import dev.amble.ait.api.mod.tardis.TardisManager;
+import dev.amble.ait.api.tardis.Tardis;
+import dev.amble.ait.api.tardis.TardisManager;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.nbt.CompoundTag;

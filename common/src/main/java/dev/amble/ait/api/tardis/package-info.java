@@ -1,4 +1,4 @@
 @NullMarked
-package dev.amble.ait.api.mod.tardis;
+package dev.amble.ait.api.tardis;
 
 import org.jspecify.annotations.NullMarked;

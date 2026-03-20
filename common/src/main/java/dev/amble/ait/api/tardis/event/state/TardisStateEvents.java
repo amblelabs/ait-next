@@ -1,7 +1,7 @@
-package dev.amble.ait.api.mod.tardis.event.state;
+package dev.amble.ait.api.tardis.event.state;
 
-import dev.amble.ait.api.mod.tardis.Tardis;
-import dev.amble.ait.api.mod.tardis.event.TardisNotifyEvent;
+import dev.amble.ait.api.tardis.Tardis;
+import dev.amble.ait.api.tardis.event.TardisNotifyEvent;
 import dev.drtheo.ecs.event.TEvents;
 import dev.drtheo.ecs.state.TState;
 

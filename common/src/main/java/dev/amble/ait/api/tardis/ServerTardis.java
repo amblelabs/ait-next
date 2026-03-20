@@ -1,6 +1,6 @@
-package dev.amble.ait.api.mod.tardis;
+package dev.amble.ait.api.tardis;
 
-import dev.amble.ait.api.mod.tardis.event.init.TardisLifecycleEvents;
+import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.UUID;

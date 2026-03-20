@@ -1,8 +1,8 @@
-package dev.amble.ait.api.mod.tardis.event.init;
+package dev.amble.ait.api.tardis.event.init;
 
-import dev.amble.ait.api.mod.tardis.ServerTardis;
-import dev.amble.ait.api.mod.tardis.Tardis;
-import dev.amble.ait.api.mod.tardis.event.TardisNotifyEvent;
+import dev.amble.ait.api.tardis.ServerTardis;
+import dev.amble.ait.api.tardis.Tardis;
+import dev.amble.ait.api.tardis.event.TardisNotifyEvent;
 import dev.drtheo.ecs.event.TEvents;
 
 public interface TardisLifecycleEvents extends TEvents {
