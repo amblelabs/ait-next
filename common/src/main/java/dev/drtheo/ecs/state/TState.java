@@ -6,6 +6,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Base interface for all states.
@@ -44,7 +45,7 @@ public interface TState<Self extends TState<Self>> {
 
         @Override
         @Contract(pure = true)
-        public @NotNull CompoundTag encode(@NotNull T t, boolean isClient) {
+        public @Nullable CompoundTag encode(@NotNull T t, boolean isClient) {
             CompoundTag nbt = new CompoundTag();
             t.toNbt(nbt, isClient);
 
@@ -121,10 +122,10 @@ public interface TState<Self extends TState<Self>> {
          *
          * @param t the unserialized state.
          * @param isClient whether the serialization is running on client.
-         * @return a new {@link S} instance, containing all the serialized data.
+         * @return a new {@link S} instance, containing all the serialized data, or {@code null}, to skip serialization.
          */
         @Contract(pure = true)
-        public abstract @NotNull S encode(@NotNull T t, boolean isClient);
+        public abstract @Nullable S encode(@NotNull T t, boolean isClient);
     }
 
     /**

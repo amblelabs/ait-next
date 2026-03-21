@@ -4,6 +4,10 @@ import dev.amble.ait.api.AitAPI;
 import dev.drtheo.ecs.state.NbtSerializer;
 import dev.drtheo.ecs.state.TState;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import org.jspecify.annotations.Nullable;
+
+import java.lang.ref.WeakReference;
 
 public class DimensionState implements TState<DimensionState>, NbtSerializer {
 
@@ -12,7 +16,17 @@ public class DimensionState implements TState<DimensionState>, NbtSerializer {
         public DimensionState fromNbt(CompoundTag nbt, boolean isClient) {
             return new DimensionState();
         }
+
+        @Override
+        public @Nullable CompoundTag encode(DimensionState state, boolean isClient) {
+            // don't sync.
+            if (isClient) return null;
+
+            return super.encode(state, false);
+        }
     };
+
+    public @Nullable WeakReference<ServerLevel> level;
 
     @Override
     public Type<DimensionState> type() {

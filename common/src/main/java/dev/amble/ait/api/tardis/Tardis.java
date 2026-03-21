@@ -1,7 +1,6 @@
 package dev.amble.ait.api.tardis;
 
 import dev.amble.ait.common.lib.AitEcs;
-import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
 import dev.amble.ait.api.tardis.event.state.TardisStateEvents;
 import dev.amble.ait.api.tardis.event.tick.TardisTickEvents;
 import dev.drtheo.ecs.state.NbtSerializer;
@@ -45,8 +44,6 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
         this.isClient = isClient;
 
         this.updateStates(nbt, isClient, fix);
-
-        TardisLifecycleEvents.handleLoaded(this);
     }
 
     public void tick() {
@@ -144,7 +141,10 @@ public class Tardis extends TStateContainer.Delegate implements NbtSerializer {
             return;
 
         //noinspection unchecked
-        nbt.put(type.id().toString(), backed.encode(state, isClient));
+        CompoundTag tag = backed.encode(state, isClient);
+        if (tag == null) return;
+
+        nbt.put(type.id().toString(), tag);
     }
     //endregion
 

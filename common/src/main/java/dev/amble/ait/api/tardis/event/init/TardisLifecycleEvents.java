@@ -2,6 +2,7 @@ package dev.amble.ait.api.tardis.event.init;
 
 import dev.amble.ait.api.tardis.ServerTardis;
 import dev.amble.ait.api.tardis.Tardis;
+import dev.amble.ait.api.tardis.TardisManager;
 import dev.amble.ait.api.tardis.event.NotifyEvent;
 import dev.drtheo.ecs.event.TEvents;
 import net.minecraft.server.MinecraftServer;
@@ -16,8 +17,8 @@ public interface TardisLifecycleEvents extends TEvents {
         TEvents.handle(new NotifyEvent<>(event, handler -> handler.onPostCreated(tardis, server)));
     }
 
-    static void handleLoaded(Tardis tardis) {
-        TEvents.handle(new NotifyEvent<>(event, handler -> handler.onLoaded(tardis)));
+    static void handleLoaded(TardisManager<?> manager, Tardis tardis) {
+        TEvents.handle(new NotifyEvent<>(event, handler -> handler.onLoaded(manager, tardis)));
     }
 
     static void handleRemoved(ServerTardis tardis) {
@@ -28,6 +29,6 @@ public interface TardisLifecycleEvents extends TEvents {
 
     default void onCreated(ServerTardis tardis) { }
     default void onPostCreated(ServerTardis tardis, MinecraftServer server) { }
-    default void onLoaded(Tardis tardis) { }
+    default void onLoaded(TardisManager<?> manager, Tardis tardis) { }
     default void onRemoved(ServerTardis tardis) { }
 }

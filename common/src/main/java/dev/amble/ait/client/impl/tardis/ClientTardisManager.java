@@ -2,6 +2,7 @@ package dev.amble.ait.client.impl.tardis;
 
 import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.TardisManager;
+import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -41,6 +42,8 @@ public class ClientTardisManager implements TardisManager<Tardis> {
         if (tardis == null) {
             tardis = Tardis.fromNbt(tag, true);
             this.add(tardis);
+
+            TardisLifecycleEvents.handleLoaded(this, tardis);
         } else {
             tardis.updateStates(tag, true, false);
         }

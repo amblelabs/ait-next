@@ -4,6 +4,7 @@ import dev.amble.ait.api.AitAPI;
 import dev.amble.ait.api.mod.storage.PlainLazyDirectoryDimensionDataStorage;
 import dev.amble.ait.api.tardis.ServerTardis;
 import dev.amble.ait.api.tardis.TardisManager;
+import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
 import dev.amble.ait.common.network.tardis.manager.TardisSyncPayload;
 import dev.amble.ait.xplat.IXplatAbstractions;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -29,6 +30,10 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 		this.server = server;
 	}
 
+	public MinecraftServer server() {
+		return server;
+	}
+
 	public void tick() {
 		for (ServerTardis tardis : this.lookup.values()) {
 			if (tardis == null) continue;
@@ -36,7 +41,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 			tardis.tick();
 
 			if (tardis.dirty()) {
-				// FIXME: dont sync to everyone on the server
+				// FIXME: don't sync to everyone on the server
 				this.syncPartial(tardis, server.getPlayerList().getPlayers().stream());
 				tardis.unmarkDirty();
 			}
@@ -71,7 +76,9 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 		CompoundTag data = storage.readSavedData(STORAGE_PREFIX, id.toString());
 		if (data == null) return null;
 
-		return ServerTardis.fromNbt(data);
+		ServerTardis tardis = ServerTardis.fromNbt(data);
+		TardisLifecycleEvents.handleLoaded(this, tardis);
+		return tardis;
 	}
 
 	@Override
@@ -88,7 +95,7 @@ public class ServerTardisManager implements TardisManager<ServerTardis> {
 	public void add(ServerTardis tardis) {
 		lookup.put(tardis.id(), tardis);
 
-		// FIXME: dont sync to everyone on the server
+		// FIXME: don't sync to everyone on the server
 		this.syncPartial(tardis, server.getPlayerList().getPlayers().stream());
 	}
 
