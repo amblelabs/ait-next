@@ -189,10 +189,6 @@ public class ExteriorBlock extends BaseEntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                               Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!stack.is(Items.DEBUG_STICK)) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        }
-
         if (!(level.getBlockEntity(pos) instanceof ExteriorBlockEntity policeBox))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
