@@ -18,6 +18,6 @@ public class I18n {
     public static final Component FUNC_ON_LASER = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_laser");
     public static final Component FUNC_ON_HIGH_FREQ = Component.translatable("sonic." + AitAPI.MOD_ID + ".on_high_freq");
 
-    public static final Component OVERLAY_WIP = Component.literal("*subject to change*").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY);
-    public static final Component OVERLAY_UNSTABLE = Component.literal("AIT 2.x (unstable): ").append(OVERLAY_WIP);
+    public static final Component OVERLAY_UNSTABLE = Component.literal("AIT 2.x (wip) - ").append(
+            Component.literal("*subject to change*").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 }
