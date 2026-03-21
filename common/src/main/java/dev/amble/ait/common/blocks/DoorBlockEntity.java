@@ -1,5 +1,6 @@
 package dev.amble.ait.common.blocks;
 
+import dev.amble.ait.api.mod.block.entity.LinkableBlockEntity;
 import dev.amble.ait.common.lib.AitBlockEntities;
 import dev.amble.ait.common.lib.AitVariants;
 import dev.amble.ait.common.lib.AitSounds;
@@ -10,14 +11,13 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
+public class DoorBlockEntity extends LinkableBlockEntity implements GeoBlockEntity {
 
     public enum DoorState {
         CLOSED,
@@ -171,11 +171,6 @@ public class DoorBlockEntity extends BlockEntity implements GeoBlockEntity {
         CompoundTag tag = super.getUpdateTag(registries);
         saveAdditional(tag, registries);
         return tag;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

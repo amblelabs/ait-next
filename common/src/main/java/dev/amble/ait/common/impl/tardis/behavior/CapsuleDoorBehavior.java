@@ -1,12 +1,18 @@
 package dev.amble.ait.common.impl.tardis.behavior;
 
+import com.mojang.datafixers.util.Pair;
 import dev.amble.ait.api.tardis.Tardis;
+import dev.amble.ait.api.tardis.event.block.DoorInteractionEvents;
 import dev.amble.ait.api.tardis.event.block.ExteriorInteractionEvents;
+import dev.amble.ait.api.tardis.util.TeleportUtil;
 import dev.amble.ait.common.impl.tardis.state.DimensionState;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
+import dev.amble.ait.common.impl.tardis.state.ExteriorState;
 import dev.amble.ait.common.lib.AitSounds;
 import dev.drtheo.ecs.behavior.TBehavior;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.RelativeMovement;
@@ -16,10 +22,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class CapsuleExteriorBehavior implements TBehavior, ExteriorInteractionEvents {
+public class CapsuleDoorBehavior implements TBehavior, DoorInteractionEvents {
 
     @Override
-    public void exterior$useWithoutItem(Tardis tardis, BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    public void door$useWithoutItem(Tardis tardis, BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         DoorState door = tardis.state(DoorState.state);
 
         if (door.closed()) { // closed
@@ -49,9 +55,20 @@ public class CapsuleExteriorBehavior implements TBehavior, ExteriorInteractionEv
     }
 
     @Override
-    public void exterior$useWithItem(Tardis tardis, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        DimensionState dim = tardis.state(DimensionState.state);
+    public void door$useWithItem(Tardis tardis, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
-        player.teleportTo(dim.level.get(), 0, 64, 0, RelativeMovement.ROTATION, 0, 0);
+        ExteriorState exteriorState = tardis.state(ExteriorState.state);
+
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        GlobalPos globalPos = exteriorState.exteriorPos;
+
+        byte direction = exteriorState.exteriorRot;
+
+        BlockPos finalPos = globalPos.pos();
+
+        ServerLevel exteriorLevel = serverLevel.getServer().getLevel(globalPos.dimension());
+
+        TeleportUtil.teleportWithOffset(player, exteriorLevel, finalPos, direction);
     }
 }

@@ -32,15 +32,10 @@ public class ExteriorBlockEntity extends LinkableBlockEntity implements GeoBlock
     private int textureVariant = 0;
     private boolean rightHasOpened = false;
     private boolean leftHasOpened = false;
-    private boolean needsSnap = false;
 
     public ExteriorBlockEntity(BlockPos pos, BlockState state) {
         super(AitBlockEntities.EXTERIOR_BLOCK_ENTITY, pos, state);
         this.textureVariant = state.hasProperty(ExteriorBlock.TEXTURE) ? state.getValue(ExteriorBlock.TEXTURE) : 0;
-    }
-
-    public int getTextureIndex() {
-        return this.textureVariant;
     }
 
     public String getModelName() {
@@ -55,43 +50,12 @@ public class ExteriorBlockEntity extends LinkableBlockEntity implements GeoBlock
                 ];
     }
 
-    public void cycleModelVariant() {
-        this.modelVariant = (this.modelVariant + 1) % AitVariants.EXTERIOR_MODEL_NAMES.length;
-        this.sync();
-    }
-
-    public void cycleTextureVariant() {
-        this.textureVariant = (this.textureVariant + 1) % AitVariants.EXTERIOR_TEXTURE_NAMES.length;
-
-        if (this.level != null && this.getBlockState().hasProperty(ExteriorBlock.TEXTURE)) {
-            BlockState state = this.getBlockState().setValue(ExteriorBlock.TEXTURE, this.textureVariant);
-            this.level.setBlock(this.worldPosition, state, 3);
-        }
-
-        this.sync();
-    }
-
     public float getAlpha() {
         return alpha;
     }
 
     public boolean isOnSlab() {
         return this.getBlockState().getValue(ExteriorBlock.ON_SLAB);
-    }
-
-    public boolean needsSnap() {
-        return needsSnap;
-    }
-
-    public void clearSnap() {
-        this.needsSnap = false;
-    }
-
-    private void sync() {
-        this.setChanged();
-        if (this.level != null) {
-            this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
-        }
     }
 
     @Override
@@ -127,7 +91,6 @@ public class ExteriorBlockEntity extends LinkableBlockEntity implements GeoBlock
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "right_door", 0, state -> {
-            if (needsSnap) return PlayState.STOP;
 
             Tardis tardis = this.tardis();
             if (tardis == null) return PlayState.STOP;
@@ -144,7 +107,6 @@ public class ExteriorBlockEntity extends LinkableBlockEntity implements GeoBlock
         }));
 
         controllers.add(new AnimationController<>(this, "left_door", 0, state -> {
-            if (needsSnap) return PlayState.STOP;
 
             Tardis tardis = this.tardis();
             if (tardis == null) return PlayState.STOP;

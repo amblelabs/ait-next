@@ -1,13 +1,17 @@
 package dev.amble.ait.common.blocks;
 
 import com.mojang.serialization.MapCodec;
+import dev.amble.ait.api.tardis.Tardis;
+import dev.amble.ait.api.tardis.TardisManager;
+import dev.amble.ait.api.tardis.event.block.DoorInteractionEvents;
+import dev.amble.ait.common.impl.tardis.TardisServerWorld;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.BlockGetter;
@@ -28,6 +32,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.UUID;
 
 public class DoorBlock extends BaseEntityBlock {
 
@@ -97,6 +103,26 @@ public class DoorBlock extends BaseEntityBlock {
     }
 
     @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        level.scheduleTick(pos, this, 2);
+
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        // We're only linking the door in the current TARDIS dimension. - Loqor
+        if (!TardisServerWorld.isTardisDimension(serverLevel)) return;
+
+        if (!(level.getBlockEntity(pos) instanceof DoorBlockEntity door)) return;
+
+        UUID tardisId = TardisServerWorld.getTardisId(serverLevel);
+
+        if (tardisId == null) return;
+
+        Tardis tardis = TardisManager.getOrCreate(level).get(tardisId);
+
+        door.link(tardis);
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(ROTATION, TEXTURE, LIGHT, ON_SLAB, BETWEEN);
     }
@@ -152,36 +178,25 @@ public class DoorBlock extends BaseEntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                               Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!stack.is(Items.DEBUG_STICK)) {
+        if (!(level.getBlockEntity(pos) instanceof DoorBlockEntity door))
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        }
 
-        if (level.isClientSide()) {
-            return ItemInteractionResult.SUCCESS;
-        }
+        Tardis tardis = door.tardis();
+        if (tardis == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof DoorBlockEntity door) {
-            if (player.isShiftKeyDown()) {
-                door.cycleTextureVariant();
-            } else {
-                door.cycleModelVariant();
-            }
-            return ItemInteractionResult.SUCCESS;
-        }
-
+        DoorInteractionEvents.useWithItem(tardis, stack, state, level, pos, player, hand, hit);
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        if (level.isClientSide()) return InteractionResult.SUCCESS;
+        if (!(level.getBlockEntity(pos) instanceof DoorBlockEntity doorBlockEntity))
+            return InteractionResult.CONSUME;
 
-        BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof DoorBlockEntity door) {
-            door.interact(player.isShiftKeyDown());
-        }
+        Tardis tardis = doorBlockEntity.tardis();
+        if (tardis == null) return InteractionResult.CONSUME;
 
+        DoorInteractionEvents.useWithoutItem(tardis, state, level, pos, player, hit);
         return InteractionResult.CONSUME;
     }
 }

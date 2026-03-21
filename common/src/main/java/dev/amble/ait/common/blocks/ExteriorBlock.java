@@ -1,5 +1,6 @@
 package dev.amble.ait.common.blocks;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import dev.amble.ait.api.tardis.ServerTardis;
 import dev.amble.ait.api.tardis.Tardis;
@@ -8,7 +9,9 @@ import dev.amble.ait.api.tardis.event.block.ExteriorInteractionEvents;
 import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
 import dev.amble.ait.common.impl.tardis.state.DimensionState;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
+import dev.amble.ait.common.impl.tardis.state.ExteriorState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -38,6 +41,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 public class ExteriorBlock extends BaseEntityBlock {
@@ -216,14 +220,15 @@ public class ExteriorBlock extends BaseEntityBlock {
         level.scheduleTick(pos, this, 2);
 
         if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof ExteriorBlockEntity exterior) {
-            // FIXME: move this to a proper method.
-            ServerTardis tardis = new ServerTardis(UUID.randomUUID());
+            ServerTardis tardis = ServerTardis.create(serverLevel, new DoorState(), new DimensionState(), new ExteriorState());
 
-            tardis.addState(new DoorState());
-            tardis.addState(new DimensionState());
+            GlobalPos globalPosition = GlobalPos.of(level.dimension(), pos);
 
-            TardisManager.getOrCreate(level).add(tardis);
-            TardisLifecycleEvents.handlePostCreated(tardis, serverLevel.getServer());
+            byte rotation = state.getValue(ROTATION).byteValue();
+
+            tardis.state(ExteriorState.state).exteriorPos = globalPosition;
+            tardis.state(ExteriorState.state).exteriorRot = rotation;
+
             exterior.link(tardis);
         }
     }
