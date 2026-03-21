@@ -26,7 +26,8 @@ public class DimensionState implements TState<DimensionState>, NbtSerializer {
         }
     };
 
-    public @Nullable WeakReference<ServerLevel> level;
+    @SuppressWarnings("NotNullFieldNotInitialized") // we initialize it later in #onPostLoaded and #onLoaded
+    public WeakReference<ServerLevel> level;
 
     @Override
     public Type<DimensionState> type() {
