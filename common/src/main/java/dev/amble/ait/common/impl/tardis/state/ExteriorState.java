@@ -18,6 +18,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class ExteriorState implements TState<ExteriorState>, NbtSerializer {
 
+    public ExteriorState(GlobalPos globalPos, byte rotation) {
+        this.exteriorPos = globalPos;
+        this.exteriorRot = rotation;
+    }
+
+    // Prevents null stuff, basically a bullshit location. - Loqor
+    public ExteriorState() {
+        this(new GlobalPos(Level.OVERWORLD, new BlockPos(0, 64, 0)), (byte) 0);
+    }
+
     @SuppressWarnings("NotNullFieldNotInitialized") // lel
     public GlobalPos exteriorPos;
     public byte exteriorRot; // GlobalPos doesn't store the direction, so we can use a separate value. - Loqor
@@ -44,7 +54,7 @@ public class ExteriorState implements TState<ExteriorState>, NbtSerializer {
 
     @Override
     public void toNbt(@NotNull CompoundTag nbt, boolean isClient) {
-        nbt.putString("dimension", exteriorPos.dimension().toString());
+        nbt.putString("dimension", exteriorPos.dimension().location().toString());
         nbt.put("position", NbtUtils.writeBlockPos(exteriorPos.pos()));
         nbt.putByte("rotation", exteriorRot);
     }

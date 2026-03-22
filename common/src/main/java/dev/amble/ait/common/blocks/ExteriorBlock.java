@@ -220,14 +220,13 @@ public class ExteriorBlock extends BaseEntityBlock {
         level.scheduleTick(pos, this, 2);
 
         if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof ExteriorBlockEntity exterior) {
-            ServerTardis tardis = ServerTardis.create(serverLevel, new DoorState(), new DimensionState(), new ExteriorState());
 
+            // TODO: clean this up to be a single little thing for setting the location. - Loqor
             GlobalPos globalPosition = GlobalPos.of(level.dimension(), pos);
-
             byte rotation = state.getValue(ROTATION).byteValue();
+            ExteriorState exteriorState = new ExteriorState(globalPosition, rotation);
 
-            tardis.state(ExteriorState.state).exteriorPos = globalPosition;
-            tardis.state(ExteriorState.state).exteriorRot = rotation;
+            ServerTardis tardis = ServerTardis.create(serverLevel, new DoorState(), new DimensionState(), exteriorState);
 
             exterior.link(tardis);
         }
