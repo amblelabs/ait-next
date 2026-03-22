@@ -1,11 +1,8 @@
 package dev.amble.ait.common.impl.tardis.behavior;
 
-import com.mojang.datafixers.util.Pair;
 import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.event.block.DoorInteractionEvents;
-import dev.amble.ait.api.tardis.event.block.ExteriorInteractionEvents;
 import dev.amble.ait.api.tardis.util.TeleportUtil;
-import dev.amble.ait.common.impl.tardis.state.DimensionState;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
 import dev.amble.ait.common.impl.tardis.state.ExteriorState;
 import dev.amble.ait.common.lib.AitSounds;
@@ -15,7 +12,6 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -68,6 +64,7 @@ public class CapsuleDoorBehavior implements TBehavior, DoorInteractionEvents {
         BlockPos finalPos = globalPos.pos();
 
         ServerLevel exteriorLevel = serverLevel.getServer().getLevel(globalPos.dimension());
+        if (exteriorLevel == null) return;
 
         TeleportUtil.teleportWithOffset(player, exteriorLevel, finalPos, direction);
     }
