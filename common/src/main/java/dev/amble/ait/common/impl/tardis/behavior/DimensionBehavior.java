@@ -5,9 +5,11 @@ import dev.amble.ait.api.tardis.ServerTardis;
 import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.TardisManager;
 import dev.amble.ait.api.tardis.event.ServerLifecycleEvents;
+import dev.amble.ait.api.tardis.event.desktop.DesktopPlacementEvents;
 import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
 import dev.amble.ait.common.impl.tardis.ServerTardisManager;
 import dev.amble.ait.common.impl.tardis.TardisServerWorld;
+import dev.amble.ait.common.impl.tardis.state.DesktopState;
 import dev.amble.ait.common.impl.tardis.state.DimensionState;
 import dev.drtheo.ecs.behavior.TBehavior;
 import dev.drtheo.multidim.MultiDim;
@@ -32,6 +34,9 @@ public class DimensionBehavior implements TBehavior, TardisLifecycleEvents, Serv
         ServerLevel level = TardisServerWorld.create(server, Objects.requireNonNull(this.blueprint), tardis);
 
         state.level = new WeakReference<>(level);
+
+        // Trigger desktop placement, currently a hollow shell.
+        DesktopPlacementEvents.handleBeforePlaced(tardis, server);
     }
 
     @Override

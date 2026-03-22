@@ -5,6 +5,7 @@ import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.TardisManager;
 import dev.amble.ait.api.tardis.event.block.DoorInteractionEvents;
 import dev.amble.ait.common.impl.tardis.TardisServerWorld;
+import dev.amble.ait.common.impl.tardis.state.DesktopState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -120,6 +121,9 @@ public class DoorBlock extends BaseEntityBlock {
         Tardis tardis = TardisManager.getOrCreate(level).get(tardisId);
 
         door.link(tardis);
+
+        DesktopState desktopState = tardis.state(DesktopState.state);
+        desktopState.updateDoorPos(pos, state.getValue(ROTATION).byteValue());
     }
 
     @Override

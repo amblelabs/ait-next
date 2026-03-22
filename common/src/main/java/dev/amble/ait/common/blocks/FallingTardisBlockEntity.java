@@ -1,8 +1,11 @@
 package dev.amble.ait.common.blocks;
 
+import dev.amble.ait.api.tardis.Tardis;
+import dev.amble.ait.common.impl.tardis.state.ExteriorState;
 import dev.amble.ait.common.lib.AitEntities;
 import dev.amble.ait.common.lib.AitSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -160,18 +163,9 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
                         BlockState toPlace = setOnSlab(this.blockState, false);
 
                         if (this.level().setBlock(landingPos, toPlace, Block.UPDATE_ALL)) {
-                            this.discard();
-
                             this.level().playSound(null, landingPos, AitSounds.LAND_THUD, SoundSource.BLOCKS, 1.0f, 1.0f);
-
-                            if (this.blockEntityData != null) {
-                                BlockEntity be = this.level().getBlockEntity(landingPos);
-                                if (be != null) {
-                                    be.loadWithComponents(this.blockEntityData, this.level().registryAccess());
-                                    be.setChanged();
-                                    this.level().sendBlockUpdated(landingPos, toPlace, toPlace, 3);
-                                }
-                            }
+                            this.restorePlacedBlockData(landingPos, toPlace);
+                            this.discard();
                             return;
                         }
                     } else if (isBottomSlab(stateAtPos)) {
@@ -182,25 +176,13 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
                             BlockState toPlace = setOnSlab(this.blockState, true);
 
                             if (this.level().setBlock(abovePos, toPlace, Block.UPDATE_ALL)) {
-                                this.discard();
-
                                 this.level().playSound(null, abovePos, AitSounds.LAND_THUD, SoundSource.BLOCKS, 1.0f, 1.0f);
-
-                                if (this.blockEntityData != null) {
-                                    BlockEntity be = this.level().getBlockEntity(abovePos);
-                                    if (be != null) {
-                                        be.loadWithComponents(this.blockEntityData, this.level().registryAccess());
-                                        be.setChanged();
-                                        this.level().sendBlockUpdated(abovePos, toPlace, toPlace, 3);
-                                    }
-                                }
+                                this.restorePlacedBlockData(abovePos, toPlace);
+                                this.discard();
                                 return;
                             }
                         }
                     }
-
-                    this.discard();
-                    Block.dropResources(this.blockState, this.level(), landingPos);
                 }
             }
 
@@ -210,6 +192,24 @@ public class FallingTardisBlockEntity extends Entity implements GeoEntity {
         }
 
         this.setDeltaMovement(this.getDeltaMovement().scale(0.98));
+    }
+
+    private void restorePlacedBlockData(BlockPos placedPos, BlockState placedState) {
+        BlockEntity be = this.level().getBlockEntity(placedPos);
+        if (be != null && this.blockEntityData != null) {
+            be.loadWithComponents(this.blockEntityData, this.level().registryAccess());
+            be.setChanged();
+        }
+
+        this.level().sendBlockUpdated(placedPos, placedState, placedState, Block.UPDATE_ALL);
+
+        if (be instanceof ExteriorBlockEntity exteriorBlockEntity) {
+            Tardis tardis = exteriorBlockEntity.tardis();
+            if (tardis != null) {
+                ExteriorState exteriorState = tardis.state(ExteriorState.state);
+                exteriorState.updateExteriorPos(new GlobalPos(this.level().dimension(), placedPos), (byte) this.getRotation());
+            }
+        }
     }
 
     private static boolean isBottomSlab(BlockState state) {

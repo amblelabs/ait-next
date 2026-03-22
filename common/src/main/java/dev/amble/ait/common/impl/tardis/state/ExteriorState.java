@@ -28,7 +28,6 @@ public class ExteriorState implements TState<ExteriorState>, NbtSerializer {
         this(new GlobalPos(Level.OVERWORLD, new BlockPos(0, 64, 0)), (byte) 0);
     }
 
-    @SuppressWarnings("NotNullFieldNotInitialized") // lel
     public GlobalPos exteriorPos;
     public byte exteriorRot; // GlobalPos doesn't store the direction, so we can use a separate value. - Loqor
 
@@ -57,5 +56,18 @@ public class ExteriorState implements TState<ExteriorState>, NbtSerializer {
         nbt.putString("dimension", exteriorPos.dimension().location().toString());
         nbt.put("position", NbtUtils.writeBlockPos(exteriorPos.pos()));
         nbt.putByte("rotation", exteriorRot);
+    }
+
+    public void updateExteriorPos(GlobalPos globalPos) {
+        updateExteriorPos(globalPos, this.exteriorRot);
+    }
+
+    public void updateExteriorPos(byte rot) {
+        updateExteriorPos(this.exteriorPos, rot);
+    }
+
+    public void updateExteriorPos(GlobalPos globalPos, byte rot) {
+        this.exteriorPos = globalPos;
+        this.exteriorRot = rot;
     }
 }

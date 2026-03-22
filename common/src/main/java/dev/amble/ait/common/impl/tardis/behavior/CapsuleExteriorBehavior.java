@@ -2,6 +2,7 @@ package dev.amble.ait.common.impl.tardis.behavior;
 
 import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.event.block.ExteriorInteractionEvents;
+import dev.amble.ait.common.impl.tardis.state.DesktopState;
 import dev.amble.ait.common.impl.tardis.state.DimensionState;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
 import dev.amble.ait.common.lib.AitSounds;
@@ -51,7 +52,14 @@ public class CapsuleExteriorBehavior implements TBehavior, ExteriorInteractionEv
     @Override
     public void exterior$useWithItem(Tardis tardis, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         DimensionState dim = tardis.state(DimensionState.state);
+        DesktopState desktopState = tardis.state(DesktopState.state);
+        BlockPos bPos = desktopState.doorPos;
+        byte rot = desktopState.doorRot;
+        
+        if (bPos == null) {
+            bPos = new BlockPos(0, 64, 0);
+        }
 
-        player.teleportTo(dim.level.get(), 0, 64, 0, RelativeMovement.ROTATION, 0, 0);
+        player.teleportTo(dim.level.get(), bPos.getX(), bPos.getY(), bPos.getZ(), RelativeMovement.ROTATION, rot * 45f, 0);
     }
 }

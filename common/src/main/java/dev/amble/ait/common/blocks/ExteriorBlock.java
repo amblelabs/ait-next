@@ -7,6 +7,7 @@ import dev.amble.ait.api.tardis.Tardis;
 import dev.amble.ait.api.tardis.TardisManager;
 import dev.amble.ait.api.tardis.event.block.ExteriorInteractionEvents;
 import dev.amble.ait.api.tardis.event.init.TardisLifecycleEvents;
+import dev.amble.ait.common.impl.tardis.state.DesktopState;
 import dev.amble.ait.common.impl.tardis.state.DimensionState;
 import dev.amble.ait.common.impl.tardis.state.DoorState;
 import dev.amble.ait.common.impl.tardis.state.ExteriorState;
@@ -226,7 +227,7 @@ public class ExteriorBlock extends BaseEntityBlock {
             byte rotation = state.getValue(ROTATION).byteValue();
             ExteriorState exteriorState = new ExteriorState(globalPosition, rotation);
 
-            ServerTardis tardis = ServerTardis.create(serverLevel, new DoorState(), new DimensionState(), exteriorState);
+            ServerTardis tardis = ServerTardis.create(serverLevel, new DoorState(), new DimensionState(), new DesktopState(), exteriorState);
 
             exterior.link(tardis);
         }
